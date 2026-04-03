@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[ExecuteAlways]
 [RequireComponent(typeof(Camera))]
 public class CameraSetup : MonoBehaviour
 {
     [Header("Links")]
     public Tilemap tilemap;
-    
+
     [Header("Padding")]
     public float padding = -1f;
 
@@ -34,10 +35,10 @@ public class CameraSetup : MonoBehaviour
 
         var sizeFromWidth = halfWidth / cam.aspect;
         cam.orthographicSize = Mathf.Max(halfHeight, sizeFromWidth);
-
-        Debug.Log($"Bounds center: {bounds.center}");
-        Debug.Log($"Bounds size: {bounds.size}");
-        Debug.Log($"Camera size: {cam.orthographicSize}");
     }
 
+    private void Start()
+    {
+        FitToGrid();
+    }
 }
