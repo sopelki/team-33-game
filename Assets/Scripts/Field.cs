@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HexagonScripts;
 using UnityEngine;
 
 public class Field
@@ -9,17 +10,18 @@ public class Field
     public void GenerateFieldData(int width, int height)
     {
         Hexagons.Clear();
+        var random = new System.Random();
 
-        var counter = 0;
+        // var counter = 0;
         for (var x = -width / 2; x < width / 2; x++)
         {
             for (var y = -height / 2; y < height / 2; y++)
             {
                 var offsetPos = new Vector3Int(x, y, 0);
 
-                var type = counter % 3 == 0 ? HexagonType.Path : HexagonType.Land;
+                var type = random.Next() % 3 == 0 ? HexagonType.Path : HexagonType.Land;
 
-                counter++;
+                // counter++;
                 var axialPos = HexagonMath.OffsetToAxial(x, y);
                 var hexagon = new Hexagon(axialPos.x, axialPos.y, offsetPos, type);
 

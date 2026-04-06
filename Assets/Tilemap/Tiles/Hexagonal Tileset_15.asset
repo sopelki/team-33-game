@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hexagonal Tileset_15
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.Tilemaps.Tile
   m_Sprite: {fileID: 540083017, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6150943, g: 0.6025652, b: 0.53733706, a: 1}
   m_Transform:
     e00: 1
     e01: 0
