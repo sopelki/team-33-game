@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Camera))]
 public class CameraSetup : MonoBehaviour
 {
-    [Header("Links")]
+    [Header("References")]
     public Tilemap tilemap;
 
     [Header("Padding")]

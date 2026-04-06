@@ -4,13 +4,15 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Tilemap))]
 public class CreateMap : MonoBehaviour
 {
-    private Tilemap myTilemap;
-
+    [Header("References")]
     public TileBase hexTile;
 
     [Header("Map size")]
     public int width = 33;
+
     public int height = 28;
+
+    private Tilemap myTilemap;
 
     private void Awake()
     {
@@ -21,7 +23,9 @@ public class CreateMap : MonoBehaviour
     public void GenerateGrid()
     {
         if (myTilemap == null)
+        {
             myTilemap = GetComponent<Tilemap>();
+        }
 
         if (hexTile == null)
         {
@@ -45,7 +49,9 @@ public class CreateMap : MonoBehaviour
     public void ClearGrid()
     {
         if (myTilemap == null)
+        {
             myTilemap = GetComponent<Tilemap>();
+        }
 
         myTilemap.ClearAllTiles();
     }
