@@ -1,28 +1,34 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[ExecuteAlways]
-public class HexGridGenerator : MonoBehaviour
+[RequireComponent(typeof(Tilemap))]
+public class CreateMap : MonoBehaviour
 {
-    // [Header("Grid properties")]
     private Tilemap myTilemap;
 
     public TileBase hexTile;
 
     [Header("Map size")]
     public int width = 33;
-
     public int height = 28;
 
-    private void Start()
+    private void Awake()
     {
         myTilemap = GetComponent<Tilemap>();
-        GenerateGrid();
     }
 
     [ContextMenu("Regenerate Grid")]
     public void GenerateGrid()
     {
+        if (myTilemap == null)
+            myTilemap = GetComponent<Tilemap>();
+
+        if (hexTile == null)
+        {
+            Debug.LogWarning("CreateMap: references are not assigned.");
+            return;
+        }
+
         ClearGrid();
 
         for (var x = -width / 2; x < width / 2; x++)
@@ -30,10 +36,7 @@ public class HexGridGenerator : MonoBehaviour
             for (var y = -height / 2; y < height / 2; y++)
             {
                 var cellPosition = new Vector3Int(x, y, 0);
-                if (hexTile != null)
-                    myTilemap?.SetTile(cellPosition, hexTile);
-                else
-                    return;
+                myTilemap.SetTile(cellPosition, hexTile);
             }
         }
     }
@@ -41,6 +44,9 @@ public class HexGridGenerator : MonoBehaviour
     [ContextMenu("Clear Grid")]
     public void ClearGrid()
     {
-        myTilemap?.ClearAllTiles();
+        if (myTilemap == null)
+            myTilemap = GetComponent<Tilemap>();
+
+        myTilemap.ClearAllTiles();
     }
 }

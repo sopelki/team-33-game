@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[ExecuteAlways]
 [RequireComponent(typeof(Camera))]
 public class CameraSetup : MonoBehaviour
 {
@@ -17,11 +16,17 @@ public class CameraSetup : MonoBehaviour
         var cam = GetComponent<Camera>();
 
         if (tilemap == null)
+        {
+            Debug.LogWarning("CameraSetup: references are not assigned.");
             return;
+        }
 
         var tilemapRenderer = tilemap.GetComponent<TilemapRenderer>();
         if (tilemapRenderer == null)
+        {
+            Debug.LogWarning("CameraSetup: references are not assigned.");
             return;
+        }
 
         var bounds = tilemapRenderer.bounds;
 
@@ -35,10 +40,5 @@ public class CameraSetup : MonoBehaviour
 
         var sizeFromWidth = halfWidth / cam.aspect;
         cam.orthographicSize = Mathf.Max(halfHeight, sizeFromWidth);
-    }
-
-    private void Start()
-    {
-        FitToGrid();
     }
 }
