@@ -1,0 +1,1 @@
+﻿public enum Texture { Grass, Path, Tree }
