@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -10,11 +11,16 @@ public class CameraSetup : MonoBehaviour
     [Header("Padding")]
     public float padding = -1f;
 
+    private Camera myCamera;
+
+    private void Awake()
+    {
+        myCamera = GetComponent<Camera>();
+    }
+
     [ContextMenu("Fit Camera to Grid")]
     public void FitToGrid()
     {
-        var cam = GetComponent<Camera>();
-
         if (tilemap == null)
         {
             Debug.LogWarning("CameraSetup: references are not assigned.");
@@ -38,7 +44,7 @@ public class CameraSetup : MonoBehaviour
         var halfHeight = bounds.size.y * 0.5f + padding;
         var halfWidth = bounds.size.x * 0.5f + padding;
 
-        var sizeFromWidth = halfWidth / cam.aspect;
-        cam.orthographicSize = Mathf.Max(halfHeight, sizeFromWidth);
+        var sizeFromWidth = halfWidth / myCamera.aspect;
+        myCamera.orthographicSize = Mathf.Max(halfHeight, sizeFromWidth);
     }
 }

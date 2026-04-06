@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace
+public class HexagonMath
 {
-    public class HexagonMath
+    public static Vector2Int OffsetToAxial(int x, int y)
     {
-        public static Vector2Int OffsetToAxial(int x, int y)
-        {
-            var q = x - (y - (y & 1)) / 2;
-            var r = y;
-            
-            return new Vector2Int(q, r);
-        }
+        var q = x - (y - (y & 1)) / 2;
+
+        return new Vector2Int(q, y);
     }
 }

@@ -1,1 +1,6 @@
-﻿public enum HexagonType { Grass, Path, TowerHolder }
+﻿public enum HexagonType
+{
+    Land,
+    Path,
+    Slot
+}

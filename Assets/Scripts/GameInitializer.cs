@@ -5,7 +5,7 @@ public class GameInitializer : MonoBehaviour
     [Header("References")]
     public CameraSetup cameraSetup;
 
-    public CreateMap createMap;
+    public FieldGenerator fieldGenerator;
 
     private void Start()
     {
@@ -15,13 +15,13 @@ public class GameInitializer : MonoBehaviour
     [ContextMenu("Initialize Game")]
     public void Initialize()
     {
-        if (cameraSetup == null || createMap == null)
+        if (cameraSetup == null || fieldGenerator == null)
         {
             Debug.LogWarning("GameInitializer: references are not assigned.");
             return;
         }
 
-        createMap.GenerateGrid();
+        fieldGenerator.GenerateAndDraw();
         cameraSetup.FitToGrid();
     }
 }
