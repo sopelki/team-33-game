@@ -8,9 +8,9 @@ public class CreateMap : MonoBehaviour
     public TileBase hexTile;
 
     [Header("Map size")]
-    public int width = 33;
+    public int width = 35;
 
-    public int height = 28;
+    public int height = 32;
 
     private Tilemap myTilemap;
 
