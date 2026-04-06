@@ -21,6 +21,8 @@ public class CameraSetup : MonoBehaviour
     [ContextMenu("Fit Camera to Grid")]
     public void FitToGrid()
     {
+        // myCamera = GetComponent<Camera>();
+        
         if (tilemap == null)
         {
             Debug.LogWarning("CameraSetup: references are not assigned.");

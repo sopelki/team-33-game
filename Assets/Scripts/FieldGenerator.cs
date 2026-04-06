@@ -15,7 +15,7 @@ public class FieldGenerator : MonoBehaviour
     private Tilemap myTilemap;
     private Dictionary<HexagonType, TileBase> tileTypeSpriteDictionary;
 
-    private const int FieldWidth = 35;
+    private const int FieldWidth = 38;
     private const int FieldHeight = 32;
 
     private void Awake()
