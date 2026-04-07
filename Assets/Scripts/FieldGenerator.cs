@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using HexagonScripts;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [ExecuteAlways]
-public class FieldGenerator: MonoBehaviour
+public class FieldGenerator : MonoBehaviour
 {
     public TileBase basicTile;
 
     [Header("TileRender")]
     public List<TileMapping> tileMappings;
-    
+
     public Field CurrentField;
 
     private Tilemap myTilemap;
@@ -34,8 +35,8 @@ public class FieldGenerator: MonoBehaviour
         CurrentField.GenerateFieldData(FieldWidth, FieldHeight);
         DrawField(CurrentField);
     }
-    
-    [ContextMenu("Read Field from editor")]
+
+    [ContextMenu("Read Field From Editor")]
     public void ReadFieldFromBrush()
     {
         if (myTilemap == null)
@@ -61,23 +62,27 @@ public class FieldGenerator: MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"Тайл {tileOnScene.name} на {pos} не найден в списке Mappings!");
+                    Debug.LogWarning($"Tile {tileOnScene.name} at {pos} not found in Mappings.");
                 }
             }
         }
-        Debug.Log($"<color=green>Считывание завершено!</color> Гексов: {parsedHexes}");
+        Debug.Log($"Hex parsed successfully: {parsedHexes}");
     }
-    
+
     [ContextMenu("Save Field To File")]
     public void SaveGrid()
     {
-        if (CurrentField != null && CurrentField.Hexagons.Count > 0)
+        if (CurrentField == null)
+        {
+            ReadFieldFromBrush();
+        }
+        if (CurrentField?.Hexagons.Count > 0)
         {
             SaveLoadManager.SaveMapToFile(CurrentField);
         }
         else
         {
-            Debug.LogWarning("Поле пустое! Сначала сгенерируйте его.");
+            Debug.LogWarning("Field is Empty, Generate first.");
         }
     }
 
@@ -85,18 +90,18 @@ public class FieldGenerator: MonoBehaviour
     public void LoadAndDraw()
     {
         ClearGrid();
-        
+
         var loadedField = SaveLoadManager.LoadMapFromFile();
         if (loadedField != null)
         {
             CurrentField = loadedField;
             DrawField(CurrentField);
-            Debug.Log($"Отрисовано гексов из файла: {CurrentField.Hexagons.Count}");
+            Debug.Log($"Rendered Hexagons From File: {CurrentField.Hexagons.Count}");
         }
         else
         {
-            Debug.LogWarning("Файл не найден. Генерируем базовое поле...");
-            GenerateAndDraw(); // Запасной вариант, если файла еще нет
+            Debug.LogWarning("File Not Found, Generating Basic Field.");
+            GenerateAndDraw();
         }
     }
 
@@ -105,15 +110,12 @@ public class FieldGenerator: MonoBehaviour
         typeToTileDict = new Dictionary<HexagonType, TileBase>();
         tileToTypeDict = new Dictionary<TileBase, HexagonType>();
 
-        foreach (var mapping in tileMappings)
+        foreach (var mapping in tileMappings.Where(mapping => mapping.tileAsset != null))
         {
-            if (mapping.tileAsset != null)
+            typeToTileDict[mapping.type] = mapping.tileAsset;
+            if (!tileToTypeDict.ContainsKey(mapping.tileAsset))
             {
-                typeToTileDict[mapping.type] = mapping.tileAsset;
-                if (!tileToTypeDict.ContainsKey(mapping.tileAsset))
-                {
-                    tileToTypeDict.Add(mapping.tileAsset, mapping.type);
-                }
+                tileToTypeDict.Add(mapping.tileAsset, mapping.type);
             }
         }
     }

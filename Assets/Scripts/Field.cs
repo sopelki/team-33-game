@@ -5,34 +5,33 @@ using HexagonScripts;
 public class Field
 {
     public Dictionary<Vector2Int, Hexagon> Hexagons = new();
-    
+
     public void AddHexagon(int x, int y, HexagonType type)
     {
         var offsetPos = new Vector3Int(x, y, 0);
         var axialPos = HexagonMath.OffsetToAxial(x, y);
-        
+
         var hex = new Hexagon(axialPos.x, axialPos.y, offsetPos, type);
 
         // Используем [axialPos] вместо Add, чтобы при перезаписи тайла кисточкой не было ошибки
-        Hexagons[axialPos] = hex; 
+        Hexagons[axialPos] = hex;
     }
-    
+
     public FieldData ExportToSaveData()
     {
-        var data = new FieldData();
-        data.savedHexes = new List<Hexagon>(Hexagons.Values);
+        var data = new FieldData { savedHexes = new List<Hexagon>(Hexagons.Values) };
         return data;
     }
-    
+
     public void ImportFromFieldData(FieldData data)
     {
         Hexagons.Clear();
-        foreach (var hex in data.savedHexes)
+        foreach (var hexagon in data.savedHexes)
         {
-            Hexagons.Add(hex.coordinates, hex); 
+            Hexagons.Add(hexagon.coordinates, hexagon);
         }
     }
-    
+
     // Плейсхолдерная реализация
     public void GenerateFieldData(int width, int height)
     {
@@ -45,7 +44,7 @@ public class Field
             {
                 var type = (counter % 3 == 0) ? HexagonType.Path : HexagonType.Land;
                 counter++;
-                
+
                 AddHexagon(x, y, type);
             }
         }
