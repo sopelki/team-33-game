@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [ExecuteAlways]
-public class FieldGenerator : MonoBehaviour
+public class FieldGenerator: MonoBehaviour
 {
     public TileBase basicTile;
 
@@ -13,7 +13,8 @@ public class FieldGenerator : MonoBehaviour
     public Field CurrentField;
 
     private Tilemap myTilemap;
-    private Dictionary<HexagonType, TileBase> tileTypeSpriteDictionary;
+    private Dictionary<HexagonType, TileBase> typeToTileDict;
+    private Dictionary<TileBase, HexagonType> tileToTypeDict;
 
     private const int FieldWidth = 38;
     private const int FieldHeight = 32;
@@ -32,13 +33,87 @@ public class FieldGenerator : MonoBehaviour
         CurrentField.GenerateFieldData(FieldWidth, FieldHeight);
         DrawField(CurrentField);
     }
-
-    private void SetupDictionary()
+    
+    [ContextMenu("Read Field from editor")]
+    public void ReadFieldFromBrush()
     {
-        tileTypeSpriteDictionary = new Dictionary<HexagonType, TileBase>();
+        if (myTilemap == null)
+        {
+            myTilemap = GetComponent<Tilemap>();
+        }
+
+        SetupDictionaries();
+
+        CurrentField = new Field();
+        var bounds = myTilemap.cellBounds;
+        var parsedHexes = 0;
+
+        foreach (var pos in bounds.allPositionsWithin)
+        {
+            var tileOnScene = myTilemap.GetTile(pos);
+            if (tileOnScene != null)
+            {
+                if (tileToTypeDict.TryGetValue(tileOnScene, out var foundType))
+                {
+                    CurrentField.AddHexagon(pos.x, pos.y, foundType);
+                    parsedHexes++;
+                }
+                else
+                {
+                    Debug.LogWarning($"Тайл {tileOnScene.name} на {pos} не найден в списке Mappings!");
+                }
+            }
+        }
+        Debug.Log($"<color=green>Считывание завершено!</color> Гексов: {parsedHexes}");
+    }
+    
+    [ContextMenu("Save Field To File")]
+    public void SaveGrid()
+    {
+        if (CurrentField != null && CurrentField.Hexagons.Count > 0)
+        {
+            SaveLoadManager.SaveMapToFile(CurrentField);
+        }
+        else
+        {
+            Debug.LogWarning("Поле пустое! Сначала сгенерируйте его.");
+        }
+    }
+
+    [ContextMenu("Load Field From File")]
+    public void LoadAndDraw()
+    {
+        ClearGrid();
+        
+        var loadedField = SaveLoadManager.LoadMapFromFile();
+        if (loadedField != null)
+        {
+            CurrentField = loadedField;
+            DrawField(CurrentField);
+            Debug.Log($"Отрисовано гексов из файла: {CurrentField.Hexagons.Count}");
+        }
+        else
+        {
+            Debug.LogWarning("Файл не найден. Генерируем базовое поле...");
+            GenerateAndDraw(); // Запасной вариант, если файла еще нет
+        }
+    }
+
+    private void SetupDictionaries()
+    {
+        typeToTileDict = new Dictionary<HexagonType, TileBase>();
+        tileToTypeDict = new Dictionary<TileBase, HexagonType>();
+
         foreach (var mapping in tileMappings)
         {
-            tileTypeSpriteDictionary[mapping.type] = mapping.tileAsset;
+            if (mapping.tileAsset != null)
+            {
+                typeToTileDict[mapping.type] = mapping.tileAsset;
+                if (!tileToTypeDict.ContainsKey(mapping.tileAsset))
+                {
+                    tileToTypeDict.Add(mapping.tileAsset, mapping.type);
+                }
+            }
         }
     }
 
@@ -49,10 +124,10 @@ public class FieldGenerator : MonoBehaviour
             myTilemap = GetComponent<Tilemap>();
         }
 
-        SetupDictionary();
+        SetupDictionaries();
         foreach (var hexagon in field.Hexagons.Values)
         {
-            if (tileTypeSpriteDictionary.TryGetValue(hexagon.type, out var tileToDraw))
+            if (typeToTileDict.TryGetValue(hexagon.type, out var tileToDraw))
             {
                 myTilemap.SetTile(hexagon.offset, tileToDraw);
             }

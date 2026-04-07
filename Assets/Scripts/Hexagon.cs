@@ -23,4 +23,5 @@ public class Hexagon
         // isWalkable = type == HexagonType.Path;
         // isSlot = type == HexagonType.Slot;
     }
+    
 }

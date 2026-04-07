@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GameInitializer : MonoBehaviour
 {
+    
     [Header("References")]
     public CameraSetup cameraSetup;
 
@@ -21,7 +22,7 @@ public class GameInitializer : MonoBehaviour
             return;
         }
 
-        fieldGenerator.GenerateAndDraw();
+        fieldGenerator.LoadAndDraw();
         cameraSetup.FitToGrid();
     }
 }
