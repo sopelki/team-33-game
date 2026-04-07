@@ -1,8 +1,11 @@
-﻿public enum TextureType
+﻿namespace HexagonScripts
 {
-    Grass,
-    Swamp,
-    MudPath,
-    BrickPath,
-    Slot
+    public enum TextureType
+    {
+        Grass,
+        Swamp,
+        MudPath,
+        BrickPath,
+        Slot
+    }
 }

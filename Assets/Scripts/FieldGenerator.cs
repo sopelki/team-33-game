@@ -4,7 +4,6 @@ using HexagonScripts;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[ExecuteAlways]
 public class FieldGenerator : MonoBehaviour
 {
     public TileBase basicTile;
@@ -36,8 +35,75 @@ public class FieldGenerator : MonoBehaviour
         DrawField(CurrentField);
     }
 
-    [ContextMenu("Read Field From Editor")]
-    public void ReadFieldFromBrush()
+    [ContextMenu("Clear Grid")]
+    public void ClearGrid()
+    {
+        if (myTilemap == null)
+        {
+            myTilemap = GetComponent<Tilemap>();
+        }
+
+        myTilemap?.ClearAllTiles();
+    }
+
+
+    [ContextMenu("Save Field To File")]
+    public void SaveGrid()
+    {
+        ReadFieldFromBrush();
+        
+        if (CurrentField.Count > 0)
+        {
+            ReadFieldFromBrush();
+            SaveLoadManager.SaveMapToFile(CurrentField);
+        }
+        else
+        {
+            Debug.LogWarning("Field is Empty, Generate first.");
+        }
+    }
+
+    [ContextMenu("Load Field From File")]
+    public void LoadAndDraw()
+    {
+        ClearGrid();
+
+        var loadedField = SaveLoadManager.LoadMapFromFile();
+        if (loadedField != null)
+        {
+            CurrentField = loadedField;
+            DrawField(CurrentField);
+            Debug.Log($"Rendered Hexagons From File: {CurrentField.Count}");
+        }
+        else
+        {
+            Debug.LogWarning("File Not Found, Generating Basic Field.");
+            GenerateAndDraw();
+        }
+    }
+
+    private void DrawField(Field field)
+    {
+        if (myTilemap == null)
+        {
+            myTilemap = GetComponent<Tilemap>();
+        }
+
+        SetupDictionaries();
+        foreach (var hexagon in field.Hexagons.Values)
+        {
+            if (typeToTileDict.TryGetValue(hexagon.type, out var tileToDraw))
+            {
+                myTilemap.SetTile(hexagon.offset, tileToDraw);
+            }
+            else
+            {
+                Debug.LogWarning("FieldGenerator: references are not assigned.");
+            }
+        }
+    }
+
+    private void ReadFieldFromBrush()
     {
         if (myTilemap == null)
         {
@@ -66,43 +132,7 @@ public class FieldGenerator : MonoBehaviour
                 }
             }
         }
-        Debug.Log($"Hex parsed successfully: {parsedHexes}");
-    }
-
-    [ContextMenu("Save Field To File")]
-    public void SaveGrid()
-    {
-        if (CurrentField == null)
-        {
-            ReadFieldFromBrush();
-        }
-        if (CurrentField?.Hexagons.Count > 0)
-        {
-            SaveLoadManager.SaveMapToFile(CurrentField);
-        }
-        else
-        {
-            Debug.LogWarning("Field is Empty, Generate first.");
-        }
-    }
-
-    [ContextMenu("Load Field From File")]
-    public void LoadAndDraw()
-    {
-        ClearGrid();
-
-        var loadedField = SaveLoadManager.LoadMapFromFile();
-        if (loadedField != null)
-        {
-            CurrentField = loadedField;
-            DrawField(CurrentField);
-            Debug.Log($"Rendered Hexagons From File: {CurrentField.Hexagons.Count}");
-        }
-        else
-        {
-            Debug.LogWarning("File Not Found, Generating Basic Field.");
-            GenerateAndDraw();
-        }
+        Debug.Log($"Hex parsed successfully: {parsedHexes}.");
     }
 
     private void SetupDictionaries()
@@ -118,37 +148,5 @@ public class FieldGenerator : MonoBehaviour
                 tileToTypeDict.Add(mapping.tileAsset, mapping.type);
             }
         }
-    }
-
-    private void DrawField(Field field)
-    {
-        if (myTilemap == null)
-        {
-            myTilemap = GetComponent<Tilemap>();
-        }
-
-        SetupDictionaries();
-        foreach (var hexagon in field.Hexagons.Values)
-        {
-            if (typeToTileDict.TryGetValue(hexagon.type, out var tileToDraw))
-            {
-                myTilemap.SetTile(hexagon.offset, tileToDraw);
-            }
-            else
-            {
-                Debug.LogWarning("FieldGenerator: references are not assigned.");
-            }
-        }
-    }
-
-    [ContextMenu("Clear Grid")]
-    public void ClearGrid()
-    {
-        if (myTilemap == null)
-        {
-            myTilemap = GetComponent<Tilemap>();
-        }
-
-        myTilemap?.ClearAllTiles();
     }
 }

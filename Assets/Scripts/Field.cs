@@ -4,7 +4,10 @@ using HexagonScripts;
 
 public class Field
 {
-    public Dictionary<Vector2Int, Hexagon> Hexagons = new();
+    public IReadOnlyDictionary<Vector2Int, Hexagon> Hexagons => hexagons;
+    private readonly Dictionary<Vector2Int, Hexagon> hexagons = new();
+    
+    public int Count => hexagons.Count;
 
     public void AddHexagon(int x, int y, HexagonType type)
     {
@@ -14,28 +17,28 @@ public class Field
         var hex = new Hexagon(axialPos.x, axialPos.y, offsetPos, type);
 
         // Используем [axialPos] вместо Add, чтобы при перезаписи тайла кисточкой не было ошибки
-        Hexagons[axialPos] = hex;
+        hexagons[axialPos] = hex;
     }
 
     public FieldData ExportToSaveData()
     {
-        var data = new FieldData { savedHexes = new List<Hexagon>(Hexagons.Values) };
+        var data = new FieldData { savedHexes = new List<Hexagon>(hexagons.Values) };
         return data;
     }
 
     public void ImportFromFieldData(FieldData data)
     {
-        Hexagons.Clear();
+        hexagons.Clear();
         foreach (var hexagon in data.savedHexes)
         {
-            Hexagons.Add(hexagon.coordinates, hexagon);
+            hexagons.Add(hexagon.coordinates, hexagon);
         }
     }
 
     // Плейсхолдерная реализация
     public void GenerateFieldData(int width, int height)
     {
-        Hexagons.Clear();
+        hexagons.Clear();
 
         var counter = 0;
         for (var x = -width / 2; x < width / 2; x++)
@@ -52,6 +55,6 @@ public class Field
 
     public Hexagon GetHex(Vector2Int axialCoords)
     {
-        return Hexagons.GetValueOrDefault(axialCoords);
+        return hexagons.GetValueOrDefault(axialCoords);
     }
 }
