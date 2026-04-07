@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HexagonScripts;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -133,7 +134,7 @@ public class FieldGenerator: MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Нет картинки для типа {hexagon.type}!");
+                Debug.LogWarning("FieldGenerator: references are not assigned.");
             }
         }
     }

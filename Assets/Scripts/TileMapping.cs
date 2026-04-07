@@ -1,4 +1,5 @@
-﻿using UnityEngine.Tilemaps;
+﻿using HexagonScripts;
+using UnityEngine.Tilemaps;
 
 [System.Serializable]
 public struct TileMapping
