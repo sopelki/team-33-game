@@ -57,4 +57,32 @@ public class Field
     {
         return hexagons.GetValueOrDefault(axialCoords);
     }
+
+    public List<Hexagon> GetNeighbors(Hexagon currentHex)
+    {
+        var neighbors = new List<Hexagon>();
+        
+        var neighborDirections = new List<Vector2Int>
+        {
+            new(0, +1),
+            new(+1, 0),
+            new(+1, -1),
+            new(0, -1),
+            new(-1, 0),
+            new(-1, +1)
+        };
+        
+        foreach (var direction in neighborDirections)
+        {
+            var neighborCoords = currentHex.coordinates + direction; 
+            var neighbor = GetHex(neighborCoords);
+            
+            if (neighbor != null)
+            {
+                neighbors.Add(neighbor);
+            }
+        }
+
+        return neighbors;
+    }
 }

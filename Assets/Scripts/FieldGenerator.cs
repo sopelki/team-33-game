@@ -8,6 +8,9 @@ public class FieldGenerator : MonoBehaviour
 {
     public TileBase basicTile;
 
+    [Header("Monster Settings")]
+    public GameObject monsterPrefab;
+    
     [Header("TileRender")]
     public List<TileMapping> tileMappings;
 
@@ -17,8 +20,8 @@ public class FieldGenerator : MonoBehaviour
     private Dictionary<HexagonType, TileBase> typeToTileDict;
     private Dictionary<TileBase, HexagonType> tileToTypeDict;
 
-    private const int FieldWidth = 38;
-    private const int FieldHeight = 32;
+    private const int FieldWidth = 40;
+    private const int FieldHeight = 42;
 
     private void Awake()
     {
@@ -147,6 +150,50 @@ public class FieldGenerator : MonoBehaviour
             {
                 tileToTypeDict.Add(mapping.tileAsset, mapping.type);
             }
+        }
+    }
+    
+    [ContextMenu("Spawn Monster")]
+    private void SpawnMonsters()
+    {
+        if (monsterPrefab == null)
+        {
+            Debug.LogError("Префаб монстра не назначен в FieldGenerator!");
+            return;
+        }
+        if (CurrentField == null || CurrentField.Count == 0)
+        {
+            Debug.LogWarning("Поле не сгенерировано. Сначала сгенерируйте или загрузите поле.");
+            return;
+        }
+    
+        // --- Начало основной логики ---
+    
+        // 1. Находим максимальную X координату на всем поле
+        int maxX = CurrentField.Hexagons.Values.Max(hex => hex.offset.x);
+        Debug.Log($"Самая правая координата X на карте: {maxX}");
+    
+        // 2. Находим все гексы, которые находятся на этой крайней правой линии И являются путем (Path)
+        List<Hexagon> spawnPoints = CurrentField.Hexagons.Values
+            .Where(hex => hex.offset.x == maxX && hex.type == HexagonType.Path)
+            .ToList();
+    
+        if (spawnPoints.Count == 0)
+        {
+            Debug.LogWarning("На правом краю карты не найдено ни одной клетки типа 'Path' для спавна.");
+            return;
+        }
+    
+        Debug.Log($"Найдено {spawnPoints.Count} точек для спавна на правом краю.");
+    
+        // 3. Создаем по одному монстру в каждой найденной точке
+        foreach (var spawnPoint in spawnPoints)
+        {
+            // Получаем мировую позицию центра гекса
+            Vector3 spawnPosition = myTilemap.GetCellCenterWorld(spawnPoint.offset);
+        
+            // Создаем монстра в этой точке
+            Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
         }
     }
 }
