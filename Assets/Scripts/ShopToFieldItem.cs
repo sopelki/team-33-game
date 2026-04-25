@@ -73,7 +73,8 @@ public class ShopToFieldItem : MonoBehaviour,
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (ghostRect == null) return;
+        if (ghostRect == null)
+            return;
         UpdateGhostPosition(eventData);
     }
 
@@ -117,8 +118,10 @@ public class ShopToFieldItem : MonoBehaviour,
         worldPos.z = fieldTilemap.transform.position.z;
 
         var cellPos = fieldTilemap.WorldToCell(worldPos);
-        if (!FindNearestSlotTile(cellPos, searchRadius: 2, out var closestSlotPos)) return;
-        if (closestSlotPos == Vector3Int.zero || fieldTilemap.GetTile(closestSlotPos) == null) return;
+        if (!FindNearestSlotTile(cellPos, searchRadius: 2, out var closestSlotPos))
+            return;
+        if (closestSlotPos == Vector3Int.zero || fieldTilemap.GetTile(closestSlotPos) == null)
+            return;
 
         var spawnPos = fieldTilemap.GetCellCenterWorld(closestSlotPos);
         spawnPos.z = fieldTilemap.transform.position.z;
@@ -140,8 +143,9 @@ public class ShopToFieldItem : MonoBehaviour,
                 var checkPos = new Vector3Int(x, y, centerPos.z);
                 var tile = fieldTilemap.GetTile(checkPos);
 
-                if (tile == null || slotTile == null || tile.name != slotTile.name) continue;
-                
+                if (tile == null || slotTile == null || tile.name != slotTile.name)
+                    continue;
+
                 var distance = Vector3Int.Distance(checkPos, centerPos);
 
                 if (distance < nearestDistance)

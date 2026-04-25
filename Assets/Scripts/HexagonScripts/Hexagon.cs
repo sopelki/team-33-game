@@ -9,7 +9,7 @@ namespace HexagonScripts
         public Vector2Int coordinates;
         public Vector3Int offset;
         public HexagonType type;
-        public TextureType texture;
+        // public TextureType texture;
         
         // public bool isWalkable;
         // public bool isSlot;
@@ -19,7 +19,7 @@ namespace HexagonScripts
             coordinates = new Vector2Int(x, y);
             this.offset = offset;
             this.type = type;
-            this.texture = texture;
+            // this.texture = texture;
 
             // isWalkable = type == HexagonType.Path;
             // isSlot = type == HexagonType.Slot;

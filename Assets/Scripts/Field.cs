@@ -30,16 +30,14 @@ public class Field
     {
         hexagons.Clear();
         foreach (var hexagon in data.savedHexes)
-        {
             hexagons.Add(hexagon.coordinates, hexagon);
-        }
     }
 
     // Плейсхолдерная реализация
     public void GenerateFieldData(int width, int height)
     {
         hexagons.Clear();
-
+    
         var counter = 0;
         for (var x = -width / 2; x < width / 2; x++)
         {
@@ -47,7 +45,7 @@ public class Field
             {
                 var type = (counter % 3 == 0) ? HexagonType.Path : HexagonType.Land;
                 counter++;
-
+    
                 AddHexagon(x, y, type);
             }
         }
@@ -72,7 +70,7 @@ public class Field
 
         return neighborDirections
             .Select(direction => currentHex.coordinates + direction)
-            .Select(neighborCoords => GetHex(neighborCoords))
+            .Select(GetHex)
             .Where(neighbor => neighbor != null)
             .ToList();
     }

@@ -4,8 +4,10 @@ using UnityEngine.EventSystems;
 public class DraggableItem : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField] private Canvas canvas;
-    [SerializeField] private bool isShopItem;   // true только для иконок в магазине
+    [SerializeField]
+    private Canvas canvas;
+    [SerializeField]
+    private bool isShopItem;
 
     public bool IsShopItem
     {
@@ -23,14 +25,10 @@ public class DraggableItem : MonoBehaviour,
 
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null)
-        {
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
-        }
 
         if (canvas == null)
-        {
             canvas = GetComponentInParent<Canvas>();
-        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -41,13 +39,10 @@ public class DraggableItem : MonoBehaviour,
         if (isShopItem)
         {
             var placeholder = Instantiate(gameObject, originalParent);
-        
+
             // у копии не должно быть своего Drag'а (чтобы она не таскалась)
             var drag = placeholder.GetComponent<DraggableItem>();
-            if (drag != null)
-            {
-                Destroy(drag);
-            }
+            if (drag != null) Destroy(drag);
         }
 
         transform.SetParent(canvas.transform, true);

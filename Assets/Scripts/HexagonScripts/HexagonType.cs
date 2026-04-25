@@ -4,6 +4,7 @@
     {
         Land,
         Path,
-        Slot
+        Slot,
+        SlotNeighbour
     }
 }

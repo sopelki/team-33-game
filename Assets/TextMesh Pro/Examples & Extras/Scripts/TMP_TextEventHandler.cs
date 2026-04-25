@@ -114,9 +114,7 @@ namespace TMPro
                 }
             }
             else
-            {
                 m_Camera = Camera.main;
-            }
         }
 
 
@@ -179,9 +177,7 @@ namespace TMPro
                     // Send the event to any listeners.
                     char[] buffer = new char[lineInfo.characterCount];
                     for (int i = 0; i < lineInfo.characterCount && i < m_TextComponent.textInfo.characterInfo.Length; i++)
-                    {
                         buffer[i] = m_TextComponent.textInfo.characterInfo[i + lineInfo.firstCharacterIndex].character;
-                    }
 
                     string lineText = new string(buffer);
                     SendOnLineSelection(lineText, lineInfo.firstCharacterIndex, lineInfo.characterCount);

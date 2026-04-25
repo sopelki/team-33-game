@@ -32,9 +32,7 @@ namespace TMPro.Examples
             m_isHoveringObject = false;
 
             if (TMP_TextUtilities.IsIntersectingRectTransform(m_TextMeshPro.rectTransform, Input.mousePosition, Camera.main))
-            {
                 m_isHoveringObject = true;
-            }
 
             if (m_isHoveringObject)
             {

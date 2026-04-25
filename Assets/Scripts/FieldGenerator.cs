@@ -7,9 +7,6 @@ using UnityEngine.Tilemaps;
 public class FieldGenerator : MonoBehaviour
 {
     public TileBase basicTile;
-
-    [Header("Monster Settings")]
-    public GameObject monsterPrefab;
     
     [Header("TileRender")]
     public List<TileMapping> tileMappings;
@@ -42,9 +39,7 @@ public class FieldGenerator : MonoBehaviour
     public void ClearGrid()
     {
         if (myTilemap == null)
-        {
             myTilemap = GetComponent<Tilemap>();
-        }
 
         myTilemap?.ClearAllTiles();
     }
@@ -61,9 +56,7 @@ public class FieldGenerator : MonoBehaviour
             SaveLoadManager.SaveMapToFile(CurrentField);
         }
         else
-        {
             Debug.LogWarning("Field is Empty, Generate first.");
-        }
     }
 
     [ContextMenu("Load Field From File")]
@@ -88,30 +81,22 @@ public class FieldGenerator : MonoBehaviour
     private void DrawField(Field field)
     {
         if (myTilemap == null)
-        {
             myTilemap = GetComponent<Tilemap>();
-        }
 
         SetupDictionaries();
         foreach (var hexagon in field.Hexagons.Values)
         {
             if (typeToTileDict.TryGetValue(hexagon.type, out var tileToDraw))
-            {
                 myTilemap.SetTile(hexagon.offset, tileToDraw);
-            }
             else
-            {
                 Debug.LogWarning("FieldGenerator: references are not assigned.");
-            }
         }
     }
 
     private void ReadFieldFromBrush()
     {
         if (myTilemap == null)
-        {
             myTilemap = GetComponent<Tilemap>();
-        }
 
         SetupDictionaries();
 
@@ -130,9 +115,7 @@ public class FieldGenerator : MonoBehaviour
                     parsedHexes++;
                 }
                 else
-                {
                     Debug.LogWarning($"Tile {tileOnScene.name} at {pos} not found in Mappings.");
-                }
             }
         }
         Debug.Log($"Hex parsed successfully: {parsedHexes}.");
@@ -147,53 +130,7 @@ public class FieldGenerator : MonoBehaviour
         {
             typeToTileDict[mapping.type] = mapping.tileAsset;
             if (!tileToTypeDict.ContainsKey(mapping.tileAsset))
-            {
                 tileToTypeDict.Add(mapping.tileAsset, mapping.type);
-            }
-        }
-    }
-    
-    [ContextMenu("Spawn Monster")]
-    private void SpawnMonsters()
-    {
-        if (monsterPrefab == null)
-        {
-            Debug.LogError("Префаб монстра не назначен в FieldGenerator!");
-            return;
-        }
-        if (CurrentField == null || CurrentField.Count == 0)
-        {
-            Debug.LogWarning("Поле не сгенерировано. Сначала сгенерируйте или загрузите поле.");
-            return;
-        }
-    
-        // --- Начало основной логики ---
-    
-        // 1. Находим максимальную X координату на всем поле
-        int maxX = CurrentField.Hexagons.Values.Max(hex => hex.offset.x);
-        Debug.Log($"Самая правая координата X на карте: {maxX}");
-    
-        // 2. Находим все гексы, которые находятся на этой крайней правой линии И являются путем (Path)
-        List<Hexagon> spawnPoints = CurrentField.Hexagons.Values
-            .Where(hex => hex.offset.x == maxX && hex.type == HexagonType.Path)
-            .ToList();
-    
-        if (spawnPoints.Count == 0)
-        {
-            Debug.LogWarning("На правом краю карты не найдено ни одной клетки типа 'Path' для спавна.");
-            return;
-        }
-    
-        Debug.Log($"Найдено {spawnPoints.Count} точек для спавна на правом краю.");
-    
-        // 3. Создаем по одному монстру в каждой найденной точке
-        foreach (var spawnPoint in spawnPoints)
-        {
-            // Получаем мировую позицию центра гекса
-            Vector3 spawnPosition = myTilemap.GetCellCenterWorld(spawnPoint.offset);
-        
-            // Создаем монстра в этой точке
-            Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
         }
     }
 }

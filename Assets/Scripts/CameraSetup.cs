@@ -22,9 +22,7 @@ public class CameraSetup : MonoBehaviour
     public void FitToGrid()
     {
         if (myCamera == null)
-        {
             myCamera = GetComponent<Camera>();
-        }
 
         if (tilemap == null)
         {

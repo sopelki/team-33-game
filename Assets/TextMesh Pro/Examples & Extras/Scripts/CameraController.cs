@@ -86,13 +86,9 @@ namespace TMPro.Examples
             if (CameraTarget != null)
             {
                 if (CameraMode == CameraModes.Isometric)
-                {
                     desiredPosition = CameraTarget.position + Quaternion.Euler(ElevationAngle, OrbitalAngle, 0f) * new Vector3(0, 0, -FollowDistance);
-                }
                 else if (CameraMode == CameraModes.Follow)
-                {
                     desiredPosition = CameraTarget.position + CameraTarget.TransformDirection(Quaternion.Euler(ElevationAngle, OrbitalAngle, 0f) * (new Vector3(0, 0, -FollowDistance)));
-                }
                 else
                 {
                     // Free Camera implementation
@@ -113,10 +109,7 @@ namespace TMPro.Examples
                 if (RotationSmoothing == true)
                     cameraTransform.rotation = Quaternion.Lerp(cameraTransform.rotation, Quaternion.LookRotation(CameraTarget.position - cameraTransform.position), RotationSmoothingValue * Time.deltaTime);
                 else
-                {
                     cameraTransform.LookAt(CameraTarget);
-                }
-
             }
 
         }
