@@ -7,13 +7,19 @@ namespace MenuScripts
     {
         public void PlayGame()
         {
-            SceneManager.LoadScene("MainScene");
+            SceneManager.LoadScene("GameScene");
         }
 
         public void QuitGame()
         {
             Application.Quit();
-            // Debug.Log("Выход из игры"); // работает в редакторе
+            Debug.Log("Выход из игры"); // работает в редакторе
+        }
+        
+        public void Settings()
+        {
+            Application.Quit();
+            Debug.Log("Выход из игры"); // работает в редакторе
         }
     }
 }
