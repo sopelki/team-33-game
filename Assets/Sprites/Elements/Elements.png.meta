@@ -70,7 +70,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -81,7 +81,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -149,12 +149,12 @@ TextureImporter:
       name: Tower
       rect:
         serializedVersion: 2
-        x: 4
-        y: 100
-        width: 24
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 5
+        y: 101
+        width: 22
+        height: 25
+      alignment: 9
+      pivot: {x: 0.5, y: 0.12}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -173,7 +173,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 68
-        width: 33
+        width: 32
         height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -193,9 +193,9 @@ TextureImporter:
       name: Elements_2
       rect:
         serializedVersion: 2
-        x: 31
+        x: 32
         y: 68
-        width: 34
+        width: 33
         height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -215,10 +215,10 @@ TextureImporter:
       name: Elements_3
       rect:
         serializedVersion: 2
-        x: 68
-        y: 68
-        width: 28
-        height: 24
+        x: 69
+        y: 65
+        width: 26
+        height: 26
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -234,35 +234,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Elements_4
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 64
-        width: 15
-        height: 10
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4fe3e649e995750c0800000000000000
-      internalID: -4587099157823602956
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Elements_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 39
-        width: 32
-        height: 20
+        x: 1
+        y: 40
+        width: 30
+        height: 18
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -278,34 +256,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Elements_6
-      rect:
-        serializedVersion: 2
-        x: 39
-        y: 39
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 313f87139174378d0800000000000000
-      internalID: -2849855965665627373
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Elements_7
       rect:
         serializedVersion: 2
-        x: 45
-        y: 41
-        width: 10
+        x: 40
+        y: 40
+        width: 14
         height: 11
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -325,10 +281,10 @@ TextureImporter:
       name: Elements_8
       rect:
         serializedVersion: 2
-        x: 64
-        y: 34
-        width: 32
-        height: 26
+        x: 65
+        y: 35
+        width: 30
+        height: 24
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -347,10 +303,10 @@ TextureImporter:
       name: Elements_9
       rect:
         serializedVersion: 2
-        x: 98
-        y: 34
-        width: 28
-        height: 20
+        x: 99
+        y: 35
+        width: 26
+        height: 18
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -369,10 +325,10 @@ TextureImporter:
       name: Elements_10
       rect:
         serializedVersion: 2
-        x: 2
-        y: 9
-        width: 28
-        height: 15
+        x: 3
+        y: 10
+        width: 26
+        height: 13
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -391,10 +347,10 @@ TextureImporter:
       name: Elements_11
       rect:
         serializedVersion: 2
-        x: 33
-        y: 5
-        width: 30
-        height: 19
+        x: 34
+        y: 6
+        width: 28
+        height: 17
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -7,18 +7,25 @@ public class ShopToFieldItem : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [Header("UI")]
-    [SerializeField] private Canvas canvas;              // главный Canvas
-    [SerializeField] private RectTransform mapViewport;  // RectTransform Viewport (RawImage с картой)
+    [SerializeField]
+    private Canvas canvas;
+    [SerializeField]
+    private RectTransform mapViewport;
 
     [Header("Field")]
-    [SerializeField] private Tilemap fieldTilemap;       // Tilemap поля
-    [SerializeField] private TileBase slotTile;          // Tile asset слота (Slot Tile Rule)
-    [SerializeField] private GameObject unitPrefab;      // префаб башни (SpriteRenderer)
+    [SerializeField]
+    private Tilemap fieldTilemap;
+    [SerializeField]
+    private TileBase slotTile;
+    [SerializeField]
+    private GameObject unitPrefab;
 
     [Header("Ghost (след)")]
     [Range(0f, 1f)]
-    [SerializeField] private float ghostAlpha = 0.7f;    // прозрачность следа
-    [SerializeField] private Vector2 ghostOffset = Vector2.zero;
+    [SerializeField]
+    private float ghostAlpha = 0.7f;
+    [SerializeField]
+    private Vector2 ghostOffset = Vector2.zero;
 
     private GameObject ghost;
     private RectTransform ghostRect;
@@ -29,8 +36,6 @@ public class ShopToFieldItem : MonoBehaviour,
             canvas = GetComponentInParent<Canvas>();
     }
 
-    // ===== DRAG =====
-
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (canvas == null || mapViewport == null || fieldTilemap == null ||
@@ -40,15 +45,13 @@ public class ShopToFieldItem : MonoBehaviour,
             return;
         }
 
-        // создаём пустой объект-призрак под Canvas
         ghost = new GameObject(name + "_ghost",
-                               typeof(RectTransform),
-                               typeof(CanvasRenderer),
-                               typeof(Image));
+            typeof(RectTransform),
+            typeof(CanvasRenderer),
+            typeof(Image));
         ghost.transform.SetParent(canvas.transform, false);
         ghostRect = ghost.GetComponent<RectTransform>();
 
-        // копируем спрайт/цвет из исходной иконки
         var srcImage = GetComponent<Image>();
         var ghostImage = ghost.GetComponent<Image>();
 
@@ -56,12 +59,11 @@ public class ShopToFieldItem : MonoBehaviour,
         ghostImage.preserveAspect = true;
         ghostImage.raycastTarget = false;
 
-        Color c = srcImage.color;
+        var c = srcImage.color;
         c.a *= ghostAlpha;
         ghostImage.color = c;
 
-        // задаём размер и центрирование
-        Rect srcRect = srcImage.rectTransform.rect;
+        var srcRect = srcImage.rectTransform.rect;
         ghostRect.sizeDelta = new Vector2(srcRect.width, srcRect.height);
         ghostRect.pivot = new Vector2(0.5f, 0.5f);
         ghostRect.anchorMin = ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
@@ -77,65 +79,80 @@ public class ShopToFieldItem : MonoBehaviour,
 
     private void UpdateGhostPosition(PointerEventData eventData)
     {
-        RectTransform canvasRT = (RectTransform)canvas.transform;
+        var canvasRT = (RectTransform)canvas.transform;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRT,
             eventData.position,
-            eventData.pressEventCamera,   // для Screen Space Overlay он null, это ок
-            out Vector2 localPoint);
+            eventData.pressEventCamera,
+            out var localPoint);
 
-        ghostRect.localPosition = localPoint + ghostOffset;
+        ghostRect.localPosition = new Vector2(localPoint.x, localPoint.y) + ghostOffset;
     }
-
-    // ===== DROP =====
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // убираем след
         if (ghost != null)
             Destroy(ghost);
 
-        Camera cam = Camera.main;
+        var cam = Camera.main;
         if (cam == null || mapViewport == null || fieldTilemap == null)
             return;
 
-        // --- 1. экран → локальные координаты Viewport (RawImage) ---
         if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 mapViewport,
                 eventData.position,
                 eventData.pressEventCamera,
-                out Vector2 local))
-        {
+                out var local))
             return;
-        }
 
-        // local.x/y ∈ [-w/2 ; w/2] → нормализуем в [0..1]
-        float u = (local.x / mapViewport.rect.width)  + 0.5f;
-        float v = (local.y / mapViewport.rect.height) + 0.5f;
+        var u = local.x / mapViewport.rect.width + 0.5f;
+        var v = local.y / mapViewport.rect.height + 0.5f;
 
-        // мышь вышла за пределы окна карты – ничего не делаем
         if (u < 0f || u > 1f || v < 0f || v > 1f)
             return;
 
-        // --- 2. viewport (u,v) → мировая позиция на плоскости тайлмапа ---
-        float zDist = Mathf.Abs(cam.transform.position.z - fieldTilemap.transform.position.z);
-        Vector3 worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
+        var zDist = Mathf.Abs(cam.transform.position.z - fieldTilemap.transform.position.z);
+        var worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
         worldPos.z = fieldTilemap.transform.position.z;
 
-        // --- 3. мир → клетка тайлмапа ---
-        Vector3Int cellPos = fieldTilemap.WorldToCell(worldPos);
-        TileBase tile = fieldTilemap.GetTile(cellPos);
+        var cellPos = fieldTilemap.WorldToCell(worldPos);
+        if (!FindNearestSlotTile(cellPos, searchRadius: 2, out var closestSlotPos)) return;
+        if (closestSlotPos == Vector3Int.zero || fieldTilemap.GetTile(closestSlotPos) == null) return;
 
-        // проверка: это именно Slot-тайл?
-        if (tile == null || slotTile == null || tile.name != slotTile.name)
-            return;
-
-        // --- 4. центр клетки и спавн башни ---
-        Vector3 spawnPos = fieldTilemap.GetCellCenterWorld(cellPos);
+        var spawnPos = fieldTilemap.GetCellCenterWorld(closestSlotPos);
         spawnPos.z = fieldTilemap.transform.position.z;
 
         Instantiate(unitPrefab, spawnPos, Quaternion.identity);
         Debug.Log($"Spawn tower at {spawnPos}");
+    }
+
+    private bool FindNearestSlotTile(Vector3Int centerPos, int searchRadius, out Vector3Int cellPos)
+    {
+        var nearestPos = Vector3Int.zero;
+        var nearestDistance = float.MaxValue;
+        var found = false;
+
+        for (var x = centerPos.x - searchRadius; x <= centerPos.x + searchRadius; x++)
+        {
+            for (var y = centerPos.y - searchRadius; y <= centerPos.y + searchRadius; y++)
+            {
+                var checkPos = new Vector3Int(x, y, centerPos.z);
+                var tile = fieldTilemap.GetTile(checkPos);
+
+                if (tile == null || slotTile == null || tile.name != slotTile.name) continue;
+                
+                var distance = Vector3Int.Distance(checkPos, centerPos);
+
+                if (distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearestPos = checkPos;
+                    found = true;
+                }
+            }
+        }
+        cellPos = nearestPos;
+        return found;
     }
 }

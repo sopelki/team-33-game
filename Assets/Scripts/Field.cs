@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using HexagonScripts;
 
@@ -6,7 +7,7 @@ public class Field
 {
     public IReadOnlyDictionary<Vector2Int, Hexagon> Hexagons => hexagons;
     private readonly Dictionary<Vector2Int, Hexagon> hexagons = new();
-    
+
     public int Count => hexagons.Count;
 
     public void AddHexagon(int x, int y, HexagonType type)
@@ -16,7 +17,6 @@ public class Field
 
         var hex = new Hexagon(axialPos.x, axialPos.y, offsetPos, type);
 
-        // Используем [axialPos] вместо Add, чтобы при перезаписи тайла кисточкой не было ошибки
         hexagons[axialPos] = hex;
     }
 
@@ -60,8 +60,6 @@ public class Field
 
     public List<Hexagon> GetNeighbors(Hexagon currentHex)
     {
-        var neighbors = new List<Hexagon>();
-        
         var neighborDirections = new List<Vector2Int>
         {
             new(0, +1),
@@ -71,18 +69,11 @@ public class Field
             new(-1, 0),
             new(-1, +1)
         };
-        
-        foreach (var direction in neighborDirections)
-        {
-            var neighborCoords = currentHex.coordinates + direction; 
-            var neighbor = GetHex(neighborCoords);
-            
-            if (neighbor != null)
-            {
-                neighbors.Add(neighbor);
-            }
-        }
 
-        return neighbors;
+        return neighborDirections
+            .Select(direction => currentHex.coordinates + direction)
+            .Select(neighborCoords => GetHex(neighborCoords))
+            .Where(neighbor => neighbor != null)
+            .ToList();
     }
 }
