@@ -30,7 +30,6 @@ public class FieldGenerator : MonoBehaviour
     {
         ClearGrid();
         CurrentField = new Field();
-        // Потом нужно убрать отсюда высоту и ширину, они уже должны быть в поле, их фиксируем
         CurrentField.GenerateFieldData(FieldWidth, FieldHeight);
         DrawField(CurrentField);
     }

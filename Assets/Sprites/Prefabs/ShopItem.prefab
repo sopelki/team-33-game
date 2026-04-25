@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1950365901589239979}
   - component: {fileID: 3790528294224216054}
   m_Layer: 5
-  m_Name: CastleBarItem
+  m_Name: ShopItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,3 +90,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DraggableItem
   canvas: {fileID: 0}
   isShopItem: 1
+  originalParent: {fileID: 0}

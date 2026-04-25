@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f747e8af38fbe4d8819f37be6fd5aa, type: 3}
   m_Name: Slot Neighbour Tile Rule
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.HexagonalRuleTile
-  m_DefaultSprite: {fileID: -2103273001, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
+  m_DefaultSprite: {fileID: 1466965961, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Id: 0
     m_Sprites:
-    - {fileID: -2103273001, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
+    - {fileID: 1466965961, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1
@@ -33,7 +33,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 1
     m_Sprites:
-    - {fileID: -398346084, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
+    - {fileID: -2031139407, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1
@@ -47,7 +47,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 2
     m_Sprites:
-    - {fileID: 511859666, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
+    - {fileID: -874930154, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1
@@ -61,7 +61,7 @@ MonoBehaviour:
     m_RuleTransform: 0
   - m_Id: 3
     m_Sprites:
-    - {fileID: -2103273001, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
+    - {fileID: 540083017, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
     m_GameObject: {fileID: 0}
     m_MinAnimationSpeed: 1
     m_MaxAnimationSpeed: 1

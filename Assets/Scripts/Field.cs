@@ -33,7 +33,6 @@ public class Field
             hexagons.Add(hexagon.coordinates, hexagon);
     }
 
-    // Плейсхолдерная реализация
     public void GenerateFieldData(int width, int height)
     {
         hexagons.Clear();
