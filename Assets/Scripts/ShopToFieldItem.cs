@@ -148,12 +148,11 @@ public class ShopToFieldItem : MonoBehaviour,
 
                 var distance = Vector3Int.Distance(checkPos, centerPos);
 
-                if (distance < nearestDistance)
-                {
-                    nearestDistance = distance;
-                    nearestPos = checkPos;
-                    found = true;
-                }
+                if (!(distance < nearestDistance))
+                    continue;
+                nearestDistance = distance;
+                nearestPos = checkPos;
+                found = true;
             }
         }
         cellPos = nearestPos;
