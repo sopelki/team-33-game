@@ -922,7 +922,7 @@
                 "y": -17,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -934,7 +934,7 @@
                 "y": -17,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -1294,7 +1294,7 @@
                 "y": -16,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -1306,7 +1306,7 @@
                 "y": -16,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -1318,7 +1318,7 @@
                 "y": -16,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -1330,7 +1330,7 @@
                 "y": -16,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -1342,7 +1342,7 @@
                 "y": -16,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -1654,7 +1654,7 @@
                 "y": -15,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -1666,7 +1666,7 @@
                 "y": -15,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -1726,7 +1726,7 @@
                 "y": -15,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -1738,7 +1738,7 @@
                 "y": -15,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -2038,7 +2038,7 @@
                 "y": -14,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -2050,7 +2050,7 @@
                 "y": -14,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -2134,7 +2134,7 @@
                 "y": -14,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -2410,7 +2410,7 @@
                 "y": -13,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -2482,7 +2482,7 @@
                 "y": -13,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -2830,7 +2830,7 @@
                 "y": -12,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -2866,7 +2866,7 @@
                 "y": -12,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -3214,7 +3214,7 @@
                 "y": -11,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -3250,7 +3250,7 @@
                 "y": -11,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -3598,7 +3598,7 @@
                 "y": -10,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -3646,7 +3646,7 @@
                 "y": -10,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -3982,7 +3982,7 @@
                 "y": -9,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -16534,7 +16534,7 @@
                 "y": 612,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
