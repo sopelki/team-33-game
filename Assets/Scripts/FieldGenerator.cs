@@ -56,8 +56,8 @@ public class FieldGenerator : MonoBehaviour
     {
         CurrentField = new Field();
 
-        ReadFieldFromBrush(); 
-        ReadObjectsFromScene(); 
+        ReadFieldFromBrush();
+        ReadObjectsFromScene();
 
         if (CurrentField.Hexagons.Count > 0)
         {
@@ -142,7 +142,7 @@ public class FieldGenerator : MonoBehaviour
         foreach (var pos in bounds.allPositionsWithin)
         {
             var tileOnScene = myTilemap.GetTile(pos);
-        
+
             if (tileOnScene != null && tileToTypeDict.TryGetValue(tileOnScene, out var foundType))
                 CurrentField.AddHexagon(pos.x, pos.y, foundType);
         }

@@ -104,6 +104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 578b9f43e57c4278839f3422d13dbd5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tower
-  range: 5
+  range: 8
   fireRate: 1
   damage: 10

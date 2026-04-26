@@ -36,40 +36,54 @@ public class ShopToFieldItem : MonoBehaviour,
             canvas = GetComponentInParent<Canvas>();
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+public void OnBeginDrag(PointerEventData eventData)
+{
+    if (canvas == null || mapViewport == null || fieldTilemap == null ||
+        slotTile == null || unitPrefab == null) return;
+
+    var prefabRenderer = unitPrefab.GetComponentInChildren<SpriteRenderer>();
+    if (prefabRenderer == null) return;
+
+    ghost = new GameObject(name + "_ghost", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+    ghost.transform.SetParent(canvas.transform, false);
+    ghostRect = ghost.GetComponent<RectTransform>();
+
+    var ghostImage = ghost.GetComponent<Image>();
+    ghostImage.sprite = prefabRenderer.sprite;
+    ghostImage.preserveAspect = true;
+    ghostImage.raycastTarget = false;
+    
+    var c = prefabRenderer.color;
+    c.a = ghostAlpha;
+    ghostImage.color = c;
+    
+    float screenHeight = Screen.height;
+    if (Camera.main != null)
     {
-        if (canvas == null || mapViewport == null || fieldTilemap == null ||
-            slotTile == null || unitPrefab == null)
-        {
-            Debug.LogWarning("ShopToFieldItem: не все ссылки заданы в инспекторе", this);
-            return;
-        }
+        var worldCameraSize = Camera.main.orthographicSize;
+        var pixelsPerUnitOnScreen = screenHeight / (worldCameraSize * 2f);
+        
+        var spriteSizeInUnits = new Vector2(
+            prefabRenderer.sprite.rect.width / prefabRenderer.sprite.pixelsPerUnit,
+            prefabRenderer.sprite.rect.height / prefabRenderer.sprite.pixelsPerUnit
+        );
+    
+        spriteSizeInUnits.x *= unitPrefab.transform.localScale.x;
+        spriteSizeInUnits.y *= unitPrefab.transform.localScale.y;
+        
+        var canvasScale = canvas.scaleFactor;
+        var finalUISize = (spriteSizeInUnits * pixelsPerUnitOnScreen) / canvasScale;
 
-        ghost = new GameObject(name + "_ghost",
-            typeof(RectTransform),
-            typeof(CanvasRenderer),
-            typeof(Image));
-        ghost.transform.SetParent(canvas.transform, false);
-        ghostRect = ghost.GetComponent<RectTransform>();
-
-        var srcImage = GetComponent<Image>();
-        var ghostImage = ghost.GetComponent<Image>();
-
-        ghostImage.sprite = srcImage.sprite;
-        ghostImage.preserveAspect = true;
-        ghostImage.raycastTarget = false;
-
-        var c = srcImage.color;
-        c.a *= ghostAlpha;
-        ghostImage.color = c;
-
-        var srcRect = srcImage.rectTransform.rect;
-        ghostRect.sizeDelta = new Vector2(srcRect.width, srcRect.height);
-        ghostRect.pivot = new Vector2(0.5f, 0.5f);
-        ghostRect.anchorMin = ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
-
-        UpdateGhostPosition(eventData);
+        ghostRect.sizeDelta = finalUISize;
     }
+    else
+        Debug.LogError($"Camera.main is null");
+    
+    ghostRect.pivot = new Vector2(0.5f, 0.5f);
+    ghostRect.anchorMin = ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
+
+    UpdateGhostPosition(eventData);
+}
 
     public void OnDrag(PointerEventData eventData)
     {
