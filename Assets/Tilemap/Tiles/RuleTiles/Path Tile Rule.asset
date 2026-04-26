@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f747e8af38fbe4d8819f37be6fd5aa, type: 3}
   m_Name: Path Tile Rule
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.HexagonalRuleTile
-  m_DefaultSprite: {fileID: -3808124083976146520, guid: 462d3c5598fd14c4aa7c119a2d79cf44, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: 8e352329a994e494d88cceeb1e87ac28, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
