@@ -1,6 +1,4 @@
-﻿using CastleScrripts;
-
-namespace CastleScripts
+﻿namespace CastleScripts
 {
     public class BuildingInstance
     {
