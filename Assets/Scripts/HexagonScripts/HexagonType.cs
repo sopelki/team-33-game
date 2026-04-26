@@ -2,7 +2,9 @@
 {
     public enum HexagonType
     {
-        Land,
+        Grass,
+        GrassWithMushroom,
+        HighGrass,
         Path,
         Slot,
         SlotNeighbour

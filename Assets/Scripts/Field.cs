@@ -42,7 +42,7 @@ public class Field
         {
             for (var y = -height / 2; y < height / 2; y++)
             {
-                var type = (counter % 3 == 0) ? HexagonType.Path : HexagonType.Land;
+                var type = (counter % 3 == 0) ? HexagonType.Path : HexagonType.Grass;
                 counter++;
     
                 AddHexagon(x, y, type);

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f747e8af38fbe4d8819f37be6fd5aa, type: 3}
   m_Name: Grass Tile Rule
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.HexagonalRuleTile
-  m_DefaultSprite: {fileID: -2135585597343286014, guid: b5670a86b089a9c469c589d75853a2c3, type: 3}
+  m_DefaultSprite: {fileID: -3465016203148287327, guid: 94cb003c567fc0644a3462473c830630, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
