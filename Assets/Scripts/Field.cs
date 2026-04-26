@@ -6,9 +6,10 @@ using HexagonScripts;
 public class Field
 {
     public IReadOnlyDictionary<Vector2Int, Hexagon> Hexagons => hexagons;
+    public List<MapObjectData> MapObjects = new();
     private readonly Dictionary<Vector2Int, Hexagon> hexagons = new();
 
-    public int Count => hexagons.Count;
+    // public int Count => hexagons.Count;
 
     public void AddHexagon(int x, int y, HexagonType type)
     {
@@ -22,7 +23,11 @@ public class Field
 
     public FieldData ExportToSaveData()
     {
-        var data = new FieldData { savedHexes = new List<Hexagon>(hexagons.Values) };
+        var data = new FieldData
+        {
+            savedHexes = new List<Hexagon>(hexagons.Values),
+            savedObjects = new List<MapObjectData>(MapObjects)
+        };
         return data;
     }
 
@@ -31,46 +36,51 @@ public class Field
         hexagons.Clear();
         foreach (var hexagon in data.savedHexes)
             hexagons.Add(hexagon.coordinates, hexagon);
+
+        MapObjects = data.savedObjects != null ? new List<MapObjectData>(data.savedObjects) : new List<MapObjectData>();
     }
 
     public void GenerateFieldData(int width, int height)
     {
         hexagons.Clear();
-    
-        var counter = 0;
+
+        HexagonType[] pool = {
+            HexagonType.Grass, HexagonType.Grass, HexagonType.Grass, HexagonType.Grass, HexagonType.Grass,
+            HexagonType.GrassWithMushroom,
+            HexagonType.HighGrass, HexagonType.HighGrass
+        };
+
         for (var x = -width / 2; x < width / 2; x++)
         {
             for (var y = -height / 2; y < height / 2; y++)
             {
-                var type = (counter % 3 == 0) ? HexagonType.Path : HexagonType.Grass;
-                counter++;
-    
-                AddHexagon(x, y, type);
+                var randomType = pool[Random.Range(0, pool.Length)];
+                AddHexagon(x, y, randomType);
             }
         }
     }
 
-    public Hexagon GetHex(Vector2Int axialCoords)
-    {
-        return hexagons.GetValueOrDefault(axialCoords);
-    }
+    // public Hexagon GetHex(Vector2Int axialCoords)
+    // {
+    //     return hexagons.GetValueOrDefault(axialCoords);
+    // }
 
-    public List<Hexagon> GetNeighbors(Hexagon currentHex)
-    {
-        var neighborDirections = new List<Vector2Int>
-        {
-            new(0, +1),
-            new(+1, 0),
-            new(+1, -1),
-            new(0, -1),
-            new(-1, 0),
-            new(-1, +1)
-        };
-
-        return neighborDirections
-            .Select(direction => currentHex.coordinates + direction)
-            .Select(GetHex)
-            .Where(neighbor => neighbor != null)
-            .ToList();
-    }
+    // public List<Hexagon> GetNeighbors(Hexagon currentHex)
+    // {
+    //     var neighborDirections = new List<Vector2Int>
+    //     {
+    //         new(0, +1),
+    //         new(+1, 0),
+    //         new(+1, -1),
+    //         new(0, -1),
+    //         new(-1, 0),
+    //         new(-1, +1)
+    //     };
+    //
+    //     return neighborDirections
+    //         .Select(direction => currentHex.coordinates + direction)
+    //         .Select(GetHex)
+    //         .Where(neighbor => neighbor != null)
+    //         .ToList();
+    // }
 }

@@ -7,9 +7,13 @@ using UnityEngine.Tilemaps;
 public class FieldGenerator : MonoBehaviour
 {
     public TileBase basicTile;
-    
+
     [Header("TileRender")]
     public List<TileMapping> tileMappings;
+
+    [Header("Object Render")]
+    public List<ObjectMapping> objectMappings;
+    public Transform objectsContainer;
 
     public Field CurrentField;
 
@@ -17,107 +21,150 @@ public class FieldGenerator : MonoBehaviour
     private Dictionary<HexagonType, TileBase> typeToTileDict;
     private Dictionary<TileBase, HexagonType> tileToTypeDict;
 
-    private const int FieldWidth = 40;
-    private const int FieldHeight = 42;
+    private const int FieldWidth = 39;
+    private const int FieldHeight = 44;
 
     private void Awake()
     {
         myTilemap = GetComponent<Tilemap>();
     }
 
+
+    [ContextMenu("Load Field From File")]
+    public void LoadAndDraw()
+    {
+        ClearField();
+
+        var loadedField = SaveLoadManager.LoadMapFromFile();
+
+        if (loadedField != null)
+        {
+            CurrentField = loadedField;
+            DrawField(CurrentField);
+            DrawObjects();
+            Debug.Log($"Field Loaded: {CurrentField.Hexagons.Count} tiles, {CurrentField.MapObjects.Count} objects.");
+        }
+        else
+        {
+            Debug.LogWarning("LoadAndDraw: File not found. Generating default grid.");
+            GenerateAndDraw();
+        }
+    }
+
+    [ContextMenu("Save Field To File")]
+    public void SaveGrid()
+    {
+        CurrentField = new Field();
+
+        ReadFieldFromBrush(); 
+        ReadObjectsFromScene(); 
+
+        if (CurrentField.Hexagons.Count > 0)
+        {
+            SaveLoadManager.SaveMapToFile(CurrentField);
+            Debug.Log($"Saved {CurrentField.Hexagons.Count} tiles and {CurrentField.MapObjects.Count} objects.");
+        }
+        else
+            Debug.LogWarning("Tilemap is empty! Check if you have tiles on the 'fieldTilemap' layer.");
+    }
+
     [ContextMenu("Regenerate Grid")]
     public void GenerateAndDraw()
     {
-        ClearGrid();
+        ClearField();
         CurrentField = new Field();
         CurrentField.GenerateFieldData(FieldWidth, FieldHeight);
         DrawField(CurrentField);
     }
 
-    [ContextMenu("Clear Grid")]
+
+    [ContextMenu("Clear Field")]
+    public void ClearField()
+    {
+        ClearGrid();
+        ClearDecorations();
+        CurrentField = new Field();
+    }
+
     public void ClearGrid()
     {
-        if (myTilemap == null)
-            myTilemap = GetComponent<Tilemap>();
-
+        if (myTilemap == null) myTilemap = GetComponent<Tilemap>();
         myTilemap?.ClearAllTiles();
     }
 
-
-    [ContextMenu("Save Field To File")]
-    public void SaveGrid()
+    public void ClearDecorations()
     {
-        ReadFieldFromBrush();
-        
-        if (CurrentField.Count > 0)
+        if (objectsContainer == null) return;
+
+        for (var i = objectsContainer.childCount - 1; i >= 0; i--)
         {
-            ReadFieldFromBrush();
-            SaveLoadManager.SaveMapToFile(CurrentField);
+            var obj = objectsContainer.GetChild(i).gameObject;
+            if (Application.isPlaying) Destroy(obj);
+            else DestroyImmediate(obj);
         }
-        else
-            Debug.LogWarning("Field is Empty, Generate first.");
     }
 
-    [ContextMenu("Load Field From File")]
-    public void LoadAndDraw()
-    {
-        ClearGrid();
-
-        var loadedField = SaveLoadManager.LoadMapFromFile();
-        if (loadedField != null)
-        {
-            CurrentField = loadedField;
-            DrawField(CurrentField);
-            Debug.Log($"Rendered Hexagons From File: {CurrentField.Count}");
-        }
-        else
-        {
-            Debug.LogWarning("File Not Found, Generating Basic Field.");
-            GenerateAndDraw();
-        }
-    }
 
     private void DrawField(Field field)
     {
-        if (myTilemap == null)
-            myTilemap = GetComponent<Tilemap>();
-
+        if (myTilemap == null) myTilemap = GetComponent<Tilemap>();
         SetupDictionaries();
+
         foreach (var hexagon in field.Hexagons.Values)
         {
             if (typeToTileDict.TryGetValue(hexagon.type, out var tileToDraw))
                 myTilemap.SetTile(hexagon.offset, tileToDraw);
-            else
-                Debug.LogWarning("FieldGenerator: references are not assigned.");
+        }
+    }
+
+    private void DrawObjects()
+    {
+        if (objectsContainer == null || CurrentField.MapObjects == null) return;
+
+        foreach (var objData in CurrentField.MapObjects)
+        {
+            var mapping = objectMappings.Find(m => m.id == objData.objectId);
+            if (mapping != null && mapping.prefab != null)
+            {
+                var worldPos = myTilemap.GetCellCenterWorld(objData.position);
+                var newObj = Instantiate(mapping.prefab, worldPos, Quaternion.identity, objectsContainer);
+                newObj.name = mapping.id; // Важно для повторного сохранения
+            }
         }
     }
 
     private void ReadFieldFromBrush()
     {
-        if (myTilemap == null)
-            myTilemap = GetComponent<Tilemap>();
-
+        if (myTilemap == null) myTilemap = GetComponent<Tilemap>();
         SetupDictionaries();
 
-        CurrentField = new Field();
         var bounds = myTilemap.cellBounds;
-        var parsedHexes = 0;
-
         foreach (var pos in bounds.allPositionsWithin)
         {
             var tileOnScene = myTilemap.GetTile(pos);
-            if (tileOnScene != null)
+        
+            if (tileOnScene != null && tileToTypeDict.TryGetValue(tileOnScene, out var foundType))
+                CurrentField.AddHexagon(pos.x, pos.y, foundType);
+        }
+    }
+
+    private void ReadObjectsFromScene()
+    {
+        CurrentField.MapObjects.Clear();
+        if (objectsContainer == null) return;
+
+        foreach (Transform child in objectsContainer)
+        {
+            var mapping = objectMappings.Find(m => child.name.StartsWith(m.id));
+            if (mapping != null)
             {
-                if (tileToTypeDict.TryGetValue(tileOnScene, out var foundType))
+                CurrentField.MapObjects.Add(new MapObjectData
                 {
-                    CurrentField.AddHexagon(pos.x, pos.y, foundType);
-                    parsedHexes++;
-                }
-                else
-                    Debug.LogWarning($"Tile {tileOnScene.name} at {pos} not found in Mappings.");
+                    position = myTilemap.WorldToCell(child.position),
+                    objectId = mapping.id
+                });
             }
         }
-        Debug.Log($"Hex parsed successfully: {parsedHexes}.");
     }
 
     private void SetupDictionaries()
@@ -125,7 +172,7 @@ public class FieldGenerator : MonoBehaviour
         typeToTileDict = new Dictionary<HexagonType, TileBase>();
         tileToTypeDict = new Dictionary<TileBase, HexagonType>();
 
-        foreach (var mapping in tileMappings.Where(mapping => mapping.tileAsset != null))
+        foreach (var mapping in tileMappings.Where(m => m.tileAsset != null))
         {
             typeToTileDict[mapping.type] = mapping.tileAsset;
             if (!tileToTypeDict.ContainsKey(mapping.tileAsset))

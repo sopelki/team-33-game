@@ -41,13 +41,13 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: map
+  - name: Map
     uniqueID: 1152692229
     locked: 0
-  - name: buildings
+  - name: Buildings
     uniqueID: 1841721055
     locked: 0
-  - name: units
+  - name: Units
     uniqueID: 2317228607
     locked: 0
   m_RenderingLayers:
