@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f747e8af38fbe4d8819f37be6fd5aa, type: 3}
   m_Name: Slot Tile Rule
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.HexagonalRuleTile
-  m_DefaultSprite: {fileID: -2103273001, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
+  m_DefaultSprite: {fileID: -1479086900, guid: c46cc6908c3520e46bf44b40e377f18f, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
