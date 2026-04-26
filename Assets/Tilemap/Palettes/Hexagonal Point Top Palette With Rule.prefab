@@ -252,6 +252,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741826
+  - first: {x: 0, y: 0, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 1
+      m_TileSpriteIndex: 5
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741826
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - serializedVersion: 2
@@ -266,6 +276,12 @@ Tilemap:
   - serializedVersion: 2
     m_RefCount: 18
     m_Data: {fileID: 11400000, guid: 77b0650d8b4abb64abf76c8d32a59d38, type: 2}
+  - serializedVersion: 2
+    m_RefCount: 0
+    m_Data: {fileID: 11400000, guid: a5c52ab73329c504b9787515cfe99295, type: 2}
+  - serializedVersion: 2
+    m_RefCount: 0
+    m_Data: {fileID: 11400000, guid: 08a058ff68c695f4ebe541685470414a, type: 2}
   m_TileSpriteArray:
   - serializedVersion: 2
     m_RefCount: 1
@@ -274,11 +290,20 @@ Tilemap:
     m_RefCount: 18
     m_Data: {fileID: -3808124083976146520, guid: 462d3c5598fd14c4aa7c119a2d79cf44, type: 3}
   - serializedVersion: 2
+    m_RefCount: 0
+    m_Data: {fileID: -3808124083976146520, guid: 462d3c5598fd14c4aa7c119a2d79cf44, type: 3}
+  - serializedVersion: 2
     m_RefCount: 1
     m_Data: {fileID: -2103273001, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
   - serializedVersion: 2
     m_RefCount: 1
     m_Data: {fileID: 540083017, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
+  - serializedVersion: 2
+    m_RefCount: 0
+    m_Data: {fileID: 21300000, guid: 0fd935abf57dc8f4a8927a2cc9dafa38, type: 3}
+  - serializedVersion: 2
+    m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 8e352329a994e494d88cceeb1e87ac28, type: 3}
   m_TileMatrixArray:
   - serializedVersion: 2
     m_RefCount: 21
@@ -307,7 +332,7 @@ Tilemap:
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -1, y: -3, z: 0}
-  m_Size: {x: 10, y: 5, z: 1}
+  m_Size: {x: 6, y: 1, z: 1}
   m_TileAnchor: {x: 0, y: 0, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -429,6 +454,21 @@ Grid:
   m_CellLayout: 1
   m_CellSwizzle: 0
 --- !u!114 &4352894283300526214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12395, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: Palette Settings
+  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.GridPalette
+  cellSizing: 0
+  m_TransparencySortMode: 0
+  m_TransparencySortAxis: {x: 0, y: 0, z: 1}
+--- !u!114 &4146497750456913709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
