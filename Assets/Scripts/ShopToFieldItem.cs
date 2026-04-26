@@ -120,14 +120,25 @@ public class ShopToFieldItem : MonoBehaviour,
         var cellPos = fieldTilemap.WorldToCell(worldPos);
         if (!FindNearestSlotTile(cellPos, searchRadius: 2, out var closestSlotPos))
             return;
-        if (closestSlotPos == Vector3Int.zero || fieldTilemap.GetTile(closestSlotPos) == null)
+        if (fieldTilemap.GetTile(closestSlotPos) == null)
             return;
+
+        if (TowerManager.Instance.IsCellOccupied(closestSlotPos))
+        {
+            Debug.Log("Клетка уже занята");
+            return;
+        }
 
         var spawnPos = fieldTilemap.GetCellCenterWorld(closestSlotPos);
         spawnPos.z = fieldTilemap.transform.position.z;
 
-        Instantiate(unitPrefab, spawnPos, Quaternion.identity);
-        Debug.Log($"Spawn tower at {spawnPos}");
+        var newUnit = Instantiate(unitPrefab, spawnPos, Quaternion.identity);
+
+        TowerManager.Instance.RegisterTower(closestSlotPos, newUnit);
+
+        var towerComponent = newUnit.GetComponent<Tower>();
+        if (towerComponent != null)
+            towerComponent.Setup(closestSlotPos);
     }
 
     private bool FindNearestSlotTile(Vector3Int centerPos, int searchRadius, out Vector3Int cellPos)

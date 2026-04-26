@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Hexagonal Tileset_23
+  m_Name: 16RockTile
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.Tilemaps.Tile
-  m_Sprite: {fileID: 660798283, guid: 53c2b21ad8c66e748b3713d5987f8d79, type: 3}
+  m_Sprite: {fileID: -8968808278319739822, guid: 05b7b1471347bf540b05e6c268a0c6ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
