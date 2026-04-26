@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CastleScripts;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -26,7 +27,12 @@ public class ShopToFieldItem : MonoBehaviour,
     private float ghostAlpha = 0.7f;
     [SerializeField]
     private Vector2 ghostOffset = Vector2.zero;
-
+    
+    [Header("LogicData")]
+    [SerializeField] private BuildingData towerData;
+    [SerializeField] private Castle castle;
+    
+    
     private GameObject ghost;
     private RectTransform ghostRect;
 
@@ -146,6 +152,12 @@ public void OnBeginDrag(PointerEventData eventData)
         var spawnPos = fieldTilemap.GetCellCenterWorld(closestSlotPos);
         spawnPos.z = fieldTilemap.transform.position.z;
 
+        if (!castle.TryBuy(towerData))
+        {
+            Debug.Log("Недостаточно денег!");
+            return;
+        }
+        
         var newUnit = Instantiate(unitPrefab, spawnPos, Quaternion.identity);
 
         TowerManager.Instance.RegisterTower(closestSlotPos, newUnit);

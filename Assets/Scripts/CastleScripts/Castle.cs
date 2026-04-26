@@ -46,5 +46,20 @@ namespace CastleScripts
                 }
             }
         }
+        
+        public bool TryBuy(BuildingData data)
+        {
+            return TrySpendGold(data.baseCost);
+        }
+
+        private bool TrySpendGold(int amount)
+        {
+            if (Gold < amount)
+                return false;
+
+            Gold -= amount;
+            OnResourcesChanged?.Invoke();
+            return true;
+        }
     }
 }

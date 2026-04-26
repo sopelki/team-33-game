@@ -5,6 +5,7 @@
         Farm,
         Barracks,
         Hospital,
-        Blacksmith
+        Blacksmith,
+        Tower
     }
 }

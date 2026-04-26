@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CastleScripts.Castle
   HP: 100
   WallLevel: 1
-  Gold: 100
+  Gold: 500
   Food: 0
 --- !u!4 &37729110
 Transform:
@@ -5103,7 +5103,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741826
+      m_AllTileFlags: 2147483650
   - first: {x: -10, y: -14, z: 0}
     second:
       serializedVersion: 2
@@ -6873,7 +6873,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741826
+      m_AllTileFlags: 2147483650
   - first: {x: 7, y: -10, z: 0}
     second:
       serializedVersion: 2
@@ -11193,7 +11193,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741826
+      m_AllTileFlags: 2147483650
   - first: {x: -1, y: 1, z: 0}
     second:
       serializedVersion: 2
@@ -14273,7 +14273,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
-      m_AllTileFlags: 1073741826
+      m_AllTileFlags: 2147483650
   - first: {x: -13, y: 9, z: 0}
     second:
       serializedVersion: 2
@@ -22037,6 +22037,14 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 767995392}
+    - target: {fileID: 878551046935925784, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
+      propertyPath: castle
+      value: 
+      objectReference: {fileID: 37729109}
+    - target: {fileID: 878551046935925784, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
+      propertyPath: towerData
+      value: 
+      objectReference: {fileID: 11400000, guid: da200bd95bb859c4f9bc044c7ad3409d, type: 2}
     - target: {fileID: 878551046935925784, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
       propertyPath: unitPrefab
       value: 
