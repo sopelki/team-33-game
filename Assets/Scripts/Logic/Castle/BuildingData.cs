@@ -1,7 +1,6 @@
-﻿using CastleScrripts;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace CastleScripts
+namespace Logic.Castle
 {
     [CreateAssetMenu(menuName = "Buildings/Building Data")]
     public class BuildingData : ScriptableObject

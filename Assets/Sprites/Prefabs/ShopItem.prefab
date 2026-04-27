@@ -103,3 +103,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopItem
   canvas: {fileID: 0}
   inventoryItemPrefab: {fileID: 0}
+  buildingData: {fileID: 0}

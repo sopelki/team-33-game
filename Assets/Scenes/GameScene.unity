@@ -119,54 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &37729108
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 37729110}
-  - component: {fileID: 37729109}
-  m_Layer: 0
-  m_Name: Castle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &37729109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 37729108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 675767586a6f45af80265a02a232c1e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CastleScripts.Castle
-  HP: 100
-  WallLevel: 1
-  Gold: 500
-  Food: 0
---- !u!4 &37729110
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 37729108}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 897.4512, y: 436.1458, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &83963490 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 504390076168633126, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
@@ -187,7 +139,7 @@ PrefabInstance:
     - target: {fileID: 3846016731886318387, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 6969695389832894247, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -613,6 +565,10 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7336057762216851244, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8757874814678525812, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
       propertyPath: canvas
       value: 
@@ -645,7 +601,7 @@ PrefabInstance:
     - target: {fileID: 3846016731886318387, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 8679728150743837429, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -831,6 +787,10 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7336057762216851244, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8757874814678525812, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
       propertyPath: canvas
       value: 
@@ -945,7 +905,23 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6868460385936980070, guid: adb2d23f33c45b54bb2cf3e6be3af10f, type: 3}
     - target: {fileID: 7336057762216851244, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336057762216851244, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336057762216851244, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336057762216851244, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
       propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336057762216851244, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
+      propertyPath: m_PreserveAspect
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8757874814678525812, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
@@ -20395,6 +20371,51 @@ RectTransform:
   m_AnchoredPosition: {x: -131, y: -394}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &643403633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 643403635}
+  - component: {fileID: 643403634}
+  m_Layer: 0
+  m_Name: TickManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &643403634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643403633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 450edb6f897841e0a105802fc20bd5c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.TickManager
+  tickInterval: 1
+--- !u!4 &643403635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643403633}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 929.26, y: 730.9002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &654907245
 GameObject:
   m_ObjectHideFlags: 0
@@ -21526,7 +21547,7 @@ GameObject:
   - component: {fileID: 998659909}
   - component: {fileID: 998659908}
   m_Layer: 0
-  m_Name: CastleInfo
+  m_Name: CastleUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21544,7 +21565,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67dd76cf3226440fafd9d40579e1eaa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CastleScripts.CastleUI
-  castle: {fileID: 37729109}
   hpText: {fileID: 551330973}
   goldText: {fileID: 2065819103}
   foodText: {fileID: 634036633}
@@ -21578,7 +21598,7 @@ PrefabInstance:
     - target: {fileID: 3846016731886318387, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 8679728150743837429, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -21770,7 +21790,7 @@ PrefabInstance:
     - target: {fileID: 3846016731886318387, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 8679728150743837429, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -21925,6 +21945,55 @@ MonoBehaviour:
   m_Spacing: {x: 15, y: 15}
   m_Constraint: 1
   m_ConstraintCount: 3
+--- !u!1 &1242743163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1242743165}
+  - component: {fileID: 1242743164}
+  m_Layer: 0
+  m_Name: GameInitializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1242743164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242743163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c29f9f5e824db59abe49db5b2024fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.GameInitializer
+  startGold: 500
+  startFood: 100
+  startHp: 500
+  castleUI: {fileID: 998659908}
+  tickManager: {fileID: 643403634}
+--- !u!4 &1242743165
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242743163}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 848.99475, y: 362.75333, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1248612338
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22040,7 +22109,7 @@ PrefabInstance:
     - target: {fileID: 878551046935925784, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 878551046935925784, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
       propertyPath: towerData
       value: 
@@ -22083,6 +22152,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8106896941773141165, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
       propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8106896941773141165, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
+      propertyPath: m_PreserveAspect
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -22224,7 +22297,7 @@ PrefabInstance:
     - target: {fileID: 3846016731886318387, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 8679728150743837429, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -22325,7 +22398,7 @@ PrefabInstance:
     - target: {fileID: 3846016731886318387, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 8679728150743837429, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -22490,7 +22563,7 @@ PrefabInstance:
     - target: {fileID: 3846016731886318387, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 8679728150743837429, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -23627,7 +23700,7 @@ GameObject:
   - component: {fileID: 1775194291}
   - component: {fileID: 1775194290}
   m_Layer: 0
-  m_Name: GameInitializer
+  m_Name: ViewSetup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23677,7 +23750,7 @@ PrefabInstance:
     - target: {fileID: 3846016731886318387, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 8679728150743837429, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -23871,7 +23944,7 @@ PrefabInstance:
     - target: {fileID: 3846016731886318387, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: castle
       value: 
-      objectReference: {fileID: 37729109}
+      objectReference: {fileID: 0}
     - target: {fileID: 8679728150743837429, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -24421,6 +24494,10 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7336057762216851244, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8757874814678525812, guid: 79310f8e55b5fc545813f81074cd0f4b, type: 3}
       propertyPath: canvas
       value: 
@@ -24455,5 +24532,6 @@ SceneRoots:
   - {fileID: 1775194291}
   - {fileID: 1693319329}
   - {fileID: 280324376}
-  - {fileID: 37729110}
   - {fileID: 998659909}
+  - {fileID: 1242743165}
+  - {fileID: 643403635}

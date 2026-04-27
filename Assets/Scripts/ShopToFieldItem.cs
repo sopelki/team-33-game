@@ -1,4 +1,4 @@
-﻿using CastleScripts;
+﻿using Logic.Castle;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -7,34 +7,29 @@ using UnityEngine.UI;
 public class ShopToFieldItem : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [Header("UI")]
-    [SerializeField]
-    private Canvas canvas;
-    [SerializeField]
-    private RectTransform mapViewport;
+    [Header("UI")] [SerializeField] private Canvas canvas;
+    [SerializeField] private RectTransform mapViewport;
 
-    [Header("Field")]
-    [SerializeField]
-    private Tilemap fieldTilemap;
-    [SerializeField]
-    private TileBase slotTile;
-    [SerializeField]
-    private GameObject unitPrefab;
+    [Header("Field")] [SerializeField] private Tilemap fieldTilemap;
+    [SerializeField] private TileBase slotTile;
+    [SerializeField] private GameObject unitPrefab;
 
-    [Header("Ghost (след)")]
-    [Range(0f, 1f)]
-    [SerializeField]
+    [Header("Ghost (след)")] [Range(0f, 1f)] [SerializeField]
     private float ghostAlpha = 0.7f;
-    [SerializeField]
-    private Vector2 ghostOffset = Vector2.zero;
-    
-    [Header("LogicData")]
-    [SerializeField] private BuildingData towerData;
-    [SerializeField] private Castle castle;
-    
-    
+
+    [SerializeField] private Vector2 ghostOffset = Vector2.zero;
+
+    [Header("LogicData")] [SerializeField] private BuildingData towerData;
+
+
+    private CastleSystem castleSystem;
     private GameObject ghost;
     private RectTransform ghostRect;
+
+    public void Construct(CastleSystem system)
+    {
+        castleSystem = system;
+    }
 
     private void Awake()
     {
@@ -42,54 +37,60 @@ public class ShopToFieldItem : MonoBehaviour,
             canvas = GetComponentInParent<Canvas>();
     }
 
-public void OnBeginDrag(PointerEventData eventData)
-{
-    if (canvas == null || mapViewport == null || fieldTilemap == null ||
-        slotTile == null || unitPrefab == null) return;
-
-    var prefabRenderer = unitPrefab.GetComponentInChildren<SpriteRenderer>();
-    if (prefabRenderer == null) return;
-
-    ghost = new GameObject(name + "_ghost", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-    ghost.transform.SetParent(canvas.transform, false);
-    ghostRect = ghost.GetComponent<RectTransform>();
-
-    var ghostImage = ghost.GetComponent<Image>();
-    ghostImage.sprite = prefabRenderer.sprite;
-    ghostImage.preserveAspect = true;
-    ghostImage.raycastTarget = false;
-    
-    var c = prefabRenderer.color;
-    c.a = ghostAlpha;
-    ghostImage.color = c;
-    
-    float screenHeight = Screen.height;
-    if (Camera.main != null)
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        var worldCameraSize = Camera.main.orthographicSize;
-        var pixelsPerUnitOnScreen = screenHeight / (worldCameraSize * 2f);
+        if (castleSystem == null)
+        {
+            Debug.LogError($"CastleSystem не передан в {gameObject.name}!");
+            return;
+        }
         
-        var spriteSizeInUnits = new Vector2(
-            prefabRenderer.sprite.rect.width / prefabRenderer.sprite.pixelsPerUnit,
-            prefabRenderer.sprite.rect.height / prefabRenderer.sprite.pixelsPerUnit
-        );
-    
-        spriteSizeInUnits.x *= unitPrefab.transform.localScale.x;
-        spriteSizeInUnits.y *= unitPrefab.transform.localScale.y;
-        
-        var canvasScale = canvas.scaleFactor;
-        var finalUISize = (spriteSizeInUnits * pixelsPerUnitOnScreen) / canvasScale;
+        if (canvas == null || mapViewport == null || fieldTilemap == null ||
+            slotTile == null || unitPrefab == null) return;
 
-        ghostRect.sizeDelta = finalUISize;
+        var prefabRenderer = unitPrefab.GetComponentInChildren<SpriteRenderer>();
+        if (prefabRenderer == null) return;
+
+        ghost = new GameObject(name + "_ghost", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        ghost.transform.SetParent(canvas.transform, false);
+        ghostRect = ghost.GetComponent<RectTransform>();
+
+        var ghostImage = ghost.GetComponent<Image>();
+        ghostImage.sprite = prefabRenderer.sprite;
+        ghostImage.preserveAspect = true;
+        ghostImage.raycastTarget = false;
+
+        var c = prefabRenderer.color;
+        c.a = ghostAlpha;
+        ghostImage.color = c;
+
+        float screenHeight = Screen.height;
+        if (Camera.main != null)
+        {
+            var worldCameraSize = Camera.main.orthographicSize;
+            var pixelsPerUnitOnScreen = screenHeight / (worldCameraSize * 2f);
+
+            var spriteSizeInUnits = new Vector2(
+                prefabRenderer.sprite.rect.width / prefabRenderer.sprite.pixelsPerUnit,
+                prefabRenderer.sprite.rect.height / prefabRenderer.sprite.pixelsPerUnit
+            );
+
+            spriteSizeInUnits.x *= unitPrefab.transform.localScale.x;
+            spriteSizeInUnits.y *= unitPrefab.transform.localScale.y;
+
+            var canvasScale = canvas.scaleFactor;
+            var finalUISize = (spriteSizeInUnits * pixelsPerUnitOnScreen) / canvasScale;
+
+            ghostRect.sizeDelta = finalUISize;
+        }
+        else
+            Debug.LogError($"Camera.main is null");
+
+        ghostRect.pivot = new Vector2(0.5f, 0.5f);
+        ghostRect.anchorMin = ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
+
+        UpdateGhostPosition(eventData);
     }
-    else
-        Debug.LogError($"Camera.main is null");
-    
-    ghostRect.pivot = new Vector2(0.5f, 0.5f);
-    ghostRect.anchorMin = ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
-
-    UpdateGhostPosition(eventData);
-}
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -152,12 +153,12 @@ public void OnBeginDrag(PointerEventData eventData)
         var spawnPos = fieldTilemap.GetCellCenterWorld(closestSlotPos);
         spawnPos.z = fieldTilemap.transform.position.z;
 
-        if (!castle.TryBuy(towerData))
+        if (castleSystem == null || !castleSystem.TryBuyTower(towerData))
         {
-            Debug.Log("Недостаточно денег!");
+            Debug.Log("Недостаточно денег или система не инициализирована!");
             return;
         }
-        
+
         var newUnit = Instantiate(unitPrefab, spawnPos, Quaternion.identity);
 
         TowerManager.Instance.RegisterTower(closestSlotPos, newUnit);
@@ -192,6 +193,7 @@ public void OnBeginDrag(PointerEventData eventData)
                 found = true;
             }
         }
+
         cellPos = nearestPos;
         return found;
     }

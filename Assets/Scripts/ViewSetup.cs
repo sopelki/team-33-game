@@ -1,6 +1,7 @@
+using Misc;
 using UnityEngine;
 
-public class GameInitializer : MonoBehaviour
+public class ViewSetup : MonoBehaviour
 {
     
     [Header("References")]
