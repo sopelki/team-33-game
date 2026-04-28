@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CastleScrripts.BuildingData
   type: 1
   baseProduction: 1
-  baseCost: 10
+  baseCost: 50
