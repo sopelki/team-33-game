@@ -7,21 +7,10 @@ namespace Logic.Castle
     public class CastleSystem
     {
         private readonly CastleModel model;
-        
+
         public CastleSystem(CastleModel model)
         {
             this.model = model;
-        }
-
-        public bool TryBuyBuilding(BuildingData data)
-        {
-            if (!TrySpendGold(data))
-                return false;
-
-            var instance = new BuildingInstance(data);
-            model.Buildings.Add(instance);
-
-            return true;
         }
 
         public void Tick()
@@ -39,12 +28,24 @@ namespace Logic.Castle
                     model.Food += building.Production;
                     changed = true;
                 }
+                // TODO: Добавить логику для других BuildingType
             }
 
-            if (changed) 
+            if (changed)
                 model.Changed();
         }
-        
+
+        public bool TryBuyBuilding(BuildingData data)
+        {
+            if (!TrySpendGold(data))
+                return false;
+
+            var instance = new BuildingInstance(data);
+            model.Buildings.Add(instance);
+
+            return true;
+        }
+
         public bool TryBuyTower(BuildingData data) => TrySpendGold(data);
 
         private bool TrySpendGold(BuildingData data)

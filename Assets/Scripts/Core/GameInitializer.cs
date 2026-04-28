@@ -33,21 +33,16 @@ namespace Core
         
         private void Start()
         {
-            // 3. Передаем данные в UI
             if (castleUI != null)
                 castleUI.Initialize(castleModel);
 
-            // 4. Находим все объекты магазина на сцене и передаем им систему
             var shopItems = FindObjectsByType<ShopToFieldItem>();
             foreach (var item in shopItems)
-            {
                 item.Construct(castleSystem);
-            }
+            
             var slots = FindObjectsByType<DropSlot>();
             foreach (var slot in slots)
-            {
                 slot.Construct(castleSystem);
-            }
         }
 
     }

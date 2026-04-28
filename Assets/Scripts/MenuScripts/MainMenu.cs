@@ -13,13 +13,13 @@ namespace MenuScripts
         public void QuitGame()
         {
             Application.Quit();
-            Debug.Log("Выход из игры"); // работает в редакторе
+            Debug.Log("Game is exited.");
         }
         
         public void Settings()
         {
             Application.Quit();
-            Debug.Log("Выход из игры"); // работает в редакторе
+            Debug.Log("Game is exited.");
         }
     }
 }

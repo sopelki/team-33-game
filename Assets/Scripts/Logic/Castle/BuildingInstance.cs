@@ -11,7 +11,7 @@
             Level = 1;
         }
 
-        // TODO: поменять Production
+        // TODO: поменять Production на что-то сложнее
         public int Production => Data.baseProduction * Level;
         public int GetUpgradeCost() => Data.baseCost * (Level + 1);
         public void Upgrade() => Level++;

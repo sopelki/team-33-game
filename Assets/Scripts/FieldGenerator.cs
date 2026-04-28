@@ -12,6 +12,7 @@ public class FieldGenerator : MonoBehaviour
     public List<TileMapping> tileMappings;
 
     [Header("Object Render")]
+    [Tooltip("Prefab names should start with objectMapping IDs")]
     public List<ObjectMapping> objectMappings;
     public Transform objectsContainer;
 
@@ -40,13 +41,13 @@ public class FieldGenerator : MonoBehaviour
         if (loadedField != null)
         {
             CurrentField = loadedField;
-            DrawField(CurrentField);
+            DrawHexagons(CurrentField);
             DrawObjects();
             Debug.Log($"Field Loaded: {CurrentField.Hexagons.Count} tiles, {CurrentField.MapObjects.Count} objects.");
         }
         else
         {
-            Debug.LogWarning("LoadAndDraw: File not found. Generating default grid.");
+            Debug.LogWarning("Load Field From File: File not found. Generating default grid.");
             GenerateAndDraw();
         }
     }
@@ -56,7 +57,7 @@ public class FieldGenerator : MonoBehaviour
     {
         CurrentField = new Field();
 
-        ReadFieldFromBrush();
+        ReadHexagonsFromBrush();
         ReadObjectsFromScene();
 
         if (CurrentField.Hexagons.Count > 0)
@@ -65,16 +66,16 @@ public class FieldGenerator : MonoBehaviour
             Debug.Log($"Saved {CurrentField.Hexagons.Count} tiles and {CurrentField.MapObjects.Count} objects.");
         }
         else
-            Debug.LogWarning("Tilemap is empty! Check if you have tiles on the 'fieldTilemap' layer.");
+            Debug.LogWarning("Save Field To File: Tilemap is empty.");
     }
 
-    [ContextMenu("Regenerate Grid")]
+    [ContextMenu("Generate Random Grid")]
     public void GenerateAndDraw()
     {
         ClearField();
         CurrentField = new Field();
         CurrentField.GenerateFieldData(FieldWidth, FieldHeight);
-        DrawField(CurrentField);
+        DrawHexagons(CurrentField);
     }
 
 
@@ -88,28 +89,35 @@ public class FieldGenerator : MonoBehaviour
 
     public void ClearGrid()
     {
-        if (myTilemap == null) myTilemap = GetComponent<Tilemap>();
+        if (myTilemap == null)
+            myTilemap = GetComponent<Tilemap>();
+        
         myTilemap?.ClearAllTiles();
     }
 
     public void ClearDecorations()
     {
-        if (objectsContainer == null) return;
+        if (objectsContainer == null)
+            return;
 
         for (var i = objectsContainer.childCount - 1; i >= 0; i--)
         {
             var obj = objectsContainer.GetChild(i).gameObject;
-            if (Application.isPlaying) Destroy(obj);
-            else DestroyImmediate(obj);
+            if (Application.isPlaying)
+                Destroy(obj);
+            else
+                DestroyImmediate(obj);
         }
     }
 
 
-    private void DrawField(Field field)
+    private void DrawHexagons(Field field)
     {
-        if (myTilemap == null) myTilemap = GetComponent<Tilemap>();
+        if (myTilemap == null)
+            myTilemap = GetComponent<Tilemap>();
+        
         SetupDictionaries();
-
+        
         foreach (var hexagon in field.Hexagons.Values)
         {
             if (typeToTileDict.TryGetValue(hexagon.type, out var tileToDraw))
@@ -119,7 +127,8 @@ public class FieldGenerator : MonoBehaviour
 
     private void DrawObjects()
     {
-        if (objectsContainer == null || CurrentField.MapObjects == null) return;
+        if (objectsContainer == null || CurrentField.MapObjects == null)
+            return;
 
         foreach (var objData in CurrentField.MapObjects)
         {
@@ -128,21 +137,22 @@ public class FieldGenerator : MonoBehaviour
             {
                 var worldPos = myTilemap.GetCellCenterWorld(objData.position);
                 var newObj = Instantiate(mapping.prefab, worldPos, Quaternion.identity, objectsContainer);
-                newObj.name = mapping.id; // Важно для повторного сохранения
+                newObj.name = mapping.id;
             }
         }
     }
 
-    private void ReadFieldFromBrush()
+    private void ReadHexagonsFromBrush()
     {
-        if (myTilemap == null) myTilemap = GetComponent<Tilemap>();
+        if (myTilemap == null)
+            myTilemap = GetComponent<Tilemap>();
+        
         SetupDictionaries();
 
         var bounds = myTilemap.cellBounds;
         foreach (var pos in bounds.allPositionsWithin)
         {
             var tileOnScene = myTilemap.GetTile(pos);
-
             if (tileOnScene != null && tileToTypeDict.TryGetValue(tileOnScene, out var foundType))
                 CurrentField.AddHexagon(pos.x, pos.y, foundType);
         }
@@ -151,7 +161,8 @@ public class FieldGenerator : MonoBehaviour
     private void ReadObjectsFromScene()
     {
         CurrentField.MapObjects.Clear();
-        if (objectsContainer == null) return;
+        if (objectsContainer == null)
+            return;
 
         foreach (Transform child in objectsContainer)
         {

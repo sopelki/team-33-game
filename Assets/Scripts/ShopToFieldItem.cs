@@ -7,19 +7,31 @@ using UnityEngine.UI;
 public class ShopToFieldItem : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [Header("UI")] [SerializeField] private Canvas canvas;
-    [SerializeField] private RectTransform mapViewport;
+    [Header("UI")]
+    [SerializeField]
+    private Canvas canvas;
+    [SerializeField]
+    private RectTransform mapViewport;
 
-    [Header("Field")] [SerializeField] private Tilemap fieldTilemap;
-    [SerializeField] private TileBase slotTile;
-    [SerializeField] private GameObject unitPrefab;
+    [Header("Field")]
+    [SerializeField]
+    private Tilemap fieldTilemap;
+    [SerializeField]
+    private TileBase slotTile;
+    [SerializeField]
+    private GameObject unitPrefab;
 
-    [Header("Ghost (след)")] [Range(0f, 1f)] [SerializeField]
+    [Header("Ghost (след)")]
+    [Range(0f, 1f)]
+    [SerializeField]
     private float ghostAlpha = 0.7f;
 
-    [SerializeField] private Vector2 ghostOffset = Vector2.zero;
+    [SerializeField]
+    private Vector2 ghostOffset = Vector2.zero;
 
-    [Header("LogicData")] [SerializeField] private BuildingData towerData;
+    [Header("LogicData")]
+    [SerializeField]
+    private BuildingData towerData;
 
 
     private CastleSystem castleSystem;
@@ -41,10 +53,10 @@ public class ShopToFieldItem : MonoBehaviour,
     {
         if (castleSystem == null)
         {
-            Debug.LogError($"CastleSystem не передан в {gameObject.name}!");
+            Debug.LogError($"CastleSystem is not linked to {gameObject.name}");
             return;
         }
-        
+
         if (canvas == null || mapViewport == null || fieldTilemap == null ||
             slotTile == null || unitPrefab == null) return;
 
@@ -84,7 +96,7 @@ public class ShopToFieldItem : MonoBehaviour,
             ghostRect.sizeDelta = finalUISize;
         }
         else
-            Debug.LogError($"Camera.main is null");
+            Debug.LogError("Camera.main is null.");
 
         ghostRect.pivot = new Vector2(0.5f, 0.5f);
         ghostRect.anchorMin = ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
@@ -144,9 +156,10 @@ public class ShopToFieldItem : MonoBehaviour,
         if (fieldTilemap.GetTile(closestSlotPos) == null)
             return;
 
+        // TODO: Убрать логику из UI части
         if (TowerManager.Instance.IsCellOccupied(closestSlotPos))
         {
-            Debug.Log("Клетка уже занята");
+            Debug.Log("Cell is occupied");
             return;
         }
 
@@ -155,15 +168,15 @@ public class ShopToFieldItem : MonoBehaviour,
 
         if (castleSystem == null || !castleSystem.TryBuyTower(towerData))
         {
-            Debug.Log("Недостаточно денег или система не инициализирована!");
+            Debug.Log("Not enough money or castleSystem is null.");
             return;
         }
 
-        var newUnit = Instantiate(unitPrefab, spawnPos, Quaternion.identity);
+        var newTower = Instantiate(unitPrefab, spawnPos, Quaternion.identity);
 
-        TowerManager.Instance.RegisterTower(closestSlotPos, newUnit);
+        TowerManager.Instance.RegisterTower(closestSlotPos, newTower);
 
-        var towerComponent = newUnit.GetComponent<Tower>();
+        var towerComponent = newTower.GetComponent<Tower>();
         if (towerComponent != null)
             towerComponent.Setup(closestSlotPos);
     }

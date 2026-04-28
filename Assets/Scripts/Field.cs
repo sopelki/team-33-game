@@ -5,11 +5,9 @@ using HexagonScripts;
 
 public class Field
 {
-    public IReadOnlyDictionary<Vector2Int, Hexagon> Hexagons => hexagons;
     public List<MapObjectData> MapObjects = new();
-    private readonly Dictionary<Vector2Int, Hexagon> hexagons = new();
+    public readonly Dictionary<Vector2Int, Hexagon> Hexagons = new();
 
-    // public int Count => hexagons.Count;
 
     public void AddHexagon(int x, int y, HexagonType type)
     {
@@ -18,31 +16,32 @@ public class Field
 
         var hex = new Hexagon(axialPos.x, axialPos.y, offsetPos, type);
 
-        hexagons[axialPos] = hex;
+        Hexagons[axialPos] = hex;
     }
 
     public FieldData ExportToSaveData()
     {
         var data = new FieldData
         {
-            savedHexes = new List<Hexagon>(hexagons.Values),
+            savedHexes = new List<Hexagon>(Hexagons.Values),
             savedObjects = new List<MapObjectData>(MapObjects)
         };
+        Debug.Log($"Exported {data.savedHexes.Count} hexagons, {data.savedObjects.Count} objects.");
         return data;
     }
 
     public void ImportFromFieldData(FieldData data)
     {
-        hexagons.Clear();
+        Hexagons.Clear();
         foreach (var hexagon in data.savedHexes)
-            hexagons.Add(hexagon.coordinates, hexagon);
+            Hexagons.Add(hexagon.coordinates, hexagon);
 
         MapObjects = data.savedObjects != null ? new List<MapObjectData>(data.savedObjects) : new List<MapObjectData>();
     }
 
     public void GenerateFieldData(int width, int height)
     {
-        hexagons.Clear();
+        Hexagons.Clear();
 
         HexagonType[] pool = {
             HexagonType.Grass, HexagonType.Grass, HexagonType.Grass, HexagonType.Grass, HexagonType.Grass,

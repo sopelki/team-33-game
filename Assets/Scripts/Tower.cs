@@ -9,14 +9,12 @@ public class Tower : MonoBehaviour
     
     private Vector3Int gridPosition;
 
-    // Метод для инициализации (вызывается при спавне)
     public void Setup(Vector3Int pos)
     {
         Debug.Log($"Setting up tower ({pos.x}, {pos.y}, {pos.z})");
         gridPosition = pos;
     }
-
-    // // Пример логики удаления башни
+    
     // public void SellTower()
     // {
     //     TowerManager.Instance.UnregisterTower(gridPosition);
@@ -25,7 +23,7 @@ public class Tower : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // Рисуем радиус атаки в редакторе
+        // Радиус в редакторе
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }

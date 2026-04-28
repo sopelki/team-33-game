@@ -5,12 +5,13 @@ public class TowerManager : MonoBehaviour
 {
     public static TowerManager Instance;
 
-    // Словарь: ключ — позиция клетки, значение — ссылка на башню
+    // ключ: позиция клетки, значение: ссылка на башню
     private readonly Dictionary<Vector3Int, GameObject> occupiedCells = new();
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
+        if (Instance == null)
+            Instance = this;
         else Destroy(gameObject);
     }
 
@@ -21,7 +22,7 @@ public class TowerManager : MonoBehaviour
 
     public void RegisterTower(Vector3Int cellPos, GameObject tower)
     {
-        Debug.Log($"Registering tower at {cellPos}");
+        Debug.Log($"Registering tower at {cellPos}.");
         occupiedCells.TryAdd(cellPos, tower);
     }
 

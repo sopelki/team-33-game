@@ -11,8 +11,8 @@ namespace Logic.Castle
         
         public List<BuildingInstance> Buildings { get; private set; } = new();
 
-        // Событие теперь передает саму модель, чтобы UI знал, что обновилось
         public event Action OnChanged;
+        public void Changed() => OnChanged?.Invoke();
         
         public CastleModel(int initialHp, int initialGold, int initialFood)
         {
@@ -20,7 +20,5 @@ namespace Logic.Castle
             Gold = initialGold;
             Food = initialFood;
         }
-
-        public void Changed() => OnChanged?.Invoke();
     }
 }

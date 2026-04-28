@@ -12,17 +12,12 @@ namespace HexagonScripts
 
         public override bool RuleMatch(int neighbor, TileBase other)
         {
-            switch (neighbor)
+            return neighbor switch
             {
-                // 1 клик в редакторе правил = "This" => проверяем на slotTile
-                case TilingRuleOutput.Neighbor.This:
-                    return other != null && other == slotTile;
-
-                // 2 клика = "NotThis" => всё, что НЕ slotTile (включая пустоту)
-                case TilingRuleOutput.Neighbor.NotThis:
-                    return other != slotTile;
-            }
-            return base.RuleMatch(neighbor, other);
+                TilingRuleOutput.Neighbor.This => other != null && other == slotTile,
+                TilingRuleOutput.Neighbor.NotThis => other != slotTile,
+                _ => base.RuleMatch(neighbor, other)
+            };
         }
     }
 }
