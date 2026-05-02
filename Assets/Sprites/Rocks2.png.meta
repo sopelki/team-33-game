@@ -1,19 +1,28 @@
 fileFormatVersion: 2
-guid: 5e7f95e5ed9139c4a90aaafee24b3b1a
+guid: 88c00c1d7fe27a34a914135aa8527167
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 663625838591219785
-    second: TreeSprites_0
+      213: -2303733828986088179
+    second: Rocks2_0
   - first:
-      213: 5123162573046540152
-    second: TreeSprites_1
+      213: 3150823109604618205
+    second: Rocks2_1
   - first:
-      213: -6173529067938926598
-    second: TreeSprites_2
+      213: -3049696744518786537
+    second: Rocks2_2
   - first:
-      213: -7130948554853402085
-    second: TreeSprites_3
+      213: 129626243702155652
+    second: Rocks2_3
+  - first:
+      213: 5649035205046913046
+    second: Rocks2_4
+  - first:
+      213: -1215352180041544555
+    second: Rocks2_5
+  - first:
+      213: -3521167103500876572
+    second: Rocks2_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -56,7 +65,7 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 0
+  spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
@@ -109,89 +118,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TreeSprites_0
+      name: Rocks2_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 7
-        width: 51
-        height: 80
-      alignment: 9
-      pivot: {x: 0.49591392, y: 0.12555969}
+        x: 1
+        y: 1
+        width: 44
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 94810052f2ca53900800000000000000
-      internalID: 663625838591219785
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TreeSprites_1
-      rect:
-        serializedVersion: 2
-        x: 53
-        y: 6
-        width: 52
-        height: 95
-      alignment: 9
-      pivot: {x: 0.48425245, y: 0.10788421}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 877e30d6731291740800000000000000
-      internalID: 5123162573046540152
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TreeSprites_2
-      rect:
-        serializedVersion: 2
-        x: 108
-        y: 7
-        width: 64
-        height: 79
-      alignment: 9
-      pivot: {x: 0.6297791, y: 0.1801935}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: affa3fe7508335aa0800000000000000
-      internalID: -6173529067938926598
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TreeSprites_3
-      rect:
-        serializedVersion: 2
-        x: 181
-        y: 8
-        width: 45
-        height: 83
-      alignment: 9
-      pivot: {x: 0.5064039, y: 0.15391982}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b1ab06c1218c90d90800000000000000
-      internalID: -7130948554853402085
+      spriteID: d05db3ac94e7700e0800000000000000
+      internalID: -2303733828986088179
       vertices: []
       indices: 
       edges: []
@@ -200,7 +143,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: a7063c714f869d540a61d72de116a896
+    spriteID: df47b23e73d521f4a8640ec68feb2651
     internalID: 0
     vertices: []
     indices: 
@@ -210,10 +153,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TreeSprites_0: 663625838591219785
-      TreeSprites_1: 5123162573046540152
-      TreeSprites_2: -6173529067938926598
-      TreeSprites_3: -7130948554853402085
+      Rocks2_0: -2303733828986088179
+      Rocks2_1: 3150823109604618205
+      Rocks2_2: -3049696744518786537
+      Rocks2_3: 129626243702155652
+      Rocks2_4: 5649035205046913046
+      Rocks2_5: -1215352180041544555
+      Rocks2_6: -3521167103500876572
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
