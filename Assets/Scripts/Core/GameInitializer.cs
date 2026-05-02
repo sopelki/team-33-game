@@ -1,4 +1,5 @@
-﻿using Logic.Castle;
+﻿using Field;
+using Logic.Castle;
 using Logic.Tower;
 using Logic.Unit;
 using View;
@@ -11,33 +12,45 @@ namespace Core
     public class GameInitializer : MonoBehaviour
     {
         [Header("Castle Settings")]
-        [SerializeField] private int startGold = 300;
-        [SerializeField] private int startFood = 100;
-        [SerializeField] private int startHp = 500;
+        [SerializeField]
+        private int startGold = 300;
+        [SerializeField]
+        private int startFood = 100;
+        [SerializeField]
+        private int startHp = 500;
 
         [Header("Scene References")]
-        [SerializeField] private CastleUI castleUI;
-        [SerializeField] private TickManager tickManager;
-        [SerializeField] private TowerViewManager towerViewManager;
-        
+        [SerializeField]
+        private CastleUI castleUI;
+        [SerializeField]
+        private TickManager tickManager;
+        [SerializeField]
+        private TowerViewManager towerViewManager;
+        [SerializeField]
+        private CameraSetup cameraSetup;
+
         [Header("Unit Settings")]
-        [SerializeField] private UnitData soldierData;
-        [SerializeField] private UnitViewManager unitViewManager;
-        
+        [SerializeField]
+        private UnitData soldierData;
+        [SerializeField]
+        private UnitViewManager unitViewManager;
+
         [Header("Field")]
-        [SerializeField] private FieldGenerator fieldGenerator;
-        [SerializeField] private Tilemap tilemap;
+        [SerializeField]
+        private FieldGenerator fieldGenerator;
+        [SerializeField]
+        private Tilemap tilemap;
 
         private CastleModel castleModel;
         private CastleSystem castleSystem;
 
         private TowersModel towersModel;
         private TowerSystem towerSystem;
-        
+
         private UnitSystem unitSystem;
         private FreeMovementService movementService;
-        
-        private Field field;
+
+        private Field.Field field;
 
         private void Awake()
         {
@@ -47,9 +60,11 @@ namespace Core
                 Debug.LogError("Level file not found! Game cannot start.");
                 return;
             }
+            cameraSetup.FitToGrid();
+            
             movementService = new FreeMovementService(field, tilemap);
             unitSystem = new UnitSystem(movementService);
-            
+
             castleModel = new CastleModel(startHp, startGold, startFood);
             castleSystem = new CastleSystem(
                 castleModel,
@@ -64,10 +79,11 @@ namespace Core
 
             if (tickManager == null)
                 return;
-            
+
             tickManager.OnTick += castleSystem.Tick;
             tickManager.OnTick += towerSystem.Tick;
-            
+
+            //TODO: Нужно ли это вообще?
             unitSystem.OnUnitDied += unit =>
             {
                 castleModel.CurrentUnits--;
@@ -79,10 +95,10 @@ namespace Core
         {
             if (fieldGenerator != null)
                 fieldGenerator.Initialize(field);
-            
+
             if (unitViewManager != null)
                 unitViewManager.Initialize(unitSystem);
-            
+
             if (towerViewManager != null)
                 towerViewManager.Initialize(towersModel);
 
@@ -97,7 +113,7 @@ namespace Core
             foreach (var slot in slots)
                 slot.Construct(castleSystem);
         }
-        
+
         private void Update()
         {
             unitSystem?.Tick(Time.deltaTime);

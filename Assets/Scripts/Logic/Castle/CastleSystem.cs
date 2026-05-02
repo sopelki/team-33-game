@@ -9,19 +9,19 @@ namespace Logic.Castle
 {
     public class CastleSystem : ITickable
     {
+        private static readonly Vector2Int spawnHex = new(-20, 20); // Поменять, если нужна другая точка спавна
+
         private readonly CastleModel model;
         private readonly UnitSystem unitSystem;
         private readonly UnitData unitData;
-        private readonly Field field;
-        private readonly Vector2Int spawnHex;
+        private readonly Field.Field field;
         private readonly Tilemap tilemap;
 
-
         public CastleSystem(
-            CastleModel model, 
+            CastleModel model,
             UnitSystem unitSystem,
             UnitData unitData,
-            Field field,
+            Field.Field field,
             Tilemap tilemap)
         {
             this.model = model;
@@ -29,8 +29,6 @@ namespace Logic.Castle
             this.unitData = unitData;
             this.field = field;
             this.tilemap = tilemap;
-            
-            spawnHex = GetTopLeftHex();
         }
 
         public void Tick()
@@ -38,32 +36,31 @@ namespace Logic.Castle
             ProduceResources();
             SpawnUnitsFromBarracks();
         }
-        
-        // ReSharper disable Unity.PerformanceAnalysis
+
         private void SpawnUnitsFromBarracks()
         {
             var barracksCount = model.Buildings.Count(b => b.Data.type == BuildingType.Barracks);
 
             if (barracksCount == 0)
                 return;
-            
+
             for (var i = 0; i < barracksCount; i++)
             {
-                // Проверяем хватает ли еды на нового юнита
                 if (model.Food < unitData.foodCost)
                     return;
 
                 SpawnUnit();
             }
         }
-        
+
+        // TODO: Поменять логику использования еды юнитами (например, чтобы они тратили еду, находясь на поле)
         private void SpawnUnit()
         {
             var hex = field.GetHex(spawnHex);
 
             if (hex == null)
                 return;
-            
+
             var worldPos = tilemap.GetCellCenterWorld(hex.offset);
             unitSystem.SpawnUnit(worldPos, spawnHex, unitData);
             model.Food -= unitData.foodCost;
@@ -72,33 +69,19 @@ namespace Logic.Castle
         }
 
 
-
         private void ProduceResources()
         {
             var changed = false;
-            foreach (var building in model.Buildings)
+            foreach (var building in model.Buildings.Where(building => building.Data.type == BuildingType.Farm))
             {
-                if (building.Data.type == BuildingType.Farm)
-                {
-                    model.Food += building.Production;
-                    changed = true;
-                }
-                // TODO: Добавить логику для других BuildingType
+                model.Food += building.Production;
+                changed = true;
             }
 
             if (changed)
                 model.Changed();
         }
-        
-        private Vector2Int GetTopLeftHex()
-        {
-            var topLeft = field.Hexagons.Values
-                .OrderBy(h => h.offset.x)     // сначала самый левый
-                .ThenByDescending(h => h.offset.y) // потом самый верхний
-                .First();
 
-            return topLeft.coordinates;
-        }
 
         public bool TryBuyBuilding(BuildingData data)
         {

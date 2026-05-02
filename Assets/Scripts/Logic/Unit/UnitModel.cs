@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Logic.Unit
@@ -10,58 +11,31 @@ namespace Logic.Unit
         public Vector3 CurrentDirection { get; set; }
         public float DirectionTimer { get; set; }
 
-        private readonly UnitData baseStats;
-        public UnitData Stats => baseStats;
+        public UnitData UnitData { get; }
         private readonly List<Buff> buffs = new();
 
         private int CurrentHealth { get; set; }
         public bool IsDead => CurrentHealth <= 0;
 
-        public UnitModel(Vector3 startPos, Vector2Int startHex, UnitData stats)
+        public UnitModel(Vector3 startPos, Vector2Int startHex, UnitData unitData)
         {
             WorldPosition = startPos;
             CurrentHex = startHex;
-            baseStats = stats;
-            CurrentHealth = stats.maxHealth;
-        }
-        
-        public float GetMoveSpeed()
-        {
-            var value = baseStats.moveSpeed;
-
-            foreach (var buff in buffs)
-                value = buff.ModifyMoveSpeed(value);
-
-            return value;
+            UnitData = unitData;
+            CurrentHealth = unitData.maxHealth;
         }
 
-        public int GetAttack()
-        {
-            var value = baseStats.attack;
-            foreach (var buff in buffs)
-                value = buff.ModifyAttack(value);
+        public float GetMoveSpeed() =>
+            buffs.Aggregate(UnitData.moveSpeed, (current, buff) => buff.ModifyMoveSpeed(current));
 
-            return value;
-        }
+        public int GetAttack() => buffs.Aggregate(UnitData.attack, (current, buff) => buff.ModifyAttack(current));
 
-        public void AddBuff(Buff buff)
-        {
-            buffs.Add(buff);
-        }
+        public void AddBuff(Buff buff) => buffs.Add(buff);
 
-        public void TakeDamage(int damage)
-        {
-            CurrentHealth -= damage;
-        }
+        public void TakeDamage(int damage) => CurrentHealth -= damage;
 
-        public void Move(Vector3 direction, float deltaTime)
-        {
-            WorldPosition += direction * GetMoveSpeed() * deltaTime;
-        }
+        public void Move(Vector3 direction, float deltaTime) => WorldPosition += direction * GetMoveSpeed() * deltaTime;
 
-        public void SetHex(Vector2Int hex)
-        {
-            CurrentHex = hex;
-        }
+        public void SetHex(Vector2Int hex) => CurrentHex = hex;
     }
 }

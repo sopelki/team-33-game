@@ -10,7 +10,7 @@ namespace Logic.Unit
         private readonly FreeMovementService movementService;
 
         public event Action<UnitModel> OnUnitCreated;
-        public event Action<UnitModel> OnUnitMoved;
+        // public event Action<UnitModel> OnUnitMoved;
         public event Action<UnitModel> OnUnitDied;
 
         public UnitSystem(FreeMovementService movementService)
@@ -26,7 +26,7 @@ namespace Logic.Unit
             OnUnitCreated?.Invoke(unit);
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
+        // TODO: Переделать в foreach
         public void Tick(float deltaTime)
         {
             for (var i = units.Count - 1; i >= 0; i--)

@@ -4,7 +4,8 @@ namespace HexagonScripts
 {
     public class HexagonMath
     {
-        private static readonly float HexSize = 1f;
+        private const float HexSize = 1f;
+
         public static Vector2Int OffsetToAxial(int x, int y)
         {
             var q = x - (y - (y & 1)) / 2;

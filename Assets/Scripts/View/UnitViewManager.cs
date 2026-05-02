@@ -34,7 +34,7 @@ namespace View
         // ----------------------------
         private void HandleUnitCreated(UnitModel model)
         {
-            var prefab = model.Stats.unitPrefab;
+            var prefab = model.UnitData.unitPrefab;
 
             var go = Instantiate(prefab, model.WorldPosition, Quaternion.identity, unitsParent);
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Misc
+namespace Field
 {
     [RequireComponent(typeof(Camera))]
     public class CameraSetup : MonoBehaviour
