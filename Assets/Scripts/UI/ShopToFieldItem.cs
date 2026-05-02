@@ -117,7 +117,7 @@ namespace UI
                     prefabRenderer.sprite.rect.width / prefabRenderer.sprite.pixelsPerUnit,
                     prefabRenderer.sprite.rect.height / prefabRenderer.sprite.pixelsPerUnit
                 );
-                ghostRect.sizeDelta = (spriteSize * pixelsPerUnit) / canvas.scaleFactor;
+                ghostRect.sizeDelta = spriteSize * pixelsPerUnit / canvas.scaleFactor;
             }
 
             ghostRect.pivot = new Vector2(0.5f, 0.5f);
