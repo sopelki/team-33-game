@@ -9,7 +9,8 @@ namespace Logic.Unit
         [Header("Stats")]
         public int maxHealth = 100;
         public int attack = 10;
-        public float moveSpeed = 2f;
+        public float moveSpeed = 20f;
+        public int foodCost = 5;
 
         [Header("View")]
         public GameObject unitPrefab;

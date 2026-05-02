@@ -36,18 +36,7 @@ namespace Logic.Castle
         public void Tick()
         {
             ProduceResources();
-            ConsumeFood();
             SpawnUnitsFromBarracks();
-        }
-        
-        private void ConsumeFood()
-        {
-            int totalConsumption = model.CurrentUnits;
-
-            if (model.Food >= totalConsumption)
-                model.Food -= totalConsumption;
-            else
-                model.Food = 0;
         }
         
         // ReSharper disable Unity.PerformanceAnalysis
@@ -61,7 +50,7 @@ namespace Logic.Castle
             for (var i = 0; i < barracksCount; i++)
             {
                 // Проверяем хватает ли еды на нового юнита
-                if (model.Food <= 0)
+                if (model.Food < unitData.foodCost)
                     return;
 
                 SpawnUnit();
@@ -75,10 +64,11 @@ namespace Logic.Castle
             if (hex == null)
                 return;
             
-            Debug.Log(field.GetHex(spawnHex).type);
             var worldPos = tilemap.GetCellCenterWorld(hex.offset);
             unitSystem.SpawnUnit(worldPos, spawnHex, unitData);
+            model.Food -= unitData.foodCost;
             model.CurrentUnits++;
+            model.Changed();
         }
 
 

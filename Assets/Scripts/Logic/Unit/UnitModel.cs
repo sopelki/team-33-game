@@ -7,6 +7,8 @@ namespace Logic.Unit
     {
         public Vector3 WorldPosition { get; private set; }
         public Vector2Int CurrentHex { get; private set; }
+        public Vector3 CurrentDirection { get; set; }
+        public float DirectionTimer { get; set; }
 
         private readonly UnitData baseStats;
         public UnitData Stats => baseStats;

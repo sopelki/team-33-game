@@ -85,7 +85,6 @@ public class Field
     
     public bool IsWalkable(Hexagon hex)
     {
-        // return hex.type == HexagonType.Path;
-        return true;
+        return hex.type == HexagonType.Path;
     }
 }
