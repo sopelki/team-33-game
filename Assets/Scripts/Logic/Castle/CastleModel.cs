@@ -8,6 +8,7 @@ namespace Logic.Castle
         public int Hp { get; set; }
         public int Gold { get; set; }
         public int Food { get; set; }
+        public int CurrentUnits { get; set; }
         
         public List<BuildingModel> Buildings { get; private set; } = new();
 
