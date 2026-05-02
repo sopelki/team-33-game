@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using HexagonScripts;
 using Interfaces;
 using Logic.Unit;
 using UnityEngine;
@@ -9,7 +8,7 @@ namespace Logic.Castle
 {
     public class CastleSystem : ITickable
     {
-        private static readonly Vector2Int spawnHex = new(-20, 20); // Поменять, если нужна другая точка спавна
+        private static readonly Vector2Int spawnHex = new(-30, 20); // Поменять, если нужна другая точка спавна
 
         private readonly CastleModel model;
         private readonly UnitSystem unitSystem;

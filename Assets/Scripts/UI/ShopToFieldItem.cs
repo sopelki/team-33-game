@@ -102,7 +102,8 @@ namespace UI
             ghostRect = ghost.GetComponent<RectTransform>();
 
             var ghostImage = ghost.GetComponent<Image>();
-            ghostImage.sprite = prefabRenderer.sprite;
+            var sprite = prefabRenderer.sprite;
+            ghostImage.sprite = sprite;
             ghostImage.preserveAspect = true;
             ghostImage.raycastTarget = false;
 
@@ -110,17 +111,26 @@ namespace UI
             c.a = ghostAlpha;
             ghostImage.color = c;
 
+            var normalizedPivot = new Vector2(
+                sprite.pivot.x / sprite.rect.width,
+                sprite.pivot.y / sprite.rect.height
+            );
+            ghostRect.pivot = normalizedPivot;
+
             if (Camera.main != null)
             {
                 var pixelsPerUnit = Screen.height / (Camera.main.orthographicSize * 2f);
-                var spriteSize = new Vector2(
+                var spriteSizeInUnits = new Vector2(
                     prefabRenderer.sprite.rect.width / prefabRenderer.sprite.pixelsPerUnit,
                     prefabRenderer.sprite.rect.height / prefabRenderer.sprite.pixelsPerUnit
                 );
-                ghostRect.sizeDelta = spriteSize * pixelsPerUnit / canvas.scaleFactor;
+
+                var prefabScale = prefabRenderer.transform.localScale;
+                spriteSizeInUnits.x *= prefabScale.x;
+                spriteSizeInUnits.y *= prefabScale.y;
+                ghostRect.sizeDelta = spriteSizeInUnits * pixelsPerUnit / canvas.scaleFactor;
             }
 
-            ghostRect.pivot = new Vector2(0.5f, 0.5f);
             ghostRect.anchorMin = ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
         }
 

@@ -25,9 +25,7 @@ namespace HexagonScripts
         
         public static Vector3 OffsetToWorld(int x, int y)
         {
-            // сначала переводим в axial
             var axial = OffsetToAxial(x, y);
-
             return AxialToWorld(axial.x, axial.y);
         }
         
