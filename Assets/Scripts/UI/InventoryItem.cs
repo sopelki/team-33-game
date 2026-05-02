@@ -9,7 +9,6 @@ namespace UI
         [Header("Data")]
         [SerializeField] private BuildingData buildingData;
         
-        // Ссылки на состояние
         public BuildingData BuildingData => buildingData;
         public Transform OriginalParent { get; private set; }
         public bool IsFromShop { get; private set; }
@@ -29,7 +28,6 @@ namespace UI
             IsFromShop = fromShop;
         }
 
-        // Вызывается в OnBeginDrag (можно через события или напрямую)
         private void CaptureState()
         {
             OriginalParent = transform.parent;
@@ -47,8 +45,8 @@ namespace UI
         public void Place(Transform slot)
         {
             transform.SetParent(slot);
-            dragHandler.ResetPosition(); // Центрируем
-            IsFromShop = false; // Теперь он в слоте, он больше не "новый из магазина"
+            dragHandler.ResetPosition();
+            IsFromShop = false;
         }
 
         public void OnBeginDrag(PointerEventData eventData)

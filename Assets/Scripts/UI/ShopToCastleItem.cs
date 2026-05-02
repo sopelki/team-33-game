@@ -11,7 +11,6 @@ namespace UI
         [SerializeField] private GameObject inventoryItemPrefab;
         [SerializeField] private BuildingData buildingData;
 
-        // private InventoryItem item;
         private Image sourceImage;
 
         private void Awake()
@@ -28,7 +27,6 @@ namespace UI
                 return;
 
             var itemGo = Instantiate(inventoryItemPrefab, canvas.transform);
-            // itemGo.transform.SetAsLastSibling();
             
             var rt = itemGo.GetComponent<RectTransform>();
             RectTransformUtility.ScreenPointToLocalPointInRectangle(

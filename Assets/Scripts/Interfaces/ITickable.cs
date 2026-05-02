@@ -1,7 +1,10 @@
+using JetBrains.Annotations;
+
 namespace Interfaces
 {
     public interface ITickable
     {
-        public void Tick();
+        [UsedImplicitly]
+        void Tick();
     }
 }

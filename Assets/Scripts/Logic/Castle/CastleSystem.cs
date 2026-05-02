@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Interfaces;
-using Logic.Tower;
-using UnityEngine;
+﻿using Interfaces;
 
 namespace Logic.Castle
 {
@@ -42,14 +38,12 @@ namespace Logic.Castle
             if (!TrySpendGold(data.baseCost))
                 return false;
 
-            var instance = new BuildingInstance(data);
+            var instance = new BuildingModel(data);
             model.Buildings.Add(instance);
 
             return true;
         }
-
-        // public bool TrySpendGoldOnTower(TowerData data) => TrySpendGold(data.baseCost);
-
+        
         public bool TrySpendGold(int price)
         {
             if (model.Gold < price)

@@ -9,7 +9,7 @@ namespace Logic.Castle
         public int Gold { get; set; }
         public int Food { get; set; }
         
-        public List<BuildingInstance> Buildings { get; private set; } = new();
+        public List<BuildingModel> Buildings { get; private set; } = new();
 
         public event Action OnChanged;
         public void Changed() => OnChanged?.Invoke();

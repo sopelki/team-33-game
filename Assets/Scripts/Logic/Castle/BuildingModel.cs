@@ -1,11 +1,11 @@
 ﻿namespace Logic.Castle
 {
-    public class BuildingInstance
+    public class BuildingModel
     {
         public BuildingData Data { get; private set; }
         public int Level { get; private set; }
 
-        public BuildingInstance(BuildingData data)
+        public BuildingModel(BuildingData data)
         {
             Data = data;
             Level = 1;
