@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Interfaces;
+using Logic.Tower;
 using UnityEngine;
 
 namespace Logic.Castle
 {
-    public class CastleSystem
+    public class CastleSystem: ITickable
     {
         private readonly CastleModel model;
 
@@ -37,7 +39,7 @@ namespace Logic.Castle
 
         public bool TryBuyBuilding(BuildingData data)
         {
-            if (!TrySpendGold(data))
+            if (!TrySpendGold(data.baseCost))
                 return false;
 
             var instance = new BuildingInstance(data);
@@ -46,14 +48,14 @@ namespace Logic.Castle
             return true;
         }
 
-        public bool TryBuyTower(BuildingData data) => TrySpendGold(data);
+        // public bool TrySpendGoldOnTower(TowerData data) => TrySpendGold(data.baseCost);
 
-        private bool TrySpendGold(BuildingData data)
+        public bool TrySpendGold(int price)
         {
-            if (model.Gold < data.baseCost)
+            if (model.Gold < price)
                 return false;
 
-            model.Gold -= data.baseCost;
+            model.Gold -= price;
             model.Changed();
             return true;
         }

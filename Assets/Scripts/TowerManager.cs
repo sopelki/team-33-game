@@ -5,7 +5,6 @@ public class TowerManager : MonoBehaviour
 {
     public static TowerManager Instance;
 
-    // ключ: позиция клетки, значение: ссылка на башню
     private readonly Dictionary<Vector3Int, GameObject> occupiedCells = new();
 
     private void Awake()
