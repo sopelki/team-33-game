@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 667f7ed3d6f946342ba3c43c92936286
+guid: 44efd881e1f66f64aa5de89e9bfda808
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8717243691107160497
-    second: TowerSprite_0
+      213: 6368796556325787434
+    second: MagicParticle_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TowerSprite_0
+      name: MagicParticle_0
       rect:
         serializedVersion: 2
-        x: 31
-        y: 19
-        width: 44
-        height: 89
-      alignment: 9
-      pivot: {x: 0.5, y: 0.14285715}
+        x: 0
+        y: 0
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1b115fc73fed9f870800000000000000
-      internalID: 8717243691107160497
+      spriteID: a27978289b2826850800000000000000
+      internalID: 6368796556325787434
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 67d296190edaeef4b8a9366f80892b91
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TowerSprite_0: 8717243691107160497
+      MagicParticle_0: 6368796556325787434
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

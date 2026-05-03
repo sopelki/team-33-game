@@ -21,8 +21,8 @@ namespace Misc
 
             if (transform.Find(shadowName) != null)
             {
-                Debug.Log("Shadow already exists.");
-                return;
+                RemoveShadow();
+                Debug.Log("Existing shadow was removed.");
             }
 
             var parentRenderer = GetComponent<SpriteRenderer>();
