@@ -8,10 +8,9 @@ namespace Logic.Monster
         public Vector3 WorldPosition { get; private set; }
         public Vector2Int CurrentHex { get; private set; }
         public bool IsDead => currentHealth <= 0;
-        public MonsterData Data => data;
+        public MonsterData Data { get; }
 
         private int currentHealth;
-        private readonly MonsterData data;
 
         private IMovementStrategy movementStrategy;
         private IAttackStrategy attackStrategy;
@@ -26,7 +25,7 @@ namespace Logic.Monster
             WorldPosition = startWorldPos;
             CurrentHex = startHex;
 
-            this.data = data;
+            Data = data;
             this.movementStrategy = movementStrategy;
             this.attackStrategy = attackStrategy;
 
@@ -49,7 +48,7 @@ namespace Logic.Monster
         public void Move(Vector3 direction)
         {
             var step = Core.TickManager.Instance.tickInterval;
-            WorldPosition += direction * (data.moveSpeed * step);
+            WorldPosition += direction * (Data.moveSpeed * step);
         }
 
         public void SetHex(Vector2Int hex)

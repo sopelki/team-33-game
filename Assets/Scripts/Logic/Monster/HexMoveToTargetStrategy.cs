@@ -77,9 +77,8 @@ namespace Logic.Monster
 
         if (distance <= step)
         {
-            // дошли до центра
             monster.SetHex(nextHex.Value);
-            monster.Move(dir.normalized * (distance / step)); // аккуратная доводка
+            monster.Move(dir.normalized * (distance / step));
             nextHex = null;
         }
         else

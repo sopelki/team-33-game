@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Logic.Tower.TowerData
   type: 1
   baseCost: 75
-  range: 7
-  fireRate: 4
-  damage: 5
+  range: 12
+  fireRate: 1.5
+  projectileData: {fileID: 11400000, guid: 04b0e2cf954faf54da3185375b551b93, type: 2}
   viewPrefab: {fileID: 2205595541700812422, guid: 6047e209bdc41324eb7db734585e1839, type: 3}

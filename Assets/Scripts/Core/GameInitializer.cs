@@ -2,6 +2,7 @@
 using Field;
 using Logic.Castle;
 using Logic.Monster;
+using Logic.Projectile;
 using Logic.Tower;
 using Logic.Unit;
 using View;
@@ -14,27 +15,42 @@ namespace Core
     public class GameInitializer : MonoBehaviour
     {
         [Header("Castle Settings")]
-        [SerializeField] private int startGold = 300;
-        [SerializeField] private int startFood = 100;
-        [SerializeField] private int startHp = 500;
+        [SerializeField]
+        private int startGold = 300;
+        [SerializeField]
+        private int startFood = 100;
+        [SerializeField]
+        private int startHp = 500;
 
         [Header("Scene References")]
-        [SerializeField] private CastleUI castleUI;
-        [SerializeField] private TickManager tickManager;
-        [SerializeField] private TowerViewManager towerViewManager;
-        [SerializeField] private CameraSetup cameraSetup;
+        [SerializeField]
+        private CastleUI castleUI;
+        [SerializeField]
+        private TickManager tickManager;
+        [SerializeField]
+        private TowerViewManager towerViewManager;
+        [SerializeField]
+        private ProjectileViewManager projectileViewManager;
+        [SerializeField]
+        private CameraSetup cameraSetup;
 
         [Header("Unit Settings")]
-        [SerializeField] private UnitData soldierData;
-        [SerializeField] private UnitViewManager unitViewManager;
+        [SerializeField]
+        private UnitData soldierData;
+        [SerializeField]
+        private UnitViewManager unitViewManager;
 
         [Header("Field")]
-        [SerializeField] private FieldGenerator fieldGenerator;
-        [SerializeField] private Tilemap tilemap;
-        
+        [SerializeField]
+        private FieldGenerator fieldGenerator;
+        [SerializeField]
+        private Tilemap tilemap;
+
         [Header("Monster Settings")]
-        [SerializeField] private List<MonsterData> availableMonsters;
-        [SerializeField] private MonsterViewManager monsterViewManager;
+        [SerializeField]
+        private List<MonsterData> availableMonsters;
+        [SerializeField]
+        private MonsterViewManager monsterViewManager;
 
         private MonsterSystem monsterSystem;
         private MonsterSpawner monsterSpawner;
@@ -47,6 +63,8 @@ namespace Core
 
         private UnitSystem unitSystem;
         private FreeMovementService movementService;
+
+        private ProjectileSystem projectileSystem;
 
         private Field.Field field;
         private static readonly List<Vector2Int> spawnHexes = new()
@@ -65,11 +83,13 @@ namespace Core
                 return;
             }
             cameraSetup.FitToGrid();
-            
+
             movementService = new FreeMovementService(field, tilemap);
             unitSystem = new UnitSystem(movementService);
             monsterSystem = new MonsterSystem();
-            
+            projectileSystem = new ProjectileSystem(monsterSystem);
+
+
             monsterSpawner = new MonsterSpawner(
                 spawnHexes,
                 castleHex,
@@ -80,6 +100,7 @@ namespace Core
                 tilemap
             );
 
+
             castleModel = new CastleModel(startHp, startGold, startFood);
             castleSystem = new CastleSystem(
                 castleModel,
@@ -88,9 +109,9 @@ namespace Core
                 field,
                 tilemap
             );
-            
+
             towersModel = new TowersModel();
-            towerSystem = new TowerSystem(castleSystem, towersModel);
+            towerSystem = new TowerSystem(castleSystem, towersModel, monsterSystem, projectileSystem);
 
             if (tickManager == null)
                 return;
@@ -100,6 +121,7 @@ namespace Core
             tickManager.OnTick += unitSystem.Tick;
             tickManager.OnTick += monsterSystem.Tick;
             tickManager.OnTick += monsterSpawner.Tick;
+            tickManager.OnTick += projectileSystem.Tick;
 
             //TODO: Нужно ли это вообще?
             unitSystem.OnUnitDied += unit =>
@@ -119,12 +141,15 @@ namespace Core
 
             if (towerViewManager != null)
                 towerViewManager.Initialize(towersModel);
-            
+
             if (monsterViewManager != null)
                 monsterViewManager.Initialize(monsterSystem);
 
             if (castleUI != null)
                 castleUI.Initialize(castleModel);
+
+            if (projectileViewManager != null)
+                projectileViewManager.Initialize(projectileSystem);
 
             var shopItems = FindObjectsByType<ShopToFieldItem>();
             foreach (var item in shopItems)

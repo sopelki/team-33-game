@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Field;
 using Logic.Unit;
 using Interfaces;
 using UnityEngine.Tilemaps;

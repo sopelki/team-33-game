@@ -22048,6 +22048,7 @@ MonoBehaviour:
   castleUI: {fileID: 998659908}
   tickManager: {fileID: 643403634}
   towerViewManager: {fileID: 1713643598}
+  projectileViewManager: {fileID: 1605870130}
   cameraSetup: {fileID: 519420033}
   soldierData: {fileID: 11400000, guid: 3ec1bfa92741c494d9c11e29d93cca3d, type: 2}
   unitViewManager: {fileID: 174547760}
@@ -23245,6 +23246,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
+--- !u!1 &1605870129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1605870131}
+  - component: {fileID: 1605870130}
+  m_Layer: 0
+  m_Name: ProjectileViewManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1605870130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605870129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6864115f32f84625906978822bef449a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::View.ProjectileViewManager
+  parent: {fileID: 1749951719}
+--- !u!4 &1605870131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605870129}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1548.3514, y: 859.38873, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1611147492
 GameObject:
   m_ObjectHideFlags: 0
@@ -23589,6 +23635,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 504390076168633126, guid: 5f18b0cd869402547a783c69f3f6f6df, type: 3}
   m_PrefabInstance: {fileID: 501885170}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1749951718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1749951719}
+  m_Layer: 0
+  m_Name: Projectiles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1749951719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749951718}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1548.3514, y: 859.38873, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1778199098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24979,3 +25056,5 @@ SceneRoots:
   - {fileID: 2131335273}
   - {fileID: 382416968}
   - {fileID: 1063108229}
+  - {fileID: 1605870131}
+  - {fileID: 1749951719}

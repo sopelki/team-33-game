@@ -50,6 +50,12 @@ TagManager:
   - name: Units
     uniqueID: 2317228607
     locked: 0
+  - name: Effects
+    uniqueID: 114094293
+    locked: 0
+  - name: Projectiles
+    uniqueID: 1007650763
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []

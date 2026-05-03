@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Logic.Projectile;
+using UnityEngine;
 
 namespace Logic.Tower
 {
@@ -9,7 +10,7 @@ namespace Logic.Tower
         public int baseCost;
         public float range;
         public float fireRate;
-        public int damage;
+        public ProjectileData projectileData;
         public GameObject viewPrefab;
     }
 }
