@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.42114633, g: 0.9811321, b: 0.5964925, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -104,3 +104,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28538e8cd9b7421e90625fe1a3c6c9ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::View.MonsterView
+  spriteRenderer: {fileID: 4890090599472735865}
+  up: {fileID: 1884529691, guid: ca721007f5ff3c940bcfa397f07ffbe1, type: 3}
+  down: {fileID: 428644020, guid: ca721007f5ff3c940bcfa397f07ffbe1, type: 3}
+  left: {fileID: 2472402255921378900, guid: ca721007f5ff3c940bcfa397f07ffbe1, type: 3}
+  right: {fileID: 760553947181242177, guid: ca721007f5ff3c940bcfa397f07ffbe1, type: 3}
+  upLeft: {fileID: 1370736141, guid: ca721007f5ff3c940bcfa397f07ffbe1, type: 3}
+  upRight: {fileID: -1695671787, guid: ca721007f5ff3c940bcfa397f07ffbe1, type: 3}
+  downLeft: {fileID: 6498456521321614045, guid: ca721007f5ff3c940bcfa397f07ffbe1, type: 3}
+  downRight: {fileID: 1496396721, guid: ca721007f5ff3c940bcfa397f07ffbe1, type: 3}

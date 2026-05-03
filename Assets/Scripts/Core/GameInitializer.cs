@@ -62,7 +62,6 @@ namespace Core
         private TowerSystem towerSystem;
 
         private UnitSystem unitSystem;
-        private FreeMovementService movementService;
 
         private ProjectileSystem projectileSystem;
 
@@ -83,11 +82,14 @@ namespace Core
                 return;
             }
             cameraSetup.FitToGrid();
-
-            movementService = new FreeMovementService(field, tilemap);
-            unitSystem = new UnitSystem(movementService);
+            
             monsterSystem = new MonsterSystem();
             projectileSystem = new ProjectileSystem(monsterSystem);
+            unitSystem = new UnitSystem(
+                monsterSystem,
+                field,
+                tilemap
+            );
 
 
             monsterSpawner = new MonsterSpawner(
