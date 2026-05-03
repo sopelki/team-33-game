@@ -15,6 +15,11 @@ namespace Logic.Castle
         private readonly UnitData unitData;
         private readonly Field.Field field;
         private readonly Tilemap tilemap;
+        private float resourceTimer;
+        private float spawnTimer;
+        private const float ResourceInterval = 1f;
+        private const float SpawnInterval = 1f;
+
 
         public CastleSystem(
             CastleModel model,
@@ -32,8 +37,22 @@ namespace Logic.Castle
 
         public void Tick()
         {
-            ProduceResources();
-            SpawnUnitsFromBarracks();
+            var dt = Core.TickManager.Instance.tickInterval;
+
+            resourceTimer += dt;
+            spawnTimer += dt;
+
+            if (resourceTimer >= ResourceInterval)
+            {
+                resourceTimer = 0f;
+                ProduceResources();
+            }
+
+            if (spawnTimer >= SpawnInterval)
+            {
+                spawnTimer = 0f;
+                SpawnUnitsFromBarracks();
+            }
         }
 
         private void SpawnUnitsFromBarracks()

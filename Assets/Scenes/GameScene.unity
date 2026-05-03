@@ -1142,6 +1142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: -0.05}
   scale: {x: 1.2, y: 0.4}
   alpha: 0.211
@@ -1255,6 +1257,51 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8679728150743837429, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
   m_PrefabInstance: {fileID: 1305794619}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &382416966
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 382416968}
+  - component: {fileID: 382416967}
+  m_Layer: 0
+  m_Name: MonsterViewManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &382416967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382416966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 534a3116ca4c4a8ea20e7d33ffc3ad7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::View.MonsterViewManager
+  parent: {fileID: 1063108229}
+--- !u!4 &382416968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382416966}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 848.99475, y: 362.75333, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &501885170
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19675,6 +19722,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: 0}
   scale: {x: 1, y: 1}
   alpha: 1
@@ -20761,6 +20810,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: -0.05}
   scale: {x: 1.2, y: 0.4}
   alpha: 0.211
@@ -20870,6 +20921,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: -0.05}
   scale: {x: 1.2, y: 0.4}
   alpha: 0.211
@@ -21311,6 +21364,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: -0.05}
   scale: {x: 1.2, y: 0.4}
   alpha: 0.211
@@ -21474,6 +21529,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88b00921974e5b44aa4bd9e01b5de430, type: 3}
+--- !u!1 &1063108228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1063108229}
+  m_Layer: 0
+  m_Name: Monsters
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1063108229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063108228}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 848.99475, y: 362.75333, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1212635080
 GameObject:
   m_ObjectHideFlags: 0
@@ -21583,6 +21669,10 @@ MonoBehaviour:
   unitViewManager: {fileID: 174547760}
   fieldGenerator: {fileID: 537554931}
   tilemap: {fileID: 537554929}
+  availableMonsters:
+  - {fileID: 11400000, guid: a3e72874c1703684abfc36588a59e4fd, type: 2}
+  - {fileID: 11400000, guid: 28eaee259108e2d47b2ac99833aca557, type: 2}
+  monsterViewManager: {fileID: 382416967}
 --- !u!4 &1242743165
 Transform:
   m_ObjectHideFlags: 0
@@ -22239,6 +22329,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: -0.05}
   scale: {x: 1.2, y: 0.4}
   alpha: 0.211
@@ -22439,6 +22531,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: 0}
   scale: {x: 1, y: 1}
   alpha: 1
@@ -22913,6 +23007,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: -0.05}
   scale: {x: 1.2, y: 0.4}
   alpha: 0.211
@@ -23742,6 +23838,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: -0.05}
   scale: {x: 1.2, y: 0.4}
   alpha: 0.211
@@ -24630,6 +24728,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Misc.ShadowCreator
   shadowSprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  flipX: 0
+  flipY: 0
   offset: {x: 0, y: -0.05}
   scale: {x: 1.2, y: 0.4}
   alpha: 0.211
@@ -24865,3 +24965,5 @@ SceneRoots:
   - {fileID: 1713643599}
   - {fileID: 174547761}
   - {fileID: 2131335273}
+  - {fileID: 382416968}
+  - {fileID: 1063108229}

@@ -43,5 +43,10 @@ namespace Logic.Unit
                 movementService.Tick(unit);
             }
         }
+        
+        public IReadOnlyList<UnitModel> GetAllUnits()
+        {
+            return units;
+        }
     }
 }

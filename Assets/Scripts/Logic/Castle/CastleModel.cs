@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Interfaces;
 
 namespace Logic.Castle
 {
-    public class CastleModel
+    public class CastleModel : IDamageable
     {
         public int Hp { get; set; }
         public int Gold { get; set; }
@@ -20,6 +21,14 @@ namespace Logic.Castle
             Hp = initialHp;
             Gold = initialGold;
             Food = initialFood;
+        }
+        
+        public bool IsDead => Hp <= 0;
+
+        public void TakeDamage(int damage)
+        {
+            Hp -= damage;
+            Changed();
         }
     }
 }

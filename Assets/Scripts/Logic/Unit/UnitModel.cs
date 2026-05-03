@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Interfaces;
 using UnityEngine;
 
 namespace Logic.Unit
 {
-    public class UnitModel
+    public class UnitModel: IDamageable
     {
         public Vector3 WorldPosition { get; private set; }
         public Vector2Int CurrentHex { get; private set; }

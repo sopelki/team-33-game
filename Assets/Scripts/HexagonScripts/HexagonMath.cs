@@ -61,5 +61,15 @@ namespace HexagonScripts
 
             return new Vector2Int(rx, rz);
         }
+        
+        public static int Distance(Vector2Int a, Vector2Int b)
+        {
+            var dq = a.x - b.x;
+            var dr = a.y - b.y;
+
+            return (Mathf.Abs(dq)
+                    + Mathf.Abs(dq + dr)
+                    + Mathf.Abs(dr)) / 2;
+        }
     }
 }
