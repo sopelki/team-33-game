@@ -50,9 +50,7 @@ namespace Logic.Unit
                 unit.SetHex(axial);
             }
             else
-            {
                 unit.DirectionTimer = 0f; // сменить направление
-            }
         }
     }
 }

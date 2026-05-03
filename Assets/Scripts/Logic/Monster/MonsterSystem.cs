@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Logic.Monster
 {
@@ -17,9 +16,10 @@ namespace Logic.Monster
             OnMonsterCreated?.Invoke(monster);
         }
 
+
         public void Tick()
         {
-            Debug.Log("MonsterSystem Tick");
+            // Debug.Log("MonsterSystem Tick");
             for (var i = monsters.Count - 1; i >= 0; i--)
             {
                 var monster = monsters[i];

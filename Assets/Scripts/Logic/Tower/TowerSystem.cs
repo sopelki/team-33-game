@@ -29,7 +29,8 @@ namespace Logic.Tower
         public void Tick()
         {
             var monsters = monsterSystem.GetAllMonsters();
-            Debug.Log(monsters.Count);
+            // Debug.Log(monsters.Count);
+            
             foreach (var tower in towersModel.Towers)
             {
                 if (Time.time < tower.NextFireTime)
@@ -39,14 +40,29 @@ namespace Logic.Tower
                 if (target == null)
                     continue;
 
+                Vector3 interceptPoint;
+
+                if (!tower.Data.projectileData.isHoming)
+                {
+                    interceptPoint = CalculateInterceptPoint(
+                        tower.WorldPosition,
+                        target.WorldPosition,
+                        target.CurrentVelocity,
+                        tower.Data.projectileData.speed
+                    );
+                }
+                else
+                    interceptPoint = target.WorldPosition;
+
                 var projectile = new ProjectileModel(
                     tower.WorldPosition,
                     target,
-                    tower.Data.projectileData
+                    tower.Data.projectileData,
+                    interceptPoint
                 );
 
                 projectileSystem.CreateProjectile(projectile);
-                Debug.Log($"Projectile Created: {projectile}");
+
                 tower.NextFireTime =
                     Time.time + 1f / tower.Data.fireRate;
             }
@@ -56,7 +72,7 @@ namespace Logic.Tower
         {
             if (towersModel.Towers.Any(t => t.GridPosition == cellPos))
             {
-                Debug.Log("Cell occupied!");
+                Debug.Log("Cell is occupied!");
                 return false;
             }
 
@@ -66,6 +82,39 @@ namespace Logic.Tower
             var tower = new TowerModel(data, cellPos, worldPos);
             towersModel.AddTower(tower);
             return true;
+        }
+
+        private static Vector3 CalculateInterceptPoint(
+            Vector3 shooterPos,
+            Vector3 targetPos,
+            Vector3 targetVelocity,
+            float projectileSpeed)
+        {
+            var toTarget = targetPos - shooterPos;
+
+            var a = Vector3.Dot(targetVelocity, targetVelocity) - projectileSpeed * projectileSpeed;
+            var b = 2f * Vector3.Dot(targetVelocity, toTarget);
+            var c = Vector3.Dot(toTarget, toTarget);
+
+            var discriminant = b * b - 4f * a * c;
+
+            if (discriminant < 0f || Mathf.Abs(a) < 0.001f)
+                return targetPos;
+
+            var sqrt = Mathf.Sqrt(discriminant);
+
+            var t1 = (-b + sqrt) / (2f * a);
+            var t2 = (-b - sqrt) / (2f * a);
+
+            var t = Mathf.Min(t1, t2);
+
+            if (t < 0f)
+                t = Mathf.Max(t1, t2);
+
+            if (t < 0f)
+                return targetPos;
+
+            return targetPos + targetVelocity * t;
         }
 
         private static MonsterModel FindTarget(

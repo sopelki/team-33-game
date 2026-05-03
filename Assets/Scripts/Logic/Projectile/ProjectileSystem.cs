@@ -32,53 +32,76 @@ namespace Logic.Projectile
             {
                 var p = projectiles[i];
 
-                if (p.Target == null || p.Target.IsDead)
-                {
-                    Remove(i);
-                    continue;
-                }
-
-                Vector3 dir;
-
                 if (p.Data.isHoming)
-                    dir = (p.Target.WorldPosition - p.Position).normalized;
+                    UpdateHoming(p, step, i);
                 else
-                    dir = p.Direction;
-
-                var distanceBefore =
-                    Vector3.Distance(p.Position, p.Target.WorldPosition);
-
-                p.Position += dir * p.Data.speed * step;
-
-                var distanceAfter =
-                    Vector3.Distance(p.Position, p.Target.WorldPosition);
-
-                if (distanceAfter < 0.3f)
-                {
-                    ApplyDamage(p);
-                    Remove(i);
-                    continue;
-                }
-
-                if (!p.Data.isHoming && distanceAfter > distanceBefore)
-                {
-                    Remove(i);
-                    continue;
-                }
-
-                p.TraveledDistance += p.Data.speed * step;
-
-                if (p.Data.maxTravelDistance > 0f &&
-                    p.TraveledDistance >= p.Data.maxTravelDistance)
-                    Remove(i);
+                    UpdateStraight(p, step, i);
             }
         }
 
-        private void ApplyDamage(ProjectileModel p)
+        private void UpdateStraight(ProjectileModel p, float step, int index)
         {
+            var toTargetBefore = p.TargetPoint - p.Position;
+
+            p.Position += p.Direction * p.Data.speed * step;
+
+            var toTargetAfter = p.TargetPoint - p.Position;
+
+            if (toTargetAfter.magnitude <= 0.3f)
+            {
+                TryApplyDamage(p);
+                Remove(index);
+                return;
+            }
+
+            if (Vector3.Dot(toTargetBefore, toTargetAfter) < 0f)
+            {
+                Remove(index);
+                return;
+            }
+
+            if (p.Data.maxTravelDistance > 0f &&
+                Vector3.Distance(p.StartPosition, p.Position) >= p.Data.maxTravelDistance)
+                Remove(index);
+        }
+
+        private void UpdateHoming(ProjectileModel p, float step, int index)
+        {
+            if (p.Target == null || p.Target.IsDead)
+            {
+                Remove(index);
+                return;
+            }
+
+            var dir =
+                (p.Target.WorldPosition - p.Position).normalized;
+
+            p.Position += dir * p.Data.speed * step;
+
+            var dist =
+                Vector3.Distance(p.Position, p.Target.WorldPosition);
+
+            if (dist <= 0.3f)
+            {
+                TryApplyDamage(p);
+                Remove(index);
+                return;
+            }
+
+            if (p.Data.maxTravelDistance > 0f &&
+                Vector3.Distance(p.StartPosition, p.Position) >= p.Data.maxTravelDistance)
+                Remove(index);
+        }
+
+        private void TryApplyDamage(ProjectileModel p)
+        {
+            if (p.Target == null)
+                return;
+
             if (p.Data.aoeRadius <= 0f)
             {
-                p.Target.TakeDamage(p.Data.damage);
+                if (!p.Target.IsDead)
+                    p.Target.TakeDamage(p.Data.damage);
                 return;
             }
 
@@ -87,12 +110,14 @@ namespace Logic.Projectile
                 if (monster.IsDead)
                     continue;
 
-                var dist = Vector3.Distance(
-                    monster.WorldPosition,
-                    p.Position);
+                var dist =
+                    Vector3.Distance(monster.WorldPosition, p.Position);
 
                 if (dist <= p.Data.aoeRadius)
+                {
+                    Debug.Log("ApplyDamage: " + p.Data.damage);
                     monster.TakeDamage(p.Data.damage);
+                }
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Interfaces;
-using Field;
 using HexagonScripts;
 using UnityEngine.Tilemaps;
 
@@ -82,9 +81,7 @@ namespace Logic.Monster
             nextHex = null;
         }
         else
-        {
             monster.Move(dir.normalized);
-        }
     }
 }
 }

@@ -7,6 +7,7 @@ namespace Logic.Monster
     {
         public Vector3 WorldPosition { get; private set; }
         public Vector2Int CurrentHex { get; private set; }
+        public Vector3 CurrentVelocity { get; private set; }
         public bool IsDead => currentHealth <= 0;
         public MonsterData Data { get; }
 
@@ -39,7 +40,7 @@ namespace Logic.Monster
 
             attackStrategy?.Tick();
 
-            if (attackStrategy != null && attackStrategy.IsAttacking)
+            if (attackStrategy?.IsAttacking == true)
                 return;
 
             movementStrategy?.Tick();
@@ -49,6 +50,7 @@ namespace Logic.Monster
         {
             var step = Core.TickManager.Instance.tickInterval;
             WorldPosition += direction * (Data.moveSpeed * step);
+            CurrentVelocity = direction * Data.moveSpeed;
         }
 
         public void SetHex(Vector2Int hex)
@@ -58,9 +60,10 @@ namespace Logic.Monster
 
         public void TakeDamage(int damage)
         {
+            Debug.Log($"Monster got damage: {damage}");
             currentHealth -= damage;
         }
-        
+
         public void SetStrategies(
             IMovementStrategy movement,
             IAttackStrategy attack)

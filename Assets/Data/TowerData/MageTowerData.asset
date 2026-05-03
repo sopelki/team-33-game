@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MageTowerData
   m_EditorClassIdentifier: Assembly-CSharp::Logic.Tower.TowerData
   type: 1
-  baseCost: 75
+  baseCost: 100
   range: 12
   fireRate: 1.5
   projectileData: {fileID: 11400000, guid: 04b0e2cf954faf54da3185375b551b93, type: 2}

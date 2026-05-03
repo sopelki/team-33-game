@@ -32,9 +32,7 @@ namespace Logic.Monster
                     Vector3.Distance(
                         currentTarget.WorldPosition,
                         monster.WorldPosition) > monster.Data.attackRadius)
-                {
                     currentTarget = null;
-                }
             }
 
             // Если цели нет — ищем новую

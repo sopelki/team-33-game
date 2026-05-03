@@ -16,14 +16,10 @@ namespace Editor
             GUILayout.Space(10);
 
             if (GUILayout.Button("Create Shadow"))
-            {
                 creator.CreateShadow();
-            }
 
             if (GUILayout.Button("Remove Shadow"))
-            {
                 creator.RemoveShadow();
-            }
         }
     }
 }
