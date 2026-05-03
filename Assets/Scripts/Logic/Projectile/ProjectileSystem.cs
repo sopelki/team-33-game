@@ -69,12 +69,11 @@ namespace Logic.Projectile
         {
             if (p.Target == null || p.Target.IsDead)
             {
-                Remove(index);
+                p.Data.isHoming = false;
                 return;
             }
 
-            var dir =
-                (p.Target.WorldPosition - p.Position).normalized;
+            var dir = (p.Target.WorldPosition - p.Position).normalized;
 
             p.Position += dir * p.Data.speed * step;
 
