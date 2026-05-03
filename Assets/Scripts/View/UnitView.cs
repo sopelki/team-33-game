@@ -7,10 +7,10 @@ namespace View
     {
         private UnitModel model;
 
-        public void Initialize(UnitModel model)
+        public void Initialize(UnitModel modelToInitialize)
         {
-            this.model = model;
-            transform.position = model.WorldPosition;
+            model = modelToInitialize;
+            transform.position = modelToInitialize.WorldPosition;
         }
 
         public void SetPosition(Vector3 worldPos)

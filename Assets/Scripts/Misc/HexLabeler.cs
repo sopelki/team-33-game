@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using HexagonScripts; // Обязательно, чтобы видеть HexagonMath
+using HexagonScripts;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,7 +8,6 @@ using UnityEditor;
 
 namespace Misc
 {
-    // Повесьте этот скрипт прямо на объект с Tilemap
     public class HexLabeler : MonoBehaviour
     {
         private Tilemap tilemap;
