@@ -8,9 +8,11 @@ namespace Misc
     public class ShadowCreator : MonoBehaviour
     {
         public Sprite shadowSprite;
-        public Vector2 offset = new(0f, -0.05f);
-        public Vector2 scale = new(1.2f, 0.4f);
-        [Range(0,1)] public float alpha = 0.4f;
+        public bool flipX;
+        public bool flipY;
+        public Vector2 offset = new(0f, 0f);
+        public Vector2 scale = new(1f, 1f);
+        [Range(0,1)] public float alpha = 1f;
 
 #if UNITY_EDITOR
         public void CreateShadow()
@@ -30,20 +32,22 @@ namespace Misc
                 return;
             }
 
-            GameObject shadow = new GameObject(shadowName);
+            var shadow = new GameObject(shadowName);
             shadow.transform.SetParent(transform, false);
 
             shadow.transform.localPosition = offset;
             shadow.transform.localScale = new Vector3(scale.x, scale.y, 1f);
 
-            var renderer = shadow.AddComponent<SpriteRenderer>();
-            renderer.sprite = shadowSprite;
-            renderer.color = new Color(0, 0, 0, alpha);
+            var spriteRenderer = shadow.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = shadowSprite;
+            spriteRenderer.color = new Color(0, 0, 0, alpha);
+            
+            spriteRenderer.flipX = flipX;
+            spriteRenderer.flipY = flipY;
 
-            renderer.sortingLayerID = parentRenderer.sortingLayerID;
-            renderer.sortingOrder = parentRenderer.sortingOrder - 1;
+            spriteRenderer.sortingLayerID = parentRenderer.sortingLayerID;
+            spriteRenderer.sortingOrder = parentRenderer.sortingOrder - 1;
 
-            // ВАЖНО — сохраняем изменения в префаб
             PrefabUtility.RecordPrefabInstancePropertyModifications(this);
             EditorUtility.SetDirty(gameObject);
         }
@@ -52,9 +56,7 @@ namespace Misc
         {
             var existing = transform.Find("_Shadow");
             if (existing != null)
-            {
                 DestroyImmediate(existing.gameObject);
-            }
 
             EditorUtility.SetDirty(gameObject);
         }

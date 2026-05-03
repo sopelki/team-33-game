@@ -103,12 +103,12 @@ TextureImporter:
       name: TreeSpritesShadows_0
       rect:
         serializedVersion: 2
-        x: 14
-        y: 24
-        width: 56
-        height: 17
+        x: 15
+        y: 25
+        width: 54
+        height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -121,11 +121,77 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: TreeSpritesShadows_1
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 24
+        width: 55
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a016ee5c4eb4af4b85b06d2d1942be6
+      internalID: -1045539220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TreeSpritesShadows_2
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 24
+        width: 66
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9dc8cde8cb92c3b47b94fc3a0097a9ca
+      internalID: -333550422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TreeSpritesShadows_3
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 26
+        width: 48
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7af2a7089b198fc48b5e567a7f3c2d9a
+      internalID: 593756813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 80474ce95c65e7946badf7184c1df047
     internalID: 0
     vertices: []
     indices: 
@@ -136,6 +202,9 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       TreeSpritesShadows_0: 3721492949514815515
+      TreeSpritesShadows_1: -1045539220
+      TreeSpritesShadows_2: -333550422
+      TreeSpritesShadows_3: 593756813
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
