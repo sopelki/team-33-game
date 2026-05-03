@@ -7,7 +7,7 @@ namespace Core
     {
         public static TickManager Instance;
 
-        public float tickInterval = 1f;
+        public float tickInterval = 0.02f;
         private float timer;
 
         public event Action OnTick;
@@ -28,7 +28,7 @@ namespace Core
         {
             timer += Time.deltaTime;
 
-            if (timer >= tickInterval)
+            while (timer >= tickInterval)
             {
                 timer -= tickInterval;
                 OnTick?.Invoke();

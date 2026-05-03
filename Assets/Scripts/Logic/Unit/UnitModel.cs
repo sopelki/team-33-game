@@ -34,7 +34,7 @@ namespace Logic.Unit
 
         public void TakeDamage(int damage) => CurrentHealth -= damage;
 
-        public void Move(Vector3 direction, float deltaTime) => WorldPosition += direction * GetMoveSpeed() * deltaTime;
+        public void Move(Vector3 direction, float step) => WorldPosition += direction * GetMoveSpeed() * step;
 
         public void SetHex(Vector2Int hex) => CurrentHex = hex;
     }
