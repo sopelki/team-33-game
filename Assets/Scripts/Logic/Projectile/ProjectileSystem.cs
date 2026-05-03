@@ -42,10 +42,12 @@ namespace Logic.Projectile
         private void UpdateStraight(ProjectileModel p, float step, int index)
         {
             var toTargetBefore = p.TargetPoint - p.Position;
-
             p.Position += p.Direction * p.Data.speed * step;
-
             var toTargetAfter = p.TargetPoint - p.Position;
+
+            var totalDistance = Vector3.Distance(p.StartPosition, p.TargetPoint);
+            var currentDistance = Vector3.Distance(p.StartPosition, p.Position);
+            p.TravelProgress = Mathf.Clamp01(currentDistance / totalDistance);
 
             if (toTargetAfter.magnitude <= 0.3f)
             {
@@ -80,7 +82,7 @@ namespace Logic.Projectile
             var dist =
                 Vector3.Distance(p.Position, p.Target.WorldPosition);
 
-            if (dist <= 0.3f)
+            if (dist <= 0.2f)
             {
                 TryApplyDamage(p);
                 Remove(index);

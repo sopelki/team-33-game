@@ -29,43 +29,56 @@ namespace Logic.Tower
         public void Tick()
         {
             var monsters = monsterSystem.GetAllMonsters();
-            // Debug.Log(monsters.Count);
-            
+            var step = Core.TickManager.Instance.tickInterval;
+
             foreach (var tower in towersModel.Towers)
             {
-                if (Time.time < tower.NextFireTime)
+                if (tower.CooldownTimer > 0)
+                    tower.CooldownTimer -= step;
+
+                if (tower.CooldownTimer > 0)
                     continue;
 
-                var target = FindTarget(tower, monsters);
-                if (target == null)
-                    continue;
-
-                Vector3 interceptPoint;
-
-                if (!tower.Data.projectileData.isHoming)
+                var targets = FindTargets(tower, monsters);
+                if (targets.Count == 0)
                 {
-                    interceptPoint = CalculateInterceptPoint(
-                        tower.WorldPosition,
-                        target.WorldPosition,
-                        target.CurrentVelocity,
-                        tower.Data.projectileData.speed
-                    );
+                    tower.ShotsLeft = 0;
+                    continue;
+                }
+
+                var target = targets[0];
+                Shoot(tower, target);
+
+                if (tower.ShotsLeft > 0)
+                {
+                    tower.ShotsLeft--;
+                    tower.CooldownTimer = 0.2f; 
                 }
                 else
-                    interceptPoint = target.WorldPosition;
-
-                var projectile = new ProjectileModel(
-                    tower.WorldPosition,
-                    target,
-                    tower.Data.projectileData,
-                    interceptPoint
-                );
-
-                projectileSystem.CreateProjectile(projectile);
-
-                tower.NextFireTime =
-                    Time.time + 1f / tower.Data.fireRate;
+                {
+                    tower.ShotsLeft = tower.Data.targetsCount - 1;
+                    tower.CooldownTimer = 1f / tower.Data.fireRate;
+                }
             }
+        }
+
+        private void Shoot(TowerModel tower, MonsterModel target)
+        {
+            var interceptPoint = CalculateInterceptPoint(
+                tower.WorldPosition,
+                target.WorldPosition,
+                target.CurrentVelocity,
+                tower.Data.projectileData.speed
+            );
+
+            var projectile = new ProjectileModel(
+                tower.WorldPosition,
+                target,
+                tower.Data.projectileData,
+                interceptPoint
+            );
+
+            projectileSystem.CreateProjectile(projectile);
         }
 
         public bool TryPlaceTower(TowerData data, Vector3Int cellPos, Vector3 worldPos)
@@ -84,10 +97,7 @@ namespace Logic.Tower
             return true;
         }
 
-        private static Vector3 CalculateInterceptPoint(
-            Vector3 shooterPos,
-            Vector3 targetPos,
-            Vector3 targetVelocity,
+        private static Vector3 CalculateInterceptPoint(Vector3 shooterPos, Vector3 targetPos, Vector3 targetVelocity,
             float projectileSpeed)
         {
             var toTarget = targetPos - shooterPos;
@@ -117,36 +127,16 @@ namespace Logic.Tower
             return targetPos + targetVelocity * t;
         }
 
-        private static MonsterModel FindTarget(
-            TowerModel tower,
-            IReadOnlyList<MonsterModel> monsters)
+        private static List<MonsterModel> FindTargets(TowerModel tower, IReadOnlyList<MonsterModel> monsters)
         {
-            MonsterModel closest = null;
-            var minDist = float.MaxValue;
-
-            foreach (var monster in monsters)
-            {
-                if (monster.IsDead)
-                    continue;
-
-                var dist = Vector3.Distance(
-                    tower.WorldPosition,
-                    monster.WorldPosition);
-
-                // Debug.Log($"TowerPos: {tower.WorldPosition}, MonsterPos: {monster.WorldPosition}, Dist: {dist}");
-
-                if (dist > tower.Data.range)
-                    continue;
-
-                if (dist < minDist)
-                {
-                    minDist = dist;
-                    closest = monster;
-                }
-            }
-
-            // Debug.Log($"Target found: {closest}, dist: {minDist}, range: {tower.Data.range}");
-            return closest;
+            return monsters
+                .Where(m => !m.IsDead)
+                .Select(m => new { Monster = m, Distance = Vector3.Distance(tower.WorldPosition, m.WorldPosition) })
+                .Where(x => x.Distance <= tower.Data.range)
+                .OrderBy(x => x.Distance)
+                .Take(tower.Data.targetsCount)
+                .Select(x => x.Monster)
+                .ToList();
         }
     }
 }

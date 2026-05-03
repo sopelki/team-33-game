@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 737cf0b00de447ca83dd3af521ce293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::View.ProjectileView
+  arcHeight: 0
 --- !u!212 &8566803457089493999
 SpriteRenderer:
   serializedVersion: 2
@@ -94,12 +95,12 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  m_Sprite: {fileID: 771453615440124750, guid: 77c1017bce6461047a228d629bd54eca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.1875, y: 0.3125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

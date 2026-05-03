@@ -9,23 +9,10 @@ namespace Logic.Projectile
         public Vector3 Direction;
         public Vector3 TargetPoint;
         public Vector3 StartPosition;
+        public float TravelProgress;
 
         public MonsterModel Target;
         public ProjectileData Data;
-
-        public ProjectileModel(
-            Vector3 startPos,
-            MonsterModel target,
-            ProjectileData data)
-        {
-            StartPosition = startPos;
-            Position = startPos;
-            Target = target;
-            Data = data;
-
-            TargetPoint = target.WorldPosition;
-            Direction = (TargetPoint - startPos).normalized;
-        }
 
         public ProjectileModel(
             Vector3 startPos,
@@ -40,6 +27,8 @@ namespace Logic.Projectile
 
             TargetPoint = interceptPoint;
             Direction = (TargetPoint - startPos).normalized;
+            
+            TravelProgress = 0f;
         }
     }
 }
