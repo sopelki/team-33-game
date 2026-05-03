@@ -54,6 +54,7 @@ namespace HexagonScripts
             if (xDiff > yDiff && xDiff > zDiff)
                 rx = -ry - rz;
             else if (yDiff > zDiff)
+                // ReSharper disable once RedundantAssignment
                 ry = -rx - rz;
             else
                 rz = -rx - ry;

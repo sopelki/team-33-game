@@ -38,28 +38,11 @@ namespace Field
             foreach (var hexagon in data.savedHexes)
                 Hexagons.Add(hexagon.coordinates, hexagon);
 
-            MapObjects = data.savedObjects != null ? new List<MapObjectData>(data.savedObjects) : new List<MapObjectData>();
+            MapObjects = data.savedObjects != null
+                ? new List<MapObjectData>(data.savedObjects)
+                : new List<MapObjectData>();
         }
 
-        // public void GenerateFieldData(int width, int height)
-        // {
-        //     Hexagons.Clear();
-        //
-        //     HexagonType[] pool = {
-        //         HexagonType.Grass, HexagonType.Grass, HexagonType.Grass, HexagonType.Grass, HexagonType.Grass,
-        //         HexagonType.GrassWithMushroom,
-        //         HexagonType.HighGrass, HexagonType.HighGrass
-        //     };
-        //
-        //     for (var x = -width / 2; x < width / 2; x++)
-        //     {
-        //         for (var y = -height / 2; y < height / 2; y++)
-        //         {
-        //             var randomType = pool[Random.Range(0, pool.Length)];
-        //             AddHexagon(x, y, randomType);
-        //         }
-        //     }
-        // }
 
         public Hexagon GetHex(Vector2Int axialCoords)
         {
@@ -77,14 +60,14 @@ namespace Field
                 new(-1, 0),
                 new(-1, +1)
             };
-    
+
             return neighborDirections
                 .Select(direction => currentHex.coordinates + direction)
                 .Select(GetHex)
                 .Where(neighbor => neighbor != null)
                 .ToList();
         }
-    
+
         public bool IsWalkable(Hexagon hex)
         {
             return hex.type == HexagonType.Path;
