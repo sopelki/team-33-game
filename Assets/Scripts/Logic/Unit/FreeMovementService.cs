@@ -1,4 +1,5 @@
-﻿using HexagonScripts;
+﻿using Core;
+using HexagonScripts;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -19,9 +20,10 @@ namespace Logic.Unit
             this.tilemap = tilemap;
         }
 
-        public void Tick(UnitModel unit, float deltaTime)
+        public void Tick(UnitModel unit)
         {
-            unit.DirectionTimer -= deltaTime;
+            var step = TickManager.Instance.tickInterval;
+            unit.DirectionTimer -= step;
 
             if (unit.DirectionTimer <= 0f)
             {
@@ -35,7 +37,7 @@ namespace Logic.Unit
             }
 
             var newPos = unit.WorldPosition +
-                         unit.CurrentDirection * unit.GetMoveSpeed() * deltaTime;
+                         unit.CurrentDirection * unit.GetMoveSpeed() * step;
 
             var cell = tilemap.WorldToCell(newPos);
             var axial = HexagonMath.OffsetToAxial(cell.x, cell.y);
@@ -44,7 +46,7 @@ namespace Logic.Unit
 
             if (hex != null && field.IsWalkable(hex))
             {
-                unit.Move(unit.CurrentDirection, deltaTime);
+                unit.Move(unit.CurrentDirection, step);
                 unit.SetHex(axial);
             }
             else

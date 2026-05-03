@@ -82,6 +82,7 @@ namespace Core
 
             tickManager.OnTick += castleSystem.Tick;
             tickManager.OnTick += towerSystem.Tick;
+            tickManager.OnTick += unitSystem.Tick;
 
             //TODO: Нужно ли это вообще?
             unitSystem.OnUnitDied += unit =>
@@ -114,9 +115,9 @@ namespace Core
                 slot.Construct(castleSystem);
         }
 
-        private void Update()
-        {
-            unitSystem?.Tick(Time.deltaTime);
-        }
+        // private void Update()
+        // {
+        //     unitSystem?.Tick(Time.deltaTime);
+        // }
     }
 }

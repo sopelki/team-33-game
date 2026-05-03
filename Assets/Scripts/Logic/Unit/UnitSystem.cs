@@ -27,7 +27,7 @@ namespace Logic.Unit
         }
 
         // TODO: Переделать в foreach
-        public void Tick(float deltaTime)
+        public void Tick()
         {
             for (var i = units.Count - 1; i >= 0; i--)
             {
@@ -40,7 +40,7 @@ namespace Logic.Unit
                     continue;
                 }
 
-                movementService.Tick(unit, deltaTime);
+                movementService.Tick(unit);
             }
         }
     }
