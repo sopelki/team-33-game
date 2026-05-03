@@ -12,5 +12,6 @@ namespace Logic.Tower
         public float fireRate;
         public ProjectileData projectileData;
         public GameObject viewPrefab;
+        public int targetsCount = 1;
     }
 }

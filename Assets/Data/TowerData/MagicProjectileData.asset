@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: MagicProjectileData
   m_EditorClassIdentifier: Assembly-CSharp::Logic.Projectile.ProjectileData
   prefab: {fileID: 8605243600817956408, guid: ab3f6c47f2c20844689871ad52ae7c1b, type: 3}
-  speed: 5
+  speed: 12
   damage: 20
-  aoeRadius: 5
-  isHoming: 1
-  maxTravelDistance: 12
+  aoeRadius: 3
+  isHoming: 0
+  maxTravelDistance: 30
