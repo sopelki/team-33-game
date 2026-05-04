@@ -52,7 +52,7 @@ namespace Logic.Tower
                 if (tower.ShotsLeft > 0)
                 {
                     tower.ShotsLeft--;
-                    tower.CooldownTimer = 0.2f; 
+                    tower.CooldownTimer = 0.2f;
                 }
                 else
                 {
@@ -64,8 +64,11 @@ namespace Logic.Tower
 
         private void Shoot(TowerModel tower, MonsterModel target)
         {
+            var firePoint = tower.WorldPosition +
+                            new Vector3(tower.Data.projectileData.xOffset, tower.Data.projectileData.yOffset, 0);
+
             var interceptPoint = CalculateInterceptPoint(
-                tower.WorldPosition,
+                firePoint,
                 target.WorldPosition,
                 target.CurrentVelocity,
                 tower.Data.projectileData.speed

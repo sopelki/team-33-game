@@ -7,6 +7,8 @@ namespace Logic.Projectile
     {
         [Header("Visual")]
         public GameObject prefab;
+        public float xOffset;
+        public float yOffset;
 
         [Header("Stats")]
         public float speed = 5f;
@@ -16,6 +18,5 @@ namespace Logic.Projectile
         public float aoeRadius;
         public bool isHoming;
         public float maxTravelDistance = 20f;
-
     }
 }

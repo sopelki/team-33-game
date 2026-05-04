@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: ArrowProjectileData
   m_EditorClassIdentifier: Assembly-CSharp::Logic.Projectile.ProjectileData
   prefab: {fileID: 8605243600817956408, guid: 16b1f4ad68ae2e7498728ca787bb65aa, type: 3}
-  speed: 15
-  damage: 10
+  xOffset: 0
+  yOffset: 2
+  speed: 12
+  damage: 8
   aoeRadius: 0
   isHoming: 0
   maxTravelDistance: 12

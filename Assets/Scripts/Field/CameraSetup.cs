@@ -44,7 +44,7 @@ namespace Field
             camPos.x = bounds.center.x;
             camPos.y = bounds.center.y;
             transform.position = camPos;
-
+            Debug.Log(camPos);
             var halfHeight = bounds.size.y * 0.5f + padding;
             var halfWidth = bounds.size.x * 0.5f + padding;
 

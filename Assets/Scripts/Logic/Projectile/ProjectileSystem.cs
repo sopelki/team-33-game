@@ -69,12 +69,6 @@ namespace Logic.Projectile
 
         private void UpdateHoming(ProjectileModel p, float step, int index)
         {
-            if (p.Target == null || p.Target.IsDead)
-            {
-                p.Data.isHoming = false;
-                return;
-            }
-
             var dir = (p.Target.WorldPosition - p.Position).normalized;
 
             p.Position += dir * p.Data.speed * step;

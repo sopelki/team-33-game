@@ -20,14 +20,16 @@ namespace Logic.Projectile
             ProjectileData data,
             Vector3 interceptPoint)
         {
-            StartPosition = startPos;
-            Position = startPos;
+            var spawnPoint = startPos + new Vector3(data.xOffset, data.yOffset, 0);
+
+            StartPosition = spawnPoint;
+            Position = spawnPoint;
             Target = target;
             Data = data;
 
             TargetPoint = interceptPoint;
-            Direction = (TargetPoint - startPos).normalized;
-            
+            Direction = (TargetPoint - spawnPoint).normalized;
+
             TravelProgress = 0f;
         }
     }
