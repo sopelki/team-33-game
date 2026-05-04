@@ -10,12 +10,13 @@ namespace UI
         [SerializeField] private Canvas canvas;
         [SerializeField] private GameObject inventoryItemPrefab;
         [SerializeField] private BuildingData buildingData;
+        [SerializeField] private GameObject icon;
 
         private Image sourceImage;
 
         private void Awake()
         {
-            sourceImage = GetComponent<Image>();
+            sourceImage = icon.GetComponent<Image>();
             if (canvas == null) 
                 canvas = GetComponentInParent<Canvas>();
         }
