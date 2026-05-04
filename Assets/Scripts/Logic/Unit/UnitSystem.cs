@@ -54,6 +54,7 @@ namespace Logic.Unit
 
                 if (unit.IsDead)
                 {
+                    Debug.Log("Unit died");
                     units.RemoveAt(i);
                     OnUnitDied?.Invoke(unit);
                     continue;

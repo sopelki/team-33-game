@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Logic.Unit
 {
-    public class UnitModel: IDamageable
+    public class UnitModel : IDamageable
     {
-        public Vector3 WorldPosition { get; private set; } 
+        public Vector3 WorldPosition { get; private set; }
         public Vector2Int CurrentHex { get; private set; }
         public Vector3 CurrentDirection { get; set; }
         public float DirectionTimer { get; set; }
-        
+
         private IMovementStrategy movementStrategy;
         private IAttackStrategy attackStrategy;
 
@@ -28,7 +28,7 @@ namespace Logic.Unit
             UnitData = unitData;
             CurrentHealth = unitData.maxHealth;
         }
-        
+
         public void SetStrategies(
             IMovementStrategy movement,
             IAttackStrategy attack)
@@ -36,7 +36,7 @@ namespace Logic.Unit
             movementStrategy = movement;
             attackStrategy = attack;
         }
-        
+
         public void Tick()
         {
             if (IsDead)
@@ -44,7 +44,7 @@ namespace Logic.Unit
 
             attackStrategy?.Tick();
 
-            if (attackStrategy != null && attackStrategy.IsAttacking)
+            if (attackStrategy?.IsAttacking == true)
                 return;
 
             movementStrategy?.Tick();
@@ -53,16 +53,25 @@ namespace Logic.Unit
         public float GetMoveSpeed() =>
             buffs.Aggregate(UnitData.moveSpeed, (current, buff) => buff.ModifyMoveSpeed(current));
 
-        public int GetAttack() => buffs.Aggregate(UnitData.attack, (current, buff) => buff.ModifyAttack(current));
+        public int GetAttack()
+        {
+            var result = buffs.Aggregate(UnitData.attack, (current, buff) => buff.ModifyAttack(current));
+            Debug.Log($"Unit dealt damage: {result}");
+            return result;
+        }
 
         public void AddBuff(Buff buff) => buffs.Add(buff);
 
-        public void TakeDamage(int damage) => CurrentHealth -= damage;
+        public void TakeDamage(int damage)
+        {
+            Debug.Log($"Unit got damaged: {damage}");
+            CurrentHealth -= damage;
+        }
 
         // public void Move(Vector3 direction, float step) => WorldPosition += direction * GetMoveSpeed() * step;
 
         public void SetHex(Vector2Int hex) => CurrentHex = hex;
-        
+
         public void SetPosition(Vector3 newPosition)
         {
             WorldPosition = newPosition;
