@@ -49,8 +49,7 @@ namespace View
         {
             foreach (var pair in views)
             {
-                pair.Value.transform.position =
-                    pair.Key.WorldPosition;
+                pair.Value.UpdateView();
             }
         }
     }
