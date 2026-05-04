@@ -82,8 +82,8 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.9979822, b: 0.18396229, a: 1}
+  m_Sprite: {fileID: 7482667652216324306, guid: 2733057c40d344b41b2b3dc69e1264cc, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -104,3 +104,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28538e8cd9b7421e90625fe1a3c6c9ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::View.MonsterView
+  spriteRenderer: {fileID: 6845509106914947852}
+  up: {fileID: 0}
+  down: {fileID: 0}
+  left: {fileID: 0}
+  right: {fileID: 0}
+  upLeft: {fileID: 0}
+  upRight: {fileID: 0}
+  downLeft: {fileID: 0}
+  downRight: {fileID: 0}
