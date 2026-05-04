@@ -129,7 +129,7 @@ namespace Core
             tickManager.OnTick += monsterSpawner.Tick;
             tickManager.OnTick += projectileSystem.Tick;
 
-            //TODO: Нужно ли это вообще?
+            // TODO: Нужно ли это вообще?
             unitSystem.OnUnitDied += unit =>
             {
                 castleModel.CurrentUnits--;

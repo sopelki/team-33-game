@@ -47,7 +47,7 @@ namespace View
         private void ApplyRotation(Vector3 currentPos)
         {
             var diff = currentPos - lastVisualPosition;
-            if (diff.magnitude < 0.1f)
+            if (diff.magnitude < 0.001f)
                 return;
 
             var angle = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;

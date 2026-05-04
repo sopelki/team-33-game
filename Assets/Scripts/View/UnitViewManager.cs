@@ -61,11 +61,8 @@ namespace View
         // ----------------------------
         private void Update()
         {
-            foreach (var pair in views)
+            foreach (var (model, view) in views)
             {
-                var model = pair.Key;
-                var view = pair.Value;
-
                 view.SetPosition(model.WorldPosition);
             }
         }

@@ -45,9 +45,7 @@ namespace Logic.Unit
                 return;
 
             foreach (var monster in targets)
-            {
                 monster.TakeDamage(unit.GetAttack());
-            }
 
             currentCooldown = unit.UnitData.attackCooldown;
             isAttacking = true;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GhostData
   m_EditorClassIdentifier: Assembly-CSharp::Logic.Monster.MonsterData
   maxHealth: 75
-  damage: 10
+  damage: 20
   moveSpeed: 5
   attackRadius: 2
   attackCooldown: 1
