@@ -12,6 +12,7 @@ namespace Logic.Monster
         public MonsterData Data { get; }
 
         private int currentHealth;
+        public int TargetedByUnits;
 
         private IMovementStrategy movementStrategy;
         private IAttackStrategy attackStrategy;
@@ -46,11 +47,16 @@ namespace Logic.Monster
             movementStrategy?.Tick();
         }
 
-        public void Move(Vector3 direction)
+        // public void Move(Vector3 direction)
+        // {
+        //     var step = Core.TickManager.Instance.tickInterval;
+        //     WorldPosition += direction * (Data.moveSpeed * step);
+        //     CurrentVelocity = direction * Data.moveSpeed;
+        // }
+        
+        public void SetPosition(Vector3 newPosition)
         {
-            var step = Core.TickManager.Instance.tickInterval;
-            WorldPosition += direction * (Data.moveSpeed * step);
-            CurrentVelocity = direction * Data.moveSpeed;
+            this.WorldPosition = newPosition;
         }
 
         public void SetHex(Vector2Int hex)
