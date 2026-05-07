@@ -10,7 +10,8 @@ namespace Logic.Unit
         public Vector3 WorldPosition { get; private set; }
         public Vector2Int CurrentHex { get; private set; }
         public Vector3 CurrentDirection { get; set; }
-        public float DirectionTimer { get; set; }
+        public int AttackType { get; set; }
+        // public float DirectionTimer { get; set; }
 
         private IMovementStrategy movementStrategy;
         private IAttackStrategy attackStrategy;
@@ -18,7 +19,7 @@ namespace Logic.Unit
         public UnitData UnitData { get; }
         private readonly List<Buff> buffs = new();
 
-        private int CurrentHealth { get; set; }
+        public int CurrentHealth { get; set; }
         public bool IsDead => CurrentHealth <= 0;
 
         public UnitModel(Vector3 startPos, Vector2Int startHex, UnitData unitData)
@@ -45,13 +46,24 @@ namespace Logic.Unit
             attackStrategy?.Tick();
 
             if (attackStrategy?.IsAttacking == true)
+            {
+                CurrentDirection = Vector3.zero;
                 return;
-
+            }
+            
             movementStrategy?.Tick();
         }
 
         public float GetMoveSpeed() =>
             buffs.Aggregate(UnitData.moveSpeed, (current, buff) => buff.ModifyMoveSpeed(current));
+
+        public int GetMaxHealth() =>
+            buffs.Aggregate(UnitData.maxHealth, (current, buff) => buff.ModifyMaxHealth(current));
+        
+        public void ResetHealth()
+        {
+            CurrentHealth = GetMaxHealth();
+        }
 
         public int GetAttack()
         {

@@ -250,11 +250,11 @@ namespace Logic.Unit
             if (hexObj == null)
                 return;
 
-            Vector3 targetWorld = tilemap.GetCellCenterWorld(hexObj.offset) + formationOffset;
-            Vector3 currentPosition = unit.WorldPosition;
+            var targetWorld = tilemap.GetCellCenterWorld(hexObj.offset) + formationOffset;
+            var currentPosition = unit.WorldPosition;
 
-            float step = unit.GetMoveSpeed() * Core.TickManager.Instance.tickInterval;
-            float distance = Vector3.Distance(currentPosition, targetWorld);
+            var step = unit.GetMoveSpeed() * Core.TickManager.Instance.tickInterval;
+            var distance = Vector3.Distance(currentPosition, targetWorld);
 
             if (distance <= step)
             {
@@ -264,8 +264,9 @@ namespace Logic.Unit
             }
             else
             {
-                Vector3 direction = (targetWorld - currentPosition).normalized;
+                var direction = (targetWorld - currentPosition).normalized;
                 unit.SetPosition(currentPosition + direction * step);
+                unit.CurrentDirection = direction;
             }
         }
 

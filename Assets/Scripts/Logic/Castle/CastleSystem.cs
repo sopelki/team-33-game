@@ -108,6 +108,17 @@ namespace Logic.Castle
 
             var instance = new BuildingModel(data);
             model.Buildings.Add(instance);
+            
+            if (data.type == BuildingType.Blacksmith)
+            {
+                unitSystem.AddBuff(new AttackPercentBuff());
+                Debug.Log("Кузница построена: будущие юниты получат +25% к атаке");
+            }
+            else if (data.type == BuildingType.Hospital)
+            {
+                unitSystem.AddBuff(new HealthPercentBuff());
+                Debug.Log("Больница построена: будущие юниты получат +25% к здоровью");
+            }
 
             return true;
         }
