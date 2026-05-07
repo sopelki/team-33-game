@@ -166,7 +166,7 @@
                 "y": -22,
                 "z": 0
             },
-            "type": 1
+            "type": 3
         },
         {
             "coordinates": {
@@ -2026,7 +2026,7 @@
                 "y": -18,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -2518,7 +2518,7 @@
                 "y": -17,
                 "z": 0
             },
-            "type": 0
+            "type": 3
         },
         {
             "coordinates": {
@@ -4462,7 +4462,7 @@
                 "y": -13,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -4942,7 +4942,7 @@
                 "y": -12,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -5410,7 +5410,7 @@
                 "y": -11,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -5890,7 +5890,7 @@
                 "y": -10,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -5902,7 +5902,7 @@
                 "y": -10,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -5986,7 +5986,7 @@
                 "y": -10,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -5998,7 +5998,7 @@
                 "y": -10,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -6358,7 +6358,7 @@
                 "y": -9,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -6442,7 +6442,7 @@
                 "y": -9,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -6454,7 +6454,7 @@
                 "y": -9,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -6466,7 +6466,7 @@
                 "y": -9,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -6478,7 +6478,7 @@
                 "y": -9,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -6934,7 +6934,7 @@
                 "y": -8,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -6946,7 +6946,7 @@
                 "y": -8,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -6958,7 +6958,7 @@
                 "y": -8,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -6970,7 +6970,7 @@
                 "y": -8,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -7510,7 +7510,7 @@
                 "y": -7,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -7522,7 +7522,7 @@
                 "y": -7,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -8014,7 +8014,7 @@
                 "y": -6,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -8026,7 +8026,7 @@
                 "y": -6,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -8038,7 +8038,7 @@
                 "y": -6,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -8050,7 +8050,7 @@
                 "y": -6,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -8062,7 +8062,7 @@
                 "y": -6,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -8074,7 +8074,7 @@
                 "y": -6,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -8086,7 +8086,7 @@
                 "y": -6,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -9238,7 +9238,7 @@
                 "y": -3,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -9250,7 +9250,7 @@
                 "y": -3,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -9322,7 +9322,7 @@
                 "y": -3,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -9730,7 +9730,7 @@
                 "y": -2,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -9742,7 +9742,7 @@
                 "y": -2,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -9802,7 +9802,7 @@
                 "y": -2,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -9814,7 +9814,7 @@
                 "y": -2,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10210,7 +10210,7 @@
                 "y": -1,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10222,7 +10222,7 @@
                 "y": -1,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10366,7 +10366,7 @@
                 "y": -1,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10378,7 +10378,7 @@
                 "y": -1,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10702,7 +10702,7 @@
                 "y": 0,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10858,7 +10858,7 @@
                 "y": 0,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10870,7 +10870,7 @@
                 "y": 0,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10882,7 +10882,7 @@
                 "y": 0,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10894,7 +10894,7 @@
                 "y": 0,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -10906,7 +10906,7 @@
                 "y": 0,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -11182,7 +11182,7 @@
                 "y": 1,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -11362,7 +11362,7 @@
                 "y": 1,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -11374,7 +11374,7 @@
                 "y": 1,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -11386,7 +11386,7 @@
                 "y": 1,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -11866,7 +11866,7 @@
                 "y": 2,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -11878,7 +11878,7 @@
                 "y": 2,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -12358,7 +12358,7 @@
                 "y": 3,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -12850,7 +12850,7 @@
                 "y": 4,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -13330,7 +13330,7 @@
                 "y": 5,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -13810,7 +13810,7 @@
                 "y": 6,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -14218,7 +14218,7 @@
                 "y": 7,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -14230,7 +14230,7 @@
                 "y": 7,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -14242,7 +14242,7 @@
                 "y": 7,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -14254,7 +14254,7 @@
                 "y": 7,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -14266,7 +14266,7 @@
                 "y": 7,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -14278,7 +14278,7 @@
                 "y": 7,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -14290,7 +14290,7 @@
                 "y": 7,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -14698,7 +14698,7 @@
                 "y": 8,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -15178,7 +15178,7 @@
                 "y": 9,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -15190,7 +15190,7 @@
                 "y": 9,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -15202,7 +15202,7 @@
                 "y": 9,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -15214,7 +15214,7 @@
                 "y": 9,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -15670,7 +15670,7 @@
                 "y": 10,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -15706,7 +15706,7 @@
                 "y": 10,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -16138,7 +16138,7 @@
                 "y": 11,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -16150,7 +16150,7 @@
                 "y": 11,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -16162,7 +16162,7 @@
                 "y": 11,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -16174,7 +16174,7 @@
                 "y": 11,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
