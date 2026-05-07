@@ -8,5 +8,6 @@ namespace Logic.Castle
         public BuildingType type;
         public int baseProduction;
         public int baseCost;
+        public GameObject viewPrefab;
     }
 }

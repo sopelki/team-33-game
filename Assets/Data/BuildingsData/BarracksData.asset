@@ -15,3 +15,4 @@ MonoBehaviour:
   type: 1
   baseProduction: 1
   baseCost: 50
+  viewPrefab: {fileID: 3984174178962830700, guid: 1b1829dd405562a489ef41388261d7cc, type: 3}
