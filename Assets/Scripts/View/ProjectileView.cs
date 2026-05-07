@@ -10,12 +10,21 @@ namespace View
 
         [Header("Arc Settings")]
         [SerializeField]
-        private float arcHeight = 2f;
+        private float maxArcHeight = 2f;
+        [SerializeField]
+        private float referenceDistance = 8f;
+        [SerializeField]
+        private float minArcHeightFactor = 0.2f;
+
+        private float currentDynamicHeight;
 
         public void Initialize(ProjectileModel projectileModel)
         {
             model = projectileModel;
             lastVisualPosition = model.StartPosition;
+            var distance = Vector3.Distance(model.StartPosition, model.TargetPoint);
+            var distanceFactor = Mathf.Clamp01(distance / referenceDistance);
+            currentDynamicHeight = maxArcHeight * Mathf.Max(distanceFactor, minArcHeightFactor);
         }
 
         private void Update()
@@ -33,7 +42,7 @@ namespace View
             }
             else
             {
-                var height = arcHeight * 4f * t * (1f - t);
+                var height = currentDynamicHeight * 4f * t * (1f - t);
 
                 var currentVisualPosition = groundPosition + Vector3.up * height;
                 transform.position = currentVisualPosition;

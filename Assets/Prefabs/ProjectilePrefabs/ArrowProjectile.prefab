@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 737cf0b00de447ca83dd3af521ce293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::View.ProjectileView
-  arcHeight: 2
+  maxArcHeight: 2
+  referenceDistance: 10
+  minArcHeightFactor: 0.1
 --- !u!212 &8752826488452287383
 SpriteRenderer:
   serializedVersion: 2

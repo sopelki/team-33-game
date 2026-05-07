@@ -7,15 +7,16 @@ namespace UI
     public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         [Header("Data")]
-        [SerializeField] private BuildingData buildingData;
-        
+        [SerializeField]
+        private BuildingData buildingData;
+
         public BuildingData BuildingData => buildingData;
         public Transform OriginalParent { get; private set; }
         public bool IsFromShop { get; private set; }
 
         private Vector2 startPosition;
         private int startIndex;
-        private CastleDragHandler dragHandler; 
+        private CastleDragHandler dragHandler;
 
         private void Awake()
         {
@@ -51,20 +52,19 @@ namespace UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (IsFromShop) 
-                return; 
+            if (IsFromShop)
+                return;
             CaptureState();
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (transform.parent == dragHandler.MainCanvas.transform)
-            {
-                if (IsFromShop) 
-                    Destroy(gameObject);
-                else 
-                    ReturnToStart();
-            }
+            if (transform.parent != dragHandler.MainCanvas.transform)
+                return;
+            if (IsFromShop)
+                Destroy(gameObject);
+            else
+                ReturnToStart();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Logic.Projectile
             for (var i = projectiles.Count - 1; i >= 0; i--)
             {
                 var p = projectiles[i];
-
+                
                 if (p.Data.isHoming)
                     UpdateHoming(p, step, i);
                 else

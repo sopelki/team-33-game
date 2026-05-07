@@ -25,7 +25,6 @@ namespace Logic.Monster
 
         public void Tick()
         {
-            // Если есть цель — проверяем актуальность
             if (currentTarget != null)
             {
                 if (currentTarget.IsDead ||
@@ -35,7 +34,6 @@ namespace Logic.Monster
                     currentTarget = null;
             }
 
-            // Если цели нет — ищем новую
             if (currentTarget == null)
             {
                 currentTarget = unitSystem.GetAllUnits()
@@ -50,14 +48,12 @@ namespace Logic.Monster
                     return;
             }
 
-            // Есть цель, но ждём кулдаун
             if (currentCooldown > 0f)
             {
                 currentCooldown -= Core.TickManager.Instance.tickInterval;
                 return;
             }
 
-            // Атака
             currentTarget.TakeDamage(monster.Data.damage);
             currentCooldown = monster.Data.attackCooldown;
         }

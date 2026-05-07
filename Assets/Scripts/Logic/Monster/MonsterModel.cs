@@ -5,6 +5,7 @@ namespace Logic.Monster
 {
     public class MonsterModel : IDamageable
     {
+        public int TargetedByUnits;
         public Vector3 WorldPosition { get; private set; }
         public Vector2Int CurrentHex { get; private set; }
         public Vector3 CurrentVelocity { get; private set; }
@@ -12,8 +13,6 @@ namespace Logic.Monster
         public MonsterData Data { get; }
 
         private int currentHealth;
-        public int TargetedByUnits;
-
         private IMovementStrategy movementStrategy;
         private IAttackStrategy attackStrategy;
 
@@ -47,32 +46,22 @@ namespace Logic.Monster
             movementStrategy?.Tick();
         }
 
-        // public void Move(Vector3 direction)
-        // {
-        //     var step = Core.TickManager.Instance.tickInterval;
-        //     WorldPosition += direction * (Data.moveSpeed * step);
-        //     CurrentVelocity = direction * Data.moveSpeed;
-        // }
+        public void Move(Vector3 direction)
+        {
+            var step = Core.TickManager.Instance.tickInterval;
+            WorldPosition += direction * (Data.moveSpeed * step);
+            CurrentVelocity = direction * Data.moveSpeed;
+        }
+
+        // public void Stop() => CurrentVelocity = Vector3.zero;
+        //
+        // public void SetPosition(Vector3 newPosition) => WorldPosition = newPosition;
         
-        public void SetPosition(Vector3 newPosition)
-        {
-            this.WorldPosition = newPosition;
-        }
+        public void SetHex(Vector2Int hex) => CurrentHex = hex;
 
-        public void SetHex(Vector2Int hex)
-        {
-            CurrentHex = hex;
-        }
+        public void TakeDamage(int damage) => currentHealth -= damage;
 
-        public void TakeDamage(int damage)
-        {
-            Debug.Log($"Monster got damage: {damage}");
-            currentHealth -= damage;
-        }
-
-        public void SetStrategies(
-            IMovementStrategy movement,
-            IAttackStrategy attack)
+        public void SetStrategies(IMovementStrategy movement, IAttackStrategy attack)
         {
             movementStrategy = movement;
             attackStrategy = attack;
