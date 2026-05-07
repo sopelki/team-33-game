@@ -12,7 +12,7 @@ namespace Logic.Unit
 
         private float currentCooldown;
         private bool isAttacking;
-
+    
         public bool IsAttacking => isAttacking;
 
         public UnitAttackStrategy(
@@ -25,13 +25,16 @@ namespace Logic.Unit
 
         public void Tick()
         {
-            isAttacking = false;
 
             if (currentCooldown > 0f)
             {
                 currentCooldown -= Core.TickManager.Instance.tickInterval;
+                isAttacking = true;
                 return;
             }
+            
+            isAttacking = false;
+            unit.AttackType = 0;
 
             var targets = monsterSystem.GetAllMonsters()
                 .Where(m => !m.IsDead)
@@ -43,6 +46,14 @@ namespace Logic.Unit
 
             if (targets.Count == 0)
                 return;
+        
+            var closest = targets
+                .OrderBy(m => Vector3.Distance(m.WorldPosition, unit.WorldPosition))
+                .First();
+        
+            var distance = Vector3.Distance(closest.WorldPosition, unit.WorldPosition);
+            var meleeRange = unit.UnitData.attackRadius * 0.5f;
+            unit.AttackType = distance <= meleeRange ? 1 : 2;
 
             foreach (var monster in targets)
                 monster.TakeDamage(unit.GetAttack());

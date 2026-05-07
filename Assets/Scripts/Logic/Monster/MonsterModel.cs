@@ -56,7 +56,7 @@ namespace Logic.Monster
         
         public void SetPosition(Vector3 newPosition)
         {
-            this.WorldPosition = newPosition;
+            WorldPosition = newPosition;
         }
 
         public void SetHex(Vector2Int hex)

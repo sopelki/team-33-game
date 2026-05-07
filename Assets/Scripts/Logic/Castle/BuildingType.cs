@@ -6,7 +6,6 @@ namespace Logic.Castle
         Farm,
         Barracks,
         Hospital,
-        Blacksmith,
-        Tower
+        Blacksmith
     }
 }

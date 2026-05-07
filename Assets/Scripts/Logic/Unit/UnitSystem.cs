@@ -12,6 +12,7 @@ namespace Logic.Unit
         private readonly MonsterSystem monsterSystem;
         private readonly Field.Field field;
         private readonly Tilemap tilemap;
+        private readonly List<Buff> buffs = new();
 
         public event Action<UnitModel> OnUnitCreated;
         // public event Action<UnitModel> OnUnitMoved;
@@ -26,10 +27,20 @@ namespace Logic.Unit
             this.field = field;
             this.tilemap = tilemap;
         }
+        
+        public void AddBuff(Buff buff)
+        {
+            buffs.Add(buff);
+        }
 
         public void SpawnUnit(Vector3 worldPos, Vector2Int hexPos, UnitData stats)
         {
             var unit = new UnitModel(worldPos, hexPos, stats);
+            
+            foreach (var buff in buffs)
+                unit.AddBuff(buff);
+            
+            unit.ResetHealth();
             
             var attack = new UnitAttackStrategy(unit, monsterSystem);
             var movement = new UnitAStarMoveStrategy(
@@ -41,6 +52,8 @@ namespace Logic.Unit
 
             unit.SetStrategies(movement, attack);
             units.Add(unit);
+            
+            Debug.Log($"[UnitSpawn] HP: {unit.CurrentHealth}/{unit.GetMaxHealth()} | ATK: {unit.GetAttack()} | Buffs: {buffs.Count}");
 
             OnUnitCreated?.Invoke(unit);
         }
