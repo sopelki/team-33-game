@@ -10,6 +10,9 @@ namespace Field
     {
         public TileBase basicTile;
 
+        [SerializeField]
+        private LevelAsset currentLevel;
+
         [Header("TileRender")]
         public List<TileMapping> tileMappings;
 
@@ -19,7 +22,6 @@ namespace Field
         public Transform objectsContainer;
 
         private Field currentField;
-
         private Tilemap myTilemap;
         private Dictionary<HexagonType, TileBase> typeToTileDict;
         private Dictionary<TileBase, HexagonType> tileToTypeDict;
@@ -30,9 +32,22 @@ namespace Field
             SetupDictionaries();
         }
 
+        public Field GetFieldFromAsset()
+        {
+            if (currentLevel == null || currentLevel.jsonFile == null)
+            {
+                Debug.LogError("currentLevel or jsonFile is null!");
+                return null;
+            }
+
+            var json = currentLevel.jsonFile.text;
+            var data = JsonUtility.FromJson<FieldData>(json);
+            return ConvertDataToField(data);
+        }
+
+
         public void Initialize(Field field)
         {
-            Debug.Log("FieldGenerator Initialize called");
             currentField = field;
 
             ClearGrid();
@@ -40,6 +55,18 @@ namespace Field
             DrawHexagons();
             DrawObjects();
         }
+
+        private static Field ConvertDataToField(FieldData data)
+        {
+            var field = new Field();
+
+            foreach (var hex in data.savedHexes)
+                field.AddHexagon(hex.offset.x, hex.offset.y, hex.type);
+
+            field.MapObjects = data.savedObjects ?? new List<MapObjectData>();
+            return field;
+        }
+
 
         private void DrawHexagons()
         {

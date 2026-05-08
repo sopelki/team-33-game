@@ -11,7 +11,6 @@ namespace View
 
         private UnitSystem unitSystem;
 
-        // Model → View
         private readonly Dictionary<UnitModel, UnitView> views = new();
 
         public void Initialize(UnitSystem system)
@@ -30,9 +29,6 @@ namespace View
             unitSystem.OnUnitDied -= HandleUnitDied;
         }
 
-        // ----------------------------
-        // Создание юнита
-        // ----------------------------
         private void HandleUnitCreated(UnitModel model)
         {
             var prefab = model.UnitData.unitPrefab;
@@ -45,9 +41,6 @@ namespace View
             views.Add(model, view);
         }
 
-        // ----------------------------
-        // Удаление юнита
-        // ----------------------------
         private void HandleUnitDied(UnitModel model)
         {
             if (!views.TryGetValue(model, out var view))
@@ -57,15 +50,10 @@ namespace View
             views.Remove(model);
         }
 
-        // ----------------------------
-        // Синхронизация позиции
-        // ----------------------------
         private void Update()
         {
             foreach (var (model, view) in views)
-            {
                 view.SetPosition(model.WorldPosition);
-            }
         }
     }
 }

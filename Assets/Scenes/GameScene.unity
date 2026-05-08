@@ -1595,8 +1595,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.PixelPerfectCamera
   m_ComponentVersion: 1
   m_AssetsPPU: 32
-  m_RefResolutionX: 1164
-  m_RefResolutionY: 1007
+  m_RefResolutionX: 1122
+  m_RefResolutionY: 1045
   m_CropFrame: 0
   m_GridSnapping: 1
   m_FilterMode: 0
@@ -19427,6 +19427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.HexGridGenerator
   basicTile: {fileID: 11400000, guid: 4ad3f53ace5920142ba54debb70a7fb0, type: 2}
+  currentLevel: {fileID: 11400000, guid: 1218dcdd1f1d1e64cafe65a3f108cc9c, type: 2}
   tileMappings:
   - type: 0
     tileAsset: {fileID: 11400000, guid: e3c5efce5ade2d048834d69d79fd3de1, type: 2}

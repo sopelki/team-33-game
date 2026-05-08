@@ -79,14 +79,16 @@ namespace Core
 
         private void Awake()
         {
-            field = SaveLoadManager.LoadMapFromFile();
+            field = fieldGenerator.GetFieldFromAsset();
+
             if (field == null)
             {
                 Debug.LogError("Level file not found! Game cannot start.");
                 return;
             }
+
             cameraSetup.FitToGrid();
-            
+
             monsterSystem = new MonsterSystem();
             projectileSystem = new ProjectileSystem(monsterSystem);
             unitSystem = new UnitSystem(
@@ -129,8 +131,7 @@ namespace Core
             tickManager.OnTick += monsterSpawner.Tick;
             tickManager.OnTick += projectileSystem.Tick;
 
-            // TODO: Нужно ли это вообще?
-            unitSystem.OnUnitDied += unit =>
+            unitSystem.OnUnitDied += _ =>
             {
                 castleModel.CurrentUnits--;
                 castleModel.Changed();
