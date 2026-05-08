@@ -705,6 +705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::View.UnitViewManager
   unitsParent: {fileID: 2131335273}
+  buffView: {fileID: 0}
 --- !u!4 &174547761
 Transform:
   m_ObjectHideFlags: 0
@@ -1535,7 +1536,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15.78125
+  orthographic size: 16.375
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2

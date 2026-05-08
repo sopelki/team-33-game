@@ -35,7 +35,8 @@ namespace Field
             Debug.Log("FieldGenerator Initialize called");
             currentField = field;
 
-            ClearField();
+            ClearGrid();
+            ClearDecorations();
             DrawHexagons();
             DrawObjects();
         }
