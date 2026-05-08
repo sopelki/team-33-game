@@ -19897,7 +19897,7 @@ PrefabInstance:
     - target: {fileID: 7918087666245546974, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 6868460385936980070, guid: adb2d23f33c45b54bb2cf3e6be3af10f, type: 3}
+      objectReference: {fileID: -6297540242342842412, guid: 337233271699300489fa94d5859f28bd, type: 3}
     - target: {fileID: 8274337136036674045, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
       propertyPath: canvas
       value: 
@@ -20783,7 +20783,7 @@ PrefabInstance:
     - target: {fileID: 5749159570408318314, guid: 435707ed8aa3cdc43b143f69ac8f2a03, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1692998760251987672, guid: 4ca90d5e124389b43a65aa9a2c35cb4f, type: 3}
+      objectReference: {fileID: -1530307377888931754, guid: daae11f7bf152804290f45b14f1e2b5e, type: 3}
     - target: {fileID: 8050700227806902550, guid: 435707ed8aa3cdc43b143f69ac8f2a03, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -22207,6 +22207,10 @@ PrefabInstance:
       propertyPath: ghostOffset.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5749159570408318314, guid: 435707ed8aa3cdc43b143f69ac8f2a03, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7460372715312317963, guid: b161ed8f847322948a86940e1531af41, type: 3}
     - target: {fileID: 8050700227806902550, guid: 435707ed8aa3cdc43b143f69ac8f2a03, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -22307,6 +22311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1212635081}
   - component: {fileID: 1212635082}
+  - component: {fileID: 1212635083}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -22366,6 +22371,14 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 3
+--- !u!222 &1212635083
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212635080}
+  m_CullTransparentMesh: 1
 --- !u!1 &1242743163
 GameObject:
   m_ObjectHideFlags: 0
@@ -23055,10 +23068,6 @@ PrefabInstance:
     - target: {fileID: 1284815772692063440, guid: b1cfda0d09469e54a9894003b21672ce, type: 3}
       propertyPath: m_Name
       value: InventorySlot
-      objectReference: {fileID: 0}
-    - target: {fileID: 2586712604521644655, guid: b1cfda0d09469e54a9894003b21672ce, type: 3}
-      propertyPath: m_Sprite
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2634404152975024259, guid: b1cfda0d09469e54a9894003b21672ce, type: 3}
       propertyPath: m_Pivot.x
@@ -25274,6 +25283,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 7211115674410322583, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 124
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211115674410322583, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 124
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211115674410322583, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211115674410322583, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211115674410322583, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211115674410322583, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7918087666245546974, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3376003899920274009, guid: b443fd493c1c86749a616f37f7ec8779, type: 3}
     - target: {fileID: 8274337136036674045, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
       propertyPath: canvas
       value: 

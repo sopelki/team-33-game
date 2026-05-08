@@ -93,7 +93,6 @@ MonoBehaviour:
   canvas: {fileID: 0}
   inventoryItemPrefab: {fileID: 0}
   buildingData: {fileID: 0}
-  icon: {fileID: 7013590033123846204}
 --- !u!1 &7013590033123846204
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,6 +104,7 @@ GameObject:
   - component: {fileID: 7211115674410322583}
   - component: {fileID: 2617571115231770481}
   - component: {fileID: 7918087666245546974}
+  - component: {fileID: 8019264399286652596}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4218381197889179219, guid: adb2d23f33c45b54bb2cf3e6be3af10f, type: 3}
+  m_Sprite: {fileID: -3376003899920274009, guid: b443fd493c1c86749a616f37f7ec8779, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -169,6 +169,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8019264399286652596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7013590033123846204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &9026449181374770835
 GameObject:
   m_ObjectHideFlags: 0

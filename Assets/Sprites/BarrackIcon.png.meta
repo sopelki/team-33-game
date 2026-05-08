@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 4e00e4029905c3b409b57db22b28164d
+guid: 337233271699300489fa94d5859f28bd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5351017633697861564
-    second: AttackGlow_0
+      213: -6297540242342842412
+    second: BarrackIcon_0
+  - first:
+      213: -282753167195445916
+    second: BarrackIcon_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,40 +99,27 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AttackGlow_0
+      name: BarrackIcon_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 7
-        height: 7
+        width: 62
+        height: 62
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cbf896bdf22a24a40800000000000000
-      internalID: 5351017633697861564
+      spriteID: 4df6d60f384aa98a0800000000000000
+      internalID: -6297540242342842412
       vertices: []
       indices: 
       edges: []
@@ -138,7 +128,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c98e26e13c858114ab2fcfc9d4d3dec2
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +138,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      AttackGlow_0: 5351017633697861564
+      BarrackIcon_0: -6297540242342842412
+      BarrackIcon_1: -282753167195445916
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
