@@ -6,37 +6,39 @@ namespace UI
 {
     public class DropSlot : MonoBehaviour, IDropHandler
     {
-        
+        [SerializeField]
+        private Transform itemContainer;
         private CastleSystem castleSystem;
 
-        public void Construct(CastleSystem system)
-        {
-            castleSystem = system;
-        }
+        public void Construct(CastleSystem system) => castleSystem = system;
+
+        private InventoryItem GetStoredItem() => itemContainer.GetComponentInChildren<InventoryItem>();
+
         public void OnDrop(PointerEventData eventData)
         {
-            var item = eventData.pointerDrag?.GetComponent<InventoryItem>();
-            if (item == null) 
+            var draggingItem = eventData.pointerDrag?.GetComponent<InventoryItem>();
+            if (draggingItem == null)
                 return;
-            
-            if (item.IsFromShop)
+
+            var existingItem = GetStoredItem();
+
+            if (draggingItem.IsFromShop)
             {
-                if (transform.childCount > 0)
+                if (existingItem != null)
                     return;
-                
-                if (castleSystem.TryBuyBuilding(item.BuildingData))
-                    item.Place(transform);
+
+                if (castleSystem.TryBuyBuilding(draggingItem.BuildingData))
+                    draggingItem.Place(itemContainer);
                 else
-                    Destroy(item.gameObject);
+                    Destroy(draggingItem.gameObject);
+
                 return;
             }
-            
-            if (transform.childCount != 0)
-            {
-                var existing = transform.GetChild(0).GetComponent<InventoryItem>();
-                existing.Place(item.OriginalParent);
-            }
-            item.Place(transform); 
+
+            if (existingItem != null)
+                existingItem.Place(draggingItem.OriginalParent);
+
+            draggingItem.Place(itemContainer);
         }
     }
 }

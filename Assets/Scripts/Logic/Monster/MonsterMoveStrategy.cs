@@ -2,6 +2,7 @@
 using Interfaces;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using System.Linq;
 using Logic.Unit;
 
 namespace Logic.Monster
@@ -18,7 +19,7 @@ namespace Logic.Monster
         private int pathIndex;
 
         private float repathTimer;
-        private const float repathDelay = 0.7f;
+        private const float RepathDelay = 0.7f;
 
         private readonly Vector3 formationOffset;
 
@@ -51,7 +52,7 @@ namespace Logic.Monster
             if (currentPath == null || pathIndex >= currentPath.Count || repathTimer <= 0f)
             {
                 BuildPath();
-                repathTimer = repathDelay;
+                repathTimer = RepathDelay;
             }
 
             if (currentPath == null || pathIndex >= currentPath.Count)
@@ -62,13 +63,12 @@ namespace Logic.Monster
 
         private void BuildPath()
         {
-            // ✅ цель — случайная клетка рядом с замком
-            Vector2Int goal = GetRandomizedGoal(targetHex);
+            var goal = GetRandomizedGoal(targetHex);
 
             currentPath = pathfinder.FindPath(monster.CurrentHex, goal);
             pathIndex = 1;
 
-            if (currentPath == null || currentPath.Count <= 1)
+            if (currentPath is not { Count: > 1 })
                 currentPath = null;
         }
 
@@ -80,26 +80,18 @@ namespace Logic.Monster
             if (hexObj == null)
                 return;
 
-            Vector3 targetWorld =
-                tilemap.GetCellCenterWorld(hexObj.offset) + formationOffset;
+            var targetWorld = tilemap.GetCellCenterWorld(hexObj.offset) + formationOffset;
+            var directionVector = targetWorld - monster.WorldPosition;
+            var maxStep = monster.Data.moveSpeed * Core.TickManager.Instance.tickInterval;
 
-            Vector3 dir = targetWorld - monster.WorldPosition;
-            float distance = dir.magnitude;
-
-            float step = monster.Data.moveSpeed *
-                         Core.TickManager.Instance.tickInterval;
-
-            if (distance <= step)
+            if (directionVector.magnitude <= maxStep)
             {
+                monster.Move(directionVector /  maxStep);
                 monster.SetHex(nextHex);
-                monster.SetPosition(targetWorld);
                 pathIndex++;
             }
             else
-            {
-                monster.SetPosition(
-                    monster.WorldPosition + dir.normalized * step);
-            }
+                monster.Move(directionVector.normalized);
         }
 
         private Vector2Int GetRandomizedGoal(Vector2Int center)
@@ -110,18 +102,9 @@ namespace Logic.Monster
 
             var neighbours = field.GetNeighbours(centerHex);
 
-            var walkable = new List<Vector2Int>();
+            var walkable = (from n in neighbours where field.IsWalkable(n) select n.coordinates).ToList();
 
-            foreach (var n in neighbours)
-            {
-                if (field.IsWalkable(n))
-                    walkable.Add(n.coordinates);
-            }
-
-            if (walkable.Count == 0)
-                return center;
-
-            return walkable[Random.Range(0, walkable.Count)];
+            return walkable.Count == 0 ? center : walkable[Random.Range(0, walkable.Count)];
         }
     }
 }
