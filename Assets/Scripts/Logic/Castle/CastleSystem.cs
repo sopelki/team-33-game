@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Interfaces;
 using Logic.Unit;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Logic.Castle
 {
     public class CastleSystem : ITickable
     {
+        public static CastleSystem Instance { get; private set; }
+        
         private static readonly Vector2Int spawnHex = new(-28, 21); // Поменять, если нужна другая точка спавна
 
         private readonly CastleModel model;
@@ -33,7 +36,17 @@ namespace Logic.Castle
             this.unitData = unitData;
             this.field = field;
             this.tilemap = tilemap;
+            Instance = this;
         }
+        
+        public void RegisterCastleData(List<Vector3> worldPositions, List<Vector2Int> hexes)
+        
+        {
+            model.WallWorldPositions = worldPositions;
+            model.WallHexes = hexes;
+            Debug.Log($"Замок зарегистрирован в логике! Точек стены: {hexes.Count}");
+        }
+        public CastleModel Model => model;
 
         public void Tick()
         {

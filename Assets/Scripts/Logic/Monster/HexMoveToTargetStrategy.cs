@@ -3,6 +3,7 @@ using Interfaces;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 using System.Linq;
+using Logic.Castle;
 using Logic.Unit;
 
 namespace Logic.Monster
@@ -11,7 +12,7 @@ namespace Logic.Monster
     {
         private readonly MonsterModel monster;
         private readonly Field.Field field;
-        private readonly List<Vector2Int> targetHexes;
+        // private readonly List<Vector2Int> targetHexes;
         private readonly Tilemap tilemap;
         private readonly HexAStarPathfinder pathfinder;
 
@@ -26,12 +27,10 @@ namespace Logic.Monster
         public HexMoveToTargetStrategy(
             MonsterModel monster,
             Field.Field field,
-            List<Vector2Int> targetHexes,
             Tilemap tilemap)
         {
             this.monster = monster;
             this.field = field;
-            this.targetHexes = targetHexes;
             this.tilemap = tilemap;
 
             pathfinder = new HexAStarPathfinder(field);
@@ -44,7 +43,12 @@ namespace Logic.Monster
 
         public void Tick()
         {
-            if (targetHexes.Contains(monster.CurrentHex))
+            var castle = CastleSystem.Instance;
+            if (castle == null || castle.Model.WallHexes.Count == 0)
+                return;
+
+            
+            if (castle.Model.WallHexes.Contains(monster.CurrentHex))
                 return;
 
             repathTimer -= Core.TickManager.Instance.tickInterval;
@@ -63,6 +67,14 @@ namespace Logic.Monster
 
         private void BuildPath()
         {
+            var castle = CastleSystem.Instance;
+            
+            if (castle == null || castle.Model.WallHexes.Count == 0) 
+            {
+                currentPath = null;
+                return;
+            }
+            
             var closestWallHex = GetClosestWallHex();
             var goal = GetRandomizedGoal(closestWallHex);
 
@@ -75,8 +87,12 @@ namespace Logic.Monster
         
         private Vector2Int GetClosestWallHex()
         {
-            if (targetHexes == null || targetHexes.Count == 0) return monster.CurrentHex;
+            
+            var castle = CastleSystem.Instance;
+            if (castle == null || castle.Model.WallHexes.Count == 0) 
+                return monster.CurrentHex;
 
+            var targetHexes = castle.Model.WallHexes;
             var closest = targetHexes[0];
             var minDist = Vector2Int.Distance(monster.CurrentHex, closest);
 

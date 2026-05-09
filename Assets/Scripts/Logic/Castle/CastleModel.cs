@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Interfaces;
+using UnityEngine;
 
 namespace Logic.Castle
 {
@@ -10,6 +11,9 @@ namespace Logic.Castle
         public int Gold { get; set; }
         public int Food { get; set; }
         public int CurrentUnits { get; set; }
+        
+        public List<Vector2Int> WallHexes { get; set; } = new();
+        public List<Vector3> WallWorldPositions { get; set; } = new();
         
         public List<BuildingModel> Buildings { get; private set; } = new();
 

@@ -22,41 +22,43 @@ namespace View
             Model = model;
             Field = field;
             WallWorldPositions.Clear();
-    
-            var sumPosition = Vector3.zero;
+            
+            Debug.Log($"<color=blue>VIEW:</color> Начинаю поиск гексов для замка. В списке в инспекторе: {castleHexes.Count} шт.");
+            
+            foreach (var logicalHex in castleHexes)
+            {
+                var hexObj = Field.GetHex(logicalHex);
+                if (hexObj != null)
+                {
+                    Vector3 worldPos = tilemap.GetCellCenterWorld(hexObj.offset);
+                    worldPos.z = -0.1f; 
+                    WallWorldPositions.Add(worldPos);
+                }
+            }
 
-            foreach (var hex in castleHexes)
-            {
-                var hexObj = Field.GetHex(hex); 
-                var worldPos = tilemap.GetCellCenterWorld(hexObj.offset); 
-                WallWorldPositions.Add(worldPos);
-                sumPosition += worldPos; // Суммируем все позиции
-            }
-    
-            // Ставим картинку замка ровно посередине между всеми гексами стены
-            if (WallWorldPositions.Count > 0)
-            {
-                transform.position = sumPosition / WallWorldPositions.Count;
-            }
+            if (CastleSystem.Instance != null)
+                CastleSystem.Instance.RegisterCastleData(WallWorldPositions, castleHexes);
+            
         }
 
         // Полезный метод: найти ближайшую точку замка к монстру
-        public Vector3 GetClosestWallPoint(Vector3 monsterPos)
-        {
-            var closest = WallWorldPositions[0];
-            var minDist = Vector3.Distance(monsterPos, closest);
-
-            foreach (var pos in WallWorldPositions)
-            {
-                var d = Vector3.Distance(monsterPos, pos);
-                if (d < minDist)
-                {
-                    minDist = d;
-                    closest = pos;
-                }
-            }
-            return closest;
-        }
+        // public Vector3 GetClosestWallPoint(Vector3 monsterPos)
+        // {
+        //     var closest = WallWorldPositions[0];
+        //     var minDist = Vector3.Distance(monsterPos, closest);
+        //
+        //     foreach (var pos in WallWorldPositions)
+        //     {
+        //         var d = Vector3.Distance(monsterPos, pos);
+        //         if (d < minDist)
+        //         {
+        //             minDist = d;
+        //             closest = pos;
+        //         }
+        //     }
+        //     return closest;
+        // }
+        
         
         private void OnDrawGizmos()
         {

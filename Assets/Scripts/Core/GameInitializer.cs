@@ -94,33 +94,12 @@ namespace Core
             if (fieldGenerator != null)
                 fieldGenerator.Initialize(field);
             
-            castleView = FindAnyObjectByType<CastleView>();
-
             castleModel = new CastleModel(startHp, startGold, startFood);
-            
-            if (castleUI != null)
-                castleUI.Initialize(castleModel);
-            if (castleView != null)
-                castleView.Initialize(castleModel, tilemap, field);
-            if (gameOverMenu != null)
-                gameOverMenu.Initialize(castleModel);
-            
             monsterSystem = new MonsterSystem();
             projectileSystem = new ProjectileSystem(monsterSystem);
             unitSystem = new UnitSystem(
                 monsterSystem,
                 field,
-                tilemap
-            );
-
-
-            monsterSpawner = new MonsterSpawner(
-                spawnHexes,
-                castleView,
-                field,
-                monsterSystem,
-                unitSystem,
-                availableMonsters,
                 tilemap
             );
             
@@ -132,6 +111,29 @@ namespace Core
                 tilemap
             );
 
+            
+            castleView = FindAnyObjectByType<CastleView>();
+            
+            if (castleUI != null)
+                castleUI.Initialize(castleModel);
+            
+            if (castleView != null)
+                castleView.Initialize(castleModel, tilemap, field);
+            else 
+                Debug.LogWarning("GameInitializer: Замок не найден сразу после генерации. Возможно, его нет в JSON или ObjectMappings.");
+            
+            if (gameOverMenu != null)
+                gameOverMenu.Initialize(castleModel);
+
+            monsterSpawner = new MonsterSpawner(
+                spawnHexes,
+                field,
+                monsterSystem,
+                unitSystem,
+                availableMonsters,
+                tilemap
+            );
+            
             towersModel = new TowersModel();
             towerSystem = new TowerSystem(castleSystem, towersModel, monsterSystem, projectileSystem);
 

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Logic.Unit;
 using Interfaces;
+using Logic.Castle;
 using UnityEngine.Tilemaps;
 using View;
 
@@ -10,7 +11,7 @@ namespace Logic.Monster
     public class MonsterSpawner : ITickable
     {
         private readonly List<Vector2Int> spawnHexes;
-        private readonly CastleView castleView;
+        // private CastleView castleView;
 
         private readonly Field.Field field;
         private readonly MonsterSystem monsterSystem;
@@ -23,7 +24,6 @@ namespace Logic.Monster
 
         public MonsterSpawner(
             List<Vector2Int> spawnHexes,
-            CastleView castleView,
             Field.Field field,
             MonsterSystem monsterSystem,
             UnitSystem unitSystem,
@@ -31,7 +31,6 @@ namespace Logic.Monster
             Tilemap tilemap)
         {
             this.spawnHexes = spawnHexes;
-            this.castleView = castleView;
             this.field = field;
             this.monsterSystem = monsterSystem;
             this.unitSystem = unitSystem;
@@ -53,24 +52,20 @@ namespace Logic.Monster
 
         private void Spawn()
         {
-            if (castleView == null)
-            {
-                Debug.LogWarning("MonsterSpawner: Не могу спавнить монстра, потому что castleView == null!");
-                return;
-            }
+            var castle = CastleSystem.Instance;
+            
+            // if (castleView == null)
+            // {
+            //     castleView = Object.FindAnyObjectByType<CastleView>();
+            // }
             
             var hex = spawnHexes[Random.Range(0, spawnHexes.Count)];
 
-            var data = availableMonsters[
-                Random.Range(0, availableMonsters.Count)
-            ];
-
+            var data = availableMonsters[Random.Range(0, availableMonsters.Count)];
             var hexObj = field.GetHex(hex);
             if (hexObj == null)
-            {
-                Debug.LogError($"MonsterSpawner: Гекс спавна {hex} не найден в поле!");
                 return;
-            }
+            
             var world = tilemap.GetCellCenterWorld(hexObj.offset);
 
             // создаём монстра без стратегий
@@ -86,15 +81,10 @@ namespace Logic.Monster
             var movement = new HexMoveToTargetStrategy(
                 monster,
                 field,
-                castleView.WallHexes,
                 tilemap
             );
 
-            var attack = new MonsterAttackStrategy(
-                monster,
-                unitSystem,
-                castleView
-            );
+            var attack = new MonsterAttackStrategy(monster, unitSystem);
             
             monster.SetStrategies(movement, attack);
 
