@@ -132,5 +132,11 @@ namespace Logic.Castle
             model.Changed();
             return true;
         }
+        
+        public void AddGold(int amount)
+        {
+            model.Gold += amount;
+            model.Changed();
+        }
     }
 }

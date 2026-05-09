@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Logic.Monster
 {
@@ -9,6 +10,7 @@ namespace Logic.Monster
         public int maxHealth = 100;
         public int damage = 10;
         public float moveSpeed = 3f;
+        public int goldReward = 20;
         
         [Header("Attack")]
         public float attackRadius = 1f;

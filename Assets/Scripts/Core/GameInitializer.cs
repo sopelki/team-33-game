@@ -150,6 +150,12 @@ namespace Core
                 castleModel.CurrentUnits--;
                 castleModel.Changed();
             };
+            
+            monsterSystem.OnMonsterDied += monster => 
+            {
+                castleSystem.AddGold(monster.Data.goldReward);
+                Debug.Log($"Монстр убит! Получено золота: {monster.Data.goldReward}. Баланс: {castleModel.Gold}");
+            };
         }
 
         private void Start()

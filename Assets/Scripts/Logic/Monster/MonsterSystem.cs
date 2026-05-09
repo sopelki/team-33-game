@@ -28,8 +28,8 @@ namespace Logic.Monster
 
                 if (monster.IsDead)
                 {
-                    monsters.RemoveAt(i);
                     OnMonsterDied?.Invoke(monster);
+                    monsters.RemoveAt(i);
                 }
             }
         }
