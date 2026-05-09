@@ -86,7 +86,7 @@ namespace Field
         {
             if (objectsContainer == null || currentField.MapObjects == null)
                 return;
-
+            
             foreach (var objData in currentField.MapObjects)
             {
                 var mapping = objectMappings.Find(m => m.id == objData.objectId);

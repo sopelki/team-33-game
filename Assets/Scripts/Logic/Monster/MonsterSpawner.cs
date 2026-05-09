@@ -53,6 +53,12 @@ namespace Logic.Monster
 
         private void Spawn()
         {
+            if (castleView == null)
+            {
+                Debug.LogWarning("MonsterSpawner: Не могу спавнить монстра, потому что castleView == null!");
+                return;
+            }
+            
             var hex = spawnHexes[Random.Range(0, spawnHexes.Count)];
 
             var data = availableMonsters[
@@ -60,7 +66,12 @@ namespace Logic.Monster
             ];
 
             var hexObj = field.GetHex(hex);
-            Vector3 world = tilemap.GetCellCenterWorld(hexObj.offset);
+            if (hexObj == null)
+            {
+                Debug.LogError($"MonsterSpawner: Гекс спавна {hex} не найден в поле!");
+                return;
+            }
+            var world = tilemap.GetCellCenterWorld(hexObj.offset);
 
             // создаём монстра без стратегий
             var monster = new MonsterModel(

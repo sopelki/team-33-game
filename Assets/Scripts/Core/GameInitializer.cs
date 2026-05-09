@@ -25,7 +25,7 @@ namespace Core
         [Header("Scene References")]
         [SerializeField]
         private CastleUI castleUI;
-        [SerializeField] private CastleView castleView;
+        // [SerializeField] private CastleView castleView;
         [SerializeField]
         private TickManager tickManager;
         [SerializeField]
@@ -64,17 +64,17 @@ namespace Core
         private TowerSystem towerSystem;
 
         private UnitSystem unitSystem;
+        private CastleView castleView;
 
         private ProjectileSystem projectileSystem;
 
         private Field.Field field;
         private static readonly List<Vector2Int> spawnHexes = new()
         {
-            new Vector2Int(28, -17),
-            new Vector2Int(-3, -22),
-            new Vector2Int(16, 7),
-            new Vector2Int(-2, 21),
-            new Vector2Int(-21, 2),
+            new Vector2Int(2, -23),
+            new Vector2Int(27, -23),
+            new Vector2Int(20, -4),
+            new Vector2Int(8, 20),
         };
 
         // private static readonly Vector2Int castleHex = new(-30, 20);
@@ -90,6 +90,11 @@ namespace Core
             }
 
             cameraSetup.FitToGrid();
+            
+            if (fieldGenerator != null)
+                fieldGenerator.Initialize(field);
+            
+            castleView = FindAnyObjectByType<CastleView>();
 
             castleModel = new CastleModel(startHp, startGold, startFood);
             
@@ -149,9 +154,6 @@ namespace Core
 
         private void Start()
         {
-            if (fieldGenerator != null)
-                fieldGenerator.Initialize(field);
-
             if (unitViewManager != null)
                 unitViewManager.Initialize(unitSystem);
 
