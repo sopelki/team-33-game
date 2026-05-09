@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: UnitBuffsGlow
   m_EditorClassIdentifier: Assembly-CSharp::View.UnitBuffsViewManager
   mappings:
-  - buffClassName: AttackBuff
+  - buffClassName: AttackPercentBuff
     glowPrefab: {fileID: 4075661298223161012, guid: e74c03c19dcd8ce4da1e5e30fb89ab46, type: 3}
   - buffClassName: HealthPercentBuff
     glowPrefab: {fileID: 7418995155424390762, guid: 839146a9bd62f5e48b441c28643b028e, type: 3}

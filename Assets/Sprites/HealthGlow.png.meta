@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ce33175930f460a47ab2a689e4c2ed69
+guid: 5068b4c9551f70e4fa95bdb0b4b67ed1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6821913221042758565
-    second: HealthGlow_0
+      213: -5402728711981762850
+    second: HealthGlow 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HealthGlow_0
+      name: HealthGlow 1_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 7
-        height: 7
+        x: 3
+        y: 3
+        width: 9
+        height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5a36bc43eed4cae50800000000000000
-      internalID: 6821913221042758565
+      spriteID: ed6f5808cd6a505b0800000000000000
+      internalID: -5402728711981762850
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      HealthGlow_0: 6821913221042758565
+      HealthGlow 1_0: -5402728711981762850
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
