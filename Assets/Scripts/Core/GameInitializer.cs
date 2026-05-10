@@ -25,7 +25,6 @@ namespace Core
         [Header("Scene References")]
         [SerializeField]
         private CastleUI castleUI;
-        // [SerializeField] private CastleView castleView;
         [SerializeField]
         private TickManager tickManager;
         [SerializeField]
@@ -34,7 +33,8 @@ namespace Core
         private ProjectileViewManager projectileViewManager;
         [SerializeField]
         private CameraSetup cameraSetup;
-        [SerializeField] private MenuScripts.GameOverMenu gameOverMenu;
+        [SerializeField]
+        private MenuScripts.GameOverMenu gameOverMenu;
 
         [Header("Unit Settings")]
         [SerializeField]
@@ -56,19 +56,15 @@ namespace Core
 
         private MonsterSystem monsterSystem;
         private MonsterSpawner monsterSpawner;
-
         private CastleModel castleModel;
         private CastleSystem castleSystem;
-
         private TowersModel towersModel;
         private TowerSystem towerSystem;
-
         private UnitSystem unitSystem;
         private CastleView castleView;
-
         private ProjectileSystem projectileSystem;
-
         private Field.Field field;
+
         private static readonly List<Vector2Int> spawnHexes = new()
         {
             new Vector2Int(2, -23),
@@ -76,8 +72,6 @@ namespace Core
             new Vector2Int(20, -4),
             new Vector2Int(8, 20),
         };
-
-        // private static readonly Vector2Int castleHex = new(-30, 20);
 
         private void Awake()
         {
@@ -90,50 +84,34 @@ namespace Core
             }
 
             cameraSetup.FitToGrid();
-            
+
             if (fieldGenerator != null)
                 fieldGenerator.Initialize(field);
-            
+
             castleModel = new CastleModel(startHp, startGold, startFood);
             monsterSystem = new MonsterSystem();
             projectileSystem = new ProjectileSystem(monsterSystem);
-            unitSystem = new UnitSystem(
-                monsterSystem,
-                field,
-                tilemap
-            );
-            
-            castleSystem = new CastleSystem(
-                castleModel,
-                unitSystem,
-                soldierData,
-                field,
-                tilemap
-            );
+            unitSystem = new UnitSystem(monsterSystem, field, tilemap);
+            castleSystem = new CastleSystem(castleModel, unitSystem, soldierData, field, tilemap);
 
-            
             castleView = FindAnyObjectByType<CastleView>();
-            
+
             if (castleUI != null)
                 castleUI.Initialize(castleModel);
-            
+
             if (castleView != null)
                 castleView.Initialize(castleModel, tilemap, field);
-            else 
+            else
                 Debug.LogWarning("GameInitializer: No castle found in objects. Check level JSON or ObjectMappings.");
-            
+
             if (gameOverMenu != null)
                 gameOverMenu.Initialize(castleModel);
 
             monsterSpawner = new MonsterSpawner(
-                spawnHexes,
-                field,
-                monsterSystem,
-                unitSystem,
-                availableMonsters,
-                tilemap
+                spawnHexes, field, monsterSystem, unitSystem,
+                availableMonsters, tilemap
             );
-            
+
             towersModel = new TowersModel();
             towerSystem = new TowerSystem(castleSystem, towersModel, monsterSystem, projectileSystem);
 
@@ -152,8 +130,8 @@ namespace Core
                 castleModel.CurrentUnits--;
                 castleModel.Changed();
             };
-            
-            monsterSystem.OnMonsterDied += monster => 
+
+            monsterSystem.OnMonsterDied += monster =>
             {
                 castleSystem.AddGold(monster.Data.goldReward);
                 Debug.Log($"Monster is killed. Gold received: {monster.Data.goldReward}. Balance: {castleModel.Gold}");
@@ -182,5 +160,29 @@ namespace Core
             foreach (var slot in slots)
                 slot.Construct(castleSystem);
         }
+
+        // public void Cleanup()
+        // {
+        //     if (tickManager != null)
+        //     {
+        //         tickManager.OnTick -= castleSystem.Tick;
+        //         tickManager.OnTick -= towerSystem.Tick;
+        //         tickManager.OnTick -= unitSystem.Tick;
+        //         tickManager.OnTick -= monsterSystem.Tick;
+        //         tickManager.OnTick -= monsterSpawner.Tick;
+        //         tickManager.OnTick -= projectileSystem.Tick;
+        //     }
+        //
+        //     monsterSystem?.Clear();
+        //     unitSystem?.Clear();
+        //     projectileSystem?.Clear();
+        //
+        //     Debug.Log("GameInitializer: All systems cleaned up");
+        // }
+        //
+        // private void OnDestroy()
+        // {
+        //     Cleanup();
+        // }
     }
 }

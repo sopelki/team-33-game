@@ -38,6 +38,8 @@ namespace Logic.Projectile
                     UpdateStraight(p, step, i);
             }
         }
+        
+        // public void Clear() => projectiles.Clear();
 
         private void UpdateStraight(ProjectileModel p, float step, int index)
         {
@@ -108,11 +110,10 @@ namespace Logic.Projectile
                 var dist =
                     Vector3.Distance(monster.WorldPosition, p.Position);
 
-                if (dist <= p.Data.aoeRadius)
-                {
-                    Debug.Log("ApplyDamage: " + p.Data.damage);
-                    monster.TakeDamage(p.Data.damage);
-                }
+                if (!(dist <= p.Data.aoeRadius))
+                    continue;
+                Debug.Log("ApplyDamage: " + p.Data.damage);
+                monster.TakeDamage(p.Data.damage);
             }
         }
 

@@ -13,7 +13,6 @@ namespace Logic.Castle
         
         private static readonly Vector2Int spawnHex = new(-28, 21); // Поменять, если нужна другая точка спавна
 
-        private readonly CastleModel model;
         private readonly UnitSystem unitSystem;
         private readonly UnitData unitData;
         private readonly Field.Field field;
@@ -31,7 +30,7 @@ namespace Logic.Castle
             Field.Field field,
             Tilemap tilemap)
         {
-            this.model = model;
+            this.Model = model;
             this.unitSystem = unitSystem;
             this.unitData = unitData;
             this.field = field;
@@ -42,11 +41,11 @@ namespace Logic.Castle
         public void RegisterCastleData(List<Vector3> worldPositions, List<Vector2Int> hexes)
         
         {
-            model.WallWorldPositions = worldPositions;
-            model.WallHexes = hexes;
+            Model.WallWorldPositions = worldPositions;
+            Model.WallHexes = hexes;
             Debug.Log($"Замок зарегистрирован в логике! Точек стены: {hexes.Count}");
         }
-        public CastleModel Model => model;
+        public CastleModel Model { get; }
 
         public void Tick()
         {
@@ -61,23 +60,22 @@ namespace Logic.Castle
                 ProduceResources();
             }
 
-            if (spawnTimer >= SpawnInterval)
-            {
-                spawnTimer = 0f;
-                SpawnUnitsFromBarracks();
-            }
+            if (!(spawnTimer >= SpawnInterval))
+                return;
+            spawnTimer = 0f;
+            SpawnUnitsFromBarracks();
         }
 
         private void SpawnUnitsFromBarracks()
         {
-            var barracksCount = model.Buildings.Count(b => b.Data.type == BuildingType.Barracks);
+            var barracksCount = Model.Buildings.Count(b => b.Data.type == BuildingType.Barracks);
 
             if (barracksCount == 0)
                 return;
 
             for (var i = 0; i < barracksCount; i++)
             {
-                if (model.Food < unitData.foodCost)
+                if (Model.Food < unitData.foodCost)
                     return;
 
                 SpawnUnit();
@@ -94,23 +92,23 @@ namespace Logic.Castle
 
             var worldPos = tilemap.GetCellCenterWorld(hex.offset);
             unitSystem.SpawnUnit(worldPos, spawnHex, unitData);
-            model.Food -= unitData.foodCost;
-            model.CurrentUnits++;
-            model.Changed();
+            Model.Food -= unitData.foodCost;
+            Model.CurrentUnits++;
+            Model.Changed();
         }
 
 
         private void ProduceResources()
         {
             var changed = false;
-            foreach (var building in model.Buildings.Where(building => building.Data.type == BuildingType.Farm))
+            foreach (var building in Model.Buildings.Where(building => building.Data.type == BuildingType.Farm))
             {
-                model.Food += building.Production;
+                Model.Food += building.Production;
                 changed = true;
             }
 
             if (changed)
-                model.Changed();
+                Model.Changed();
         }
 
 
@@ -120,7 +118,7 @@ namespace Logic.Castle
                 return false;
 
             var instance = new BuildingModel(data);
-            model.Buildings.Add(instance);
+            Model.Buildings.Add(instance);
             
             if (data.type == BuildingType.Blacksmith)
             {
@@ -138,18 +136,18 @@ namespace Logic.Castle
 
         public bool TrySpendGold(int price)
         {
-            if (model.Gold < price)
+            if (Model.Gold < price)
                 return false;
 
-            model.Gold -= price;
-            model.Changed();
+            Model.Gold -= price;
+            Model.Changed();
             return true;
         }
         
         public void AddGold(int amount)
         {
-            model.Gold += amount;
-            model.Changed();
+            Model.Gold += amount;
+            Model.Changed();
         }
     }
 }

@@ -62,6 +62,24 @@ namespace Logic.Tower
             }
         }
 
+        public bool TryPlaceTower(TowerData data, Vector3Int cellPos, Vector3 worldPos)
+        {
+            if (towersModel.Towers.Any(t => t.GridPosition == cellPos))
+            {
+                Debug.Log("Cell is occupied!");
+                return false;
+            }
+
+            if (!castleSystem.TrySpendGold(data.baseCost))
+                return false;
+
+            var tower = new TowerModel(data, cellPos, worldPos);
+            towersModel.AddTower(tower);
+            return true;
+        }
+        
+        // public void Clear() => towersModel.Clear();
+
         private void Shoot(TowerModel tower, MonsterModel target)
         {
             var firePoint = tower.WorldPosition +
@@ -82,22 +100,6 @@ namespace Logic.Tower
             );
 
             projectileSystem.CreateProjectile(projectile);
-        }
-
-        public bool TryPlaceTower(TowerData data, Vector3Int cellPos, Vector3 worldPos)
-        {
-            if (towersModel.Towers.Any(t => t.GridPosition == cellPos))
-            {
-                Debug.Log("Cell is occupied!");
-                return false;
-            }
-
-            if (!castleSystem.TrySpendGold(data.baseCost))
-                return false;
-
-            var tower = new TowerModel(data, cellPos, worldPos);
-            towersModel.AddTower(tower);
-            return true;
         }
 
         private static Vector3 CalculateInterceptPoint(Vector3 shooterPos, Vector3 targetPos, Vector3 targetVelocity,

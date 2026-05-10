@@ -19,18 +19,16 @@ namespace Logic.Monster
 
         public void Tick()
         {
-            // Debug.Log("MonsterSystem Tick");
             for (var i = monsters.Count - 1; i >= 0; i--)
             {
                 var monster = monsters[i];
 
                 monster.Tick();
 
-                if (monster.IsDead)
-                {
-                    OnMonsterDied?.Invoke(monster);
-                    monsters.RemoveAt(i);
-                }
+                if (!monster.IsDead)
+                    continue;
+                OnMonsterDied?.Invoke(monster);
+                monsters.RemoveAt(i);
             }
         }
 
@@ -38,5 +36,7 @@ namespace Logic.Monster
         {
             return monsters;
         }
+
+        // public void Clear() => monsters.Clear();
     }
 }
