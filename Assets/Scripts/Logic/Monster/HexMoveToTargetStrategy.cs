@@ -47,7 +47,6 @@ namespace Logic.Monster
             if (castle == null || castle.Model.WallHexes.Count == 0)
                 return;
 
-            
             if (castle.Model.WallHexes.Contains(monster.CurrentHex))
                 return;
 
@@ -68,13 +67,13 @@ namespace Logic.Monster
         private void BuildPath()
         {
             var castle = CastleSystem.Instance;
-            
-            if (castle == null || castle.Model.WallHexes.Count == 0) 
+
+            if (castle == null || castle.Model.WallHexes.Count == 0)
             {
                 currentPath = null;
                 return;
             }
-            
+
             var closestWallHex = GetClosestWallHex();
             var goal = GetRandomizedGoal(closestWallHex);
 
@@ -84,12 +83,11 @@ namespace Logic.Monster
             if (currentPath is not { Count: > 1 })
                 currentPath = null;
         }
-        
+
         private Vector2Int GetClosestWallHex()
         {
-            
             var castle = CastleSystem.Instance;
-            if (castle == null || castle.Model.WallHexes.Count == 0) 
+            if (castle == null || castle.Model.WallHexes.Count == 0)
                 return monster.CurrentHex;
 
             var targetHexes = castle.Model.WallHexes;
@@ -122,7 +120,7 @@ namespace Logic.Monster
 
             if (directionVector.magnitude <= maxStep)
             {
-                monster.Move(directionVector /  maxStep);
+                monster.Move(directionVector / maxStep);
                 monster.SetHex(nextHex);
                 pathIndex++;
             }

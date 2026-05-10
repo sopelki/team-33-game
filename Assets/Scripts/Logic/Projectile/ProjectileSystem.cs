@@ -31,15 +31,13 @@ namespace Logic.Projectile
             for (var i = projectiles.Count - 1; i >= 0; i--)
             {
                 var p = projectiles[i];
-                
+
                 if (p.Data.isHoming)
                     UpdateHoming(p, step, i);
                 else
                     UpdateStraight(p, step, i);
             }
         }
-        
-        // public void Clear() => projectiles.Clear();
 
         private void UpdateStraight(ProjectileModel p, float step, int index)
         {
