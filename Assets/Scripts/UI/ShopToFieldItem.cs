@@ -34,6 +34,15 @@ namespace UI
         private GameObject ghost;
         private RectTransform ghostRect;
 
+        [Header("Animation")]
+        [SerializeField]
+        private float hoverScaleMultiplier = 0.8f;
+        [SerializeField]
+        private float scaleSpeed = 30f;
+
+        private float targetScale = 1f;
+        private float currentScale = 1f;
+
         public void Construct(TowerSystem system)
         {
             towerSystem = system;
@@ -47,14 +56,14 @@ namespace UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (towerSystem == null)
-                return;
+            if (towerSystem == null) return;
 
             var prefabRenderer = towerData.viewPrefab.GetComponentInChildren<SpriteRenderer>();
-            if (prefabRenderer == null)
-                return;
+            if (prefabRenderer == null) return;
 
             CreateGhost(prefabRenderer);
+            targetScale = 1f;
+            currentScale = 1f;
             UpdateGhostPosition(eventData);
         }
 
@@ -66,8 +75,6 @@ namespace UI
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (ghost != null) Destroy(ghost);
-
             var cam = Camera.main;
             if (cam == null || mapViewport == null || fieldTilemap == null)
                 return;
@@ -93,7 +100,22 @@ namespace UI
 
             if (towerSystem.TryPlaceTower(towerData, closestSlotPos, spawnPos))
                 Debug.Log("Tower placement request sent successfully");
+
+            if (ghost != null)
+                Destroy(ghost);
+
+            targetScale = 1f;
         }
+
+        private void Update()
+        {
+            if (ghostRect != null)
+            {
+                currentScale = Mathf.Lerp(currentScale, targetScale, Time.deltaTime * scaleSpeed);
+                ghostRect.localScale = new Vector3(currentScale, currentScale, 1f);
+            }
+        }
+
 
         private void CreateGhost(SpriteRenderer prefabRenderer)
         {
@@ -142,7 +164,32 @@ namespace UI
                 eventData.pressEventCamera,
                 out var localPoint);
             ghostRect.localPosition = localPoint + ghostOffset;
+
+            CheckPlacementValidity(eventData);
         }
+
+        private void CheckPlacementValidity(PointerEventData eventData)
+        {
+            var cam = Camera.main;
+            if (cam == null || mapViewport == null || fieldTilemap == null) return;
+
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    mapViewport, eventData.position, eventData.pressEventCamera, out var local))
+            {
+                targetScale = 1f;
+                return;
+            }
+
+            var u = local.x / mapViewport.rect.width + 0.5f;
+            var v = local.y / mapViewport.rect.height + 0.5f;
+
+            var zDist = Mathf.Abs(cam.transform.position.z - fieldTilemap.transform.position.z);
+            var worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
+            var cellPos = fieldTilemap.WorldToCell(worldPos);
+
+            targetScale = FindNearestSlotTile(cellPos, 2, out _) ? hoverScaleMultiplier : 1f;
+        }
+
 
         private bool FindNearestSlotTile(Vector3Int centerPos, int searchRadius, out Vector3Int cellPos)
         {
