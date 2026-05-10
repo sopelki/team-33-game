@@ -1,83 +1,110 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Logic.Unit;
 using Interfaces;
-using Logic.Castle;
 using UnityEngine.Tilemaps;
-using View;
 
 namespace Logic.Monster
 {
     public class MonsterSpawner : ITickable
     {
-        private readonly List<Vector2Int> spawnHexes;
-        // private CastleView castleView;
+        public event System.Action OnWaveSpawnCompleted;
 
+        private readonly List<Vector2Int> spawnHexes;
         private readonly Field.Field field;
         private readonly MonsterSystem monsterSystem;
         private readonly UnitSystem unitSystem;
-        private readonly List<MonsterData> availableMonsters;
         private readonly Tilemap tilemap;
 
+        private readonly List<WaveData> waves;
+
+        private int currentWaveIndex = -1;
+        private int spawnedInCurrentWave;
         private float spawnTimer;
-        private readonly float spawnInterval = 3f; // каждые 3 секунды
+        private bool waveSpawnFinished;
+
+        private WaveData CurrentWave =>
+            currentWaveIndex >= 0 && currentWaveIndex < waves.Count
+                ? waves[currentWaveIndex]
+                : null;
 
         public MonsterSpawner(
             List<Vector2Int> spawnHexes,
             Field.Field field,
             MonsterSystem monsterSystem,
             UnitSystem unitSystem,
-            List<MonsterData> availableMonsters,
+            List<WaveData> waves,
             Tilemap tilemap)
         {
             this.spawnHexes = spawnHexes;
             this.field = field;
             this.monsterSystem = monsterSystem;
             this.unitSystem = unitSystem;
-            this.availableMonsters = availableMonsters;
+            this.waves = waves;
             this.tilemap = tilemap;
+        }
+
+        public void StartNextWave()
+        {
+            currentWaveIndex++;
+
+            if (currentWaveIndex >= waves.Count)
+            {
+                Debug.Log("All waves completed");
+                return;
+            }
+
+            spawnedInCurrentWave = 0;
+            spawnTimer = 0f;
+            waveSpawnFinished = false;
+
+            Debug.Log($"Wave {currentWaveIndex + 1} started");
         }
 
         public void Tick()
         {
+            if (CurrentWave == null)
+                return;
+
+            if (spawnedInCurrentWave >= CurrentWave.totalMonsters)
+            {
+                if (waveSpawnFinished)
+                    return;
+                waveSpawnFinished = true;
+                OnWaveSpawnCompleted?.Invoke();
+                return;
+            }
+
             spawnTimer += Core.TickManager.Instance.tickInterval;
 
-            if (spawnTimer < spawnInterval)
-                return;
-
-            spawnTimer = 0f;
-
-            Spawn();
+            if (spawnTimer >= CurrentWave.spawnInterval)
+            {
+                spawnTimer = 0f;
+                Spawn(CurrentWave);
+            }
         }
 
-        private void Spawn()
+        private void Spawn(WaveData wave)
         {
-            var castle = CastleSystem.Instance;
-            
-            // if (castleView == null)
-            // {
-            //     castleView = Object.FindAnyObjectByType<CastleView>();
-            // }
-            
             var hex = spawnHexes[Random.Range(0, spawnHexes.Count)];
-
-            var data = availableMonsters[Random.Range(0, availableMonsters.Count)];
             var hexObj = field.GetHex(hex);
+
             if (hexObj == null)
                 return;
-            
+
             var world = tilemap.GetCellCenterWorld(hexObj.offset);
 
-            // создаём монстра без стратегий
+            var data = wave.monsterPool[Random.Range(0, wave.monsterPool.Count)];
+
             var monster = new MonsterModel(
                 world,
                 hex,
                 data,
-                null,
-                null
+                wave.healthMultiplier,
+                wave.damageMultiplier,
+                wave.speedMultiplier
             );
 
-            // создаём стратегии
             var movement = new HexMoveToTargetStrategy(
                 monster,
                 field,
@@ -85,10 +112,12 @@ namespace Logic.Monster
             );
 
             var attack = new MonsterAttackStrategy(monster, unitSystem);
-            
+
             monster.SetStrategies(movement, attack);
 
             monsterSystem.AddMonster(monster);
+
+            spawnedInCurrentWave++;
         }
     }
 }

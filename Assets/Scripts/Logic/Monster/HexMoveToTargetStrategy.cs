@@ -118,7 +118,7 @@ namespace Logic.Monster
 
             var targetWorld = tilemap.GetCellCenterWorld(hexObj.offset) + formationOffset;
             var directionVector = targetWorld - monster.WorldPosition;
-            var maxStep = monster.Data.moveSpeed * Core.TickManager.Instance.tickInterval;
+            var maxStep = monster.MoveSpeed * Core.TickManager.Instance.tickInterval;
 
             if (directionVector.magnitude <= maxStep)
             {

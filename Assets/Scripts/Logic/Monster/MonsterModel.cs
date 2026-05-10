@@ -6,13 +6,24 @@ namespace Logic.Monster
     public class MonsterModel : IDamageable
     {
         public int TargetedByUnits;
+
         public Vector3 WorldPosition { get; private set; }
         public Vector2Int CurrentHex { get; private set; }
         public Vector3 CurrentVelocity { get; private set; }
+
         public bool IsDead => currentHealth <= 0;
-        public MonsterData Data { get; }
+
+        public readonly MonsterData Data;
+
+        public int MaxHealth { get; }
+        public int Damage { get; }
+        public float MoveSpeed { get; }
+        public float AttackRadius { get; }
+        public float AttackCooldown { get; }
+        public int GoldReward { get; }
 
         private int currentHealth;
+
         private IMovementStrategy movementStrategy;
         private IAttackStrategy attackStrategy;
 
@@ -20,17 +31,25 @@ namespace Logic.Monster
             Vector3 startWorldPos,
             Vector2Int startHex,
             MonsterData data,
-            IMovementStrategy movementStrategy,
-            IAttackStrategy attackStrategy)
+            float healthMultiplier,
+            float damageMultiplier,
+            float speedMultiplier)
         {
+            Data = data;
+
             WorldPosition = startWorldPos;
             CurrentHex = startHex;
-
             Data = data;
-            this.movementStrategy = movementStrategy;
-            this.attackStrategy = attackStrategy;
 
-            currentHealth = data.maxHealth;
+            MaxHealth = Mathf.RoundToInt(data.maxHealth * healthMultiplier);
+            Damage = Mathf.RoundToInt(data.damage * damageMultiplier);
+            MoveSpeed = data.moveSpeed * speedMultiplier;
+
+            AttackRadius = data.attackRadius;
+            AttackCooldown = data.attackCooldown;
+            GoldReward = data.goldReward;
+
+            currentHealth = MaxHealth;
         }
 
         public void Tick()
@@ -49,14 +68,11 @@ namespace Logic.Monster
         public void Move(Vector3 direction)
         {
             var step = Core.TickManager.Instance.tickInterval;
-            WorldPosition += direction * (Data.moveSpeed * step);
-            CurrentVelocity = direction * Data.moveSpeed;
+
+            WorldPosition += direction * (MoveSpeed * step);
+            CurrentVelocity = direction * MoveSpeed;
         }
 
-        // public void Stop() => CurrentVelocity = Vector3.zero;
-        //
-        // public void SetPosition(Vector3 newPosition) => WorldPosition = newPosition;
-        
         public void SetHex(Vector2Int hex) => CurrentHex = hex;
 
         public void TakeDamage(int damage) => currentHealth -= damage;

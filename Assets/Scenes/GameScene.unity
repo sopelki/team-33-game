@@ -22321,6 +22321,9 @@ MonoBehaviour:
   availableMonsters:
   - {fileID: 11400000, guid: a3e72874c1703684abfc36588a59e4fd, type: 2}
   monsterViewManager: {fileID: 382416967}
+  waves:
+  - {fileID: 11400000, guid: cbd5739e87e7dbc46819a70dd6dbc57d, type: 2}
+  wavesDelay: 5
 --- !u!4 &1242743165
 Transform:
   m_ObjectHideFlags: 0

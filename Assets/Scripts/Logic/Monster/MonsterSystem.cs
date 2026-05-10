@@ -36,7 +36,5 @@ namespace Logic.Monster
         {
             return monsters;
         }
-
-        // public void Clear() => monsters.Clear();
     }
 }

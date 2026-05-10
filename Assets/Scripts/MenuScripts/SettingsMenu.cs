@@ -33,7 +33,7 @@ namespace MenuScripts
         {
             if (settingsPanel != null)
                 settingsPanel.SetActive(false);
-            
+
             if (lastPanel != null)
                 lastPanel.SetActive(true);
         }

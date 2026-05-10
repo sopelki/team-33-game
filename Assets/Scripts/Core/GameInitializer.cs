@@ -53,6 +53,10 @@ namespace Core
         private List<MonsterData> availableMonsters;
         [SerializeField]
         private MonsterViewManager monsterViewManager;
+        [SerializeField]
+        private List<WaveData> waves;
+        [SerializeField]
+        private float wavesDelay = 5f;
 
         private MonsterSystem monsterSystem;
         private MonsterSpawner monsterSpawner;
@@ -64,6 +68,7 @@ namespace Core
         private CastleView castleView;
         private ProjectileSystem projectileSystem;
         private Field.Field field;
+        private WaveManager waveManager;
 
         private static readonly List<Vector2Int> spawnHexes = new()
         {
@@ -107,10 +112,9 @@ namespace Core
             if (gameOverMenu != null)
                 gameOverMenu.Initialize(castleModel);
 
-            monsterSpawner = new MonsterSpawner(
-                spawnHexes, field, monsterSystem, unitSystem,
-                availableMonsters, tilemap
-            );
+            monsterSpawner = new MonsterSpawner(spawnHexes, field, monsterSystem, unitSystem, waves, tilemap);
+            waveManager = new WaveManager(monsterSpawner, monsterSystem, wavesDelay);
+            monsterSpawner.OnWaveSpawnCompleted += waveManager.OnWaveFinishedSpawning;
 
             towersModel = new TowersModel();
             towerSystem = new TowerSystem(castleSystem, towersModel, monsterSystem, projectileSystem);
@@ -124,6 +128,7 @@ namespace Core
             tickManager.OnTick += monsterSystem.Tick;
             tickManager.OnTick += monsterSpawner.Tick;
             tickManager.OnTick += projectileSystem.Tick;
+            tickManager.OnTick += waveManager.Tick;
 
             unitSystem.OnUnitDied += _ =>
             {
@@ -133,8 +138,8 @@ namespace Core
 
             monsterSystem.OnMonsterDied += monster =>
             {
-                castleSystem.AddGold(monster.Data.goldReward);
-                Debug.Log($"Monster is killed. Gold received: {monster.Data.goldReward}. Balance: {castleModel.Gold}");
+                castleSystem.AddGold(monster.GoldReward);
+                Debug.Log($"Monster is killed. Gold received: {monster.GoldReward}. Balance: {castleModel.Gold}");
             };
         }
 
@@ -159,30 +164,8 @@ namespace Core
             var slots = FindObjectsByType<DropSlot>();
             foreach (var slot in slots)
                 slot.Construct(castleSystem);
-        }
 
-        // public void Cleanup()
-        // {
-        //     if (tickManager != null)
-        //     {
-        //         tickManager.OnTick -= castleSystem.Tick;
-        //         tickManager.OnTick -= towerSystem.Tick;
-        //         tickManager.OnTick -= unitSystem.Tick;
-        //         tickManager.OnTick -= monsterSystem.Tick;
-        //         tickManager.OnTick -= monsterSpawner.Tick;
-        //         tickManager.OnTick -= projectileSystem.Tick;
-        //     }
-        //
-        //     monsterSystem?.Clear();
-        //     unitSystem?.Clear();
-        //     projectileSystem?.Clear();
-        //
-        //     Debug.Log("GameInitializer: All systems cleaned up");
-        // }
-        //
-        // private void OnDestroy()
-        // {
-        //     Cleanup();
-        // }
+            monsterSpawner.StartNextWave();
+        }
     }
 }
