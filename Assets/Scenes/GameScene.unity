@@ -23115,6 +23115,8 @@ MonoBehaviour:
   monsterViewManager: {fileID: 382416967}
   waves:
   - {fileID: 11400000, guid: cbd5739e87e7dbc46819a70dd6dbc57d, type: 2}
+  - {fileID: 11400000, guid: a0e9dc41cd2c6ad41b0e57a5e3fa1c10, type: 2}
+  - {fileID: 11400000, guid: df41df57ae0a8b046a0d38d0c10b6499, type: 2}
   wavesDelay: 5
   winPanel: {fileID: 1139018248}
 --- !u!4 &1242743165

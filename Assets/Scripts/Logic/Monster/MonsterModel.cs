@@ -55,8 +55,13 @@ namespace Logic.Monster
         public void Tick()
         {
             if (IsDead)
+            {
+                CurrentVelocity = Vector3.zero;
                 return;
+            }
 
+            CurrentVelocity = Vector3.zero;
+            
             attackStrategy?.Tick();
 
             if (attackStrategy?.IsAttacking == true)
