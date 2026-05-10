@@ -5,17 +5,22 @@ namespace MenuScripts
 {
     public class PauseMenu : MonoBehaviour
     {
-        public GameObject pausePanel;
+        [SerializeField]
+        private GameObject pausePanel;
 
         public void OpenPause()
         {
+            if (pausePanel == null)
+                pausePanel = gameObject;
+
             pausePanel.SetActive(true);
             Time.timeScale = 0f;
         }
 
         public void ResumeGame()
         {
-            pausePanel.SetActive(false);
+            if (pausePanel != null)
+                pausePanel.SetActive(false);
             Time.timeScale = 1f;
         }
 

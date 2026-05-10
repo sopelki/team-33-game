@@ -28,10 +28,7 @@ namespace Logic.Unit
             this.tilemap = tilemap;
         }
         
-        public void AddBuff(Buff buff)
-        {
-            buffs.Add(buff);
-        }
+        public void AddBuff(Buff buff) => buffs.Add(buff);
 
         public void SpawnUnit(Vector3 worldPos, Vector2Int hexPos, UnitData stats)
         {
@@ -77,9 +74,8 @@ namespace Logic.Unit
             }
         }
         
-        public IReadOnlyList<UnitModel> GetAllUnits()
-        {
-            return units;
-        }
+        public IReadOnlyList<UnitModel> GetAllUnits() => units;
+
+        public void Clear() => units.Clear();
     }
 }
