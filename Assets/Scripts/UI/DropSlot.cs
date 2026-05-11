@@ -6,21 +6,27 @@ namespace UI
 {
     public class DropSlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
     {
+        [Header("References")]
         [SerializeField]
         private Transform itemContainer;
-        private CastleSystem castleSystem;
 
-        private const float ScaleSize = 0.85f;
+        [Header("Visual Settings")]
+        [SerializeField]
+        [Range(0.5f, 1f)]
+        private float hoverScale = 0.85f;
+
+        private CastleSystem castleSystem;
 
         public void Construct(CastleSystem system) => castleSystem = system;
 
         public void OnDrop(PointerEventData eventData)
         {
             var draggingItem = eventData.pointerDrag?.GetComponent<InventoryItem>();
-            if (draggingItem != null)
-                draggingItem.SetDraggingScale(1.0f);
-            else
+            if (draggingItem == null)
                 return;
+
+            draggingItem.SetDraggingScale(1.0f);
+            draggingItem.SetValidationState(true);
 
             var existingItem = GetStoredItem();
 
@@ -45,27 +51,45 @@ namespace UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (eventData.pointerDrag != null)
-            {
-                var draggingItem = eventData.pointerDrag.GetComponent<InventoryItem>();
-                if (draggingItem != null)
-                {
-                    var existingItem = GetStoredItem();
+            if (eventData.pointerDrag == null)
+                return;
 
-                    if (!draggingItem.IsFromShop || draggingItem.IsFromShop && existingItem == null)
-                        draggingItem.SetDraggingScale(ScaleSize);
-                }
+            var draggingItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+            if (draggingItem == null)
+                return;
+
+            var existingItem = GetStoredItem();
+
+            var isValid = CanPlaceItem(draggingItem, existingItem);
+
+            if (isValid)
+            {
+                draggingItem.SetDraggingScale(hoverScale);
+                draggingItem.SetValidationState(true);
             }
+            else
+                draggingItem.SetValidationState(false);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (eventData.pointerDrag != null)
+            if (eventData.pointerDrag == null)
+                return;
+
+            var draggingItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+            if (draggingItem != null)
             {
-                var draggingItem = eventData.pointerDrag.GetComponent<InventoryItem>();
-                if (draggingItem != null)
-                    draggingItem.SetDraggingScale(1.0f);
+                draggingItem.SetDraggingScale(1.0f);
+                draggingItem.SetValidationState(true);
             }
+        }
+        
+        private static bool CanPlaceItem(InventoryItem draggingItem, InventoryItem existingItem)
+        {
+            if (draggingItem.IsFromShop)
+                return existingItem == null;
+
+            return true;
         }
 
         private InventoryItem GetStoredItem() => itemContainer.GetComponentInChildren<InventoryItem>();

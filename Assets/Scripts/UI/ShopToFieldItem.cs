@@ -78,7 +78,7 @@ namespace UI
                 canvas = GetComponentInParent<Canvas>();
 
             normalColor = new Color(1f, 1f, 1f, ghostAlpha);
-            invalidColor = new Color(1, 0.78f, 0.78f, ghostAlpha);
+            invalidColor = new Color(1f, 0.6f, 0.6f, ghostAlpha);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
