@@ -19,29 +19,37 @@ namespace UI
         [SerializeField]
         private TileBase slotTile;
 
-        [Header("Ghost (след)")]
+        [Header("Ghost")]
         [Range(0f, 1f)]
         [SerializeField]
         private float ghostAlpha = 0.7f;
         [SerializeField]
         private Vector2 ghostOffset = Vector2.zero;
 
-        [Header("Logic Data")]
+        [Header("Logic")]
         [SerializeField]
         private TowerData towerData;
 
-        private TowerSystem towerSystem;
-        private GameObject ghost;
-        private RectTransform ghostRect;
-
-        [Header("Animation Settings")]
+        [Header("Animation")]
         [SerializeField]
         private float startScaleMultiplier = 0.75f;
         [SerializeField]
         private float scaleSpeed = 15f;
+        [SerializeField]
+        private float colorLerpSpeed = 15f;
 
-        private float targetScale = 1f;
-        private float currentScale = 1f;
+        private TowerSystem towerSystem;
+
+        private GameObject ghost;
+        private RectTransform ghostRect;
+        private Image ghostImage;
+
+        private float targetScale;
+        private float currentScale;
+
+        private Color normalColor;
+        private Color invalidColor;
+        private Color targetColor;
 
         public void Construct(TowerSystem system)
         {
@@ -52,6 +60,9 @@ namespace UI
         {
             if (canvas == null)
                 canvas = GetComponentInParent<Canvas>();
+
+            normalColor = new Color(1f, 1f, 1f, ghostAlpha);
+            invalidColor = new Color(1, 0.78f, 0.78f, ghostAlpha);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -66,8 +77,9 @@ namespace UI
             currentScale = startScaleMultiplier;
             targetScale = startScaleMultiplier;
 
-            if (ghostRect != null)
-                ghostRect.localScale = new Vector3(currentScale, currentScale, 1f);
+            targetColor = normalColor;
+
+            ghostRect.localScale = Vector3.one * currentScale;
 
             UpdateGhostPosition(eventData);
         }
@@ -98,64 +110,68 @@ namespace UI
 
             var zDist = Mathf.Abs(cam.transform.position.z - fieldTilemap.transform.position.z);
             var worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
-
             var cellPos = fieldTilemap.WorldToCell(worldPos);
+
             if (!FindNearestSlotTile(cellPos, 2, out var closestSlotPos))
                 return;
 
             var spawnPos = fieldTilemap.GetCellCenterWorld(closestSlotPos);
             spawnPos.z = fieldTilemap.transform.position.z;
 
-            if (towerSystem.TryPlaceTower(towerData, closestSlotPos, spawnPos))
-                Debug.Log("Tower placement request sent successfully");
-
-            targetScale = startScaleMultiplier;
+            towerSystem.TryPlaceTower(towerData, closestSlotPos, spawnPos);
         }
 
         private void Update()
         {
-            if (ghostRect)
-            {
-                currentScale = Mathf.Lerp(currentScale, targetScale, Time.deltaTime * scaleSpeed);
-                ghostRect.localScale = new Vector3(currentScale, currentScale, 1f);
-            }
-        }
+            if (!ghostRect) return;
 
+            currentScale = Mathf.Lerp(currentScale, targetScale, Time.deltaTime * scaleSpeed);
+            ghostRect.localScale = Vector3.one * currentScale;
+
+            ghostImage.color = Color.Lerp(
+                ghostImage.color,
+                targetColor,
+                Time.deltaTime * colorLerpSpeed
+            );
+        }
 
         private void CreateGhost(SpriteRenderer prefabRenderer)
         {
-            ghost = new GameObject(name + "_ghost", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            ghost = new GameObject(name + "_ghost",
+                typeof(RectTransform),
+                typeof(CanvasRenderer),
+                typeof(Image));
+
             ghost.transform.SetParent(canvas.transform, false);
             ghostRect = ghost.GetComponent<RectTransform>();
+            ghostImage = ghost.GetComponent<Image>();
 
-            var ghostImage = ghost.GetComponent<Image>();
-            var sprite = prefabRenderer.sprite;
-            ghostImage.sprite = sprite;
+            ghostImage.sprite = prefabRenderer.sprite;
             ghostImage.preserveAspect = true;
             ghostImage.raycastTarget = false;
+            ghostImage.color = normalColor;
 
-            var c = prefabRenderer.color;
-            c.a = ghostAlpha;
-            ghostImage.color = c;
+            var sprite = prefabRenderer.sprite;
 
-            var normalizedPivot = new Vector2(
+            ghostRect.pivot = new Vector2(
                 sprite.pivot.x / sprite.rect.width,
                 sprite.pivot.y / sprite.rect.height
             );
-            ghostRect.pivot = normalizedPivot;
 
             if (Camera.main != null)
             {
                 var pixelsPerUnit = Screen.height / (Camera.main.orthographicSize * 2f);
-                var spriteSizeInUnits = new Vector2(
-                    prefabRenderer.sprite.rect.width / prefabRenderer.sprite.pixelsPerUnit,
-                    prefabRenderer.sprite.rect.height / prefabRenderer.sprite.pixelsPerUnit
+
+                var spriteSize = new Vector2(
+                    sprite.rect.width / sprite.pixelsPerUnit,
+                    sprite.rect.height / sprite.pixelsPerUnit
                 );
 
                 var prefabScale = prefabRenderer.transform.localScale;
-                spriteSizeInUnits.x *= prefabScale.x;
-                spriteSizeInUnits.y *= prefabScale.y;
-                ghostRect.sizeDelta = spriteSizeInUnits * pixelsPerUnit / canvas.scaleFactor;
+                spriteSize.x *= prefabScale.x;
+                spriteSize.y *= prefabScale.y;
+
+                ghostRect.sizeDelta = spriteSize * pixelsPerUnit / canvas.scaleFactor;
             }
 
             ghostRect.anchorMin = ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
@@ -168,6 +184,7 @@ namespace UI
                 eventData.position,
                 eventData.pressEventCamera,
                 out var localPoint);
+
             ghostRect.localPosition = localPoint + ghostOffset;
 
             CheckPlacementValidity(eventData);
@@ -176,12 +193,13 @@ namespace UI
         private void CheckPlacementValidity(PointerEventData eventData)
         {
             var cam = Camera.main;
-            if (cam == null || mapViewport == null || fieldTilemap == null) return;
+            if (!cam || !mapViewport || !fieldTilemap) return;
 
             if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     mapViewport, eventData.position, eventData.pressEventCamera, out var local))
             {
                 targetScale = startScaleMultiplier;
+                targetColor = normalColor;
                 return;
             }
 
@@ -193,11 +211,26 @@ namespace UI
             var cellPos = fieldTilemap.WorldToCell(worldPos);
 
             if (FindNearestSlotTile(cellPos, 2, out var slotPos))
-                targetScale = !towerSystem.IsCellOccupied(slotPos) ? 1f : startScaleMultiplier;
-            else
-                targetScale = startScaleMultiplier;
-        }
+            {
+                var occupied = towerSystem.IsCellOccupied(slotPos);
 
+                if (!occupied)
+                {
+                    targetScale = 1f;
+                    targetColor = normalColor;
+                }
+                else
+                {
+                    targetScale = startScaleMultiplier;
+                    targetColor = invalidColor;
+                }
+            }
+            else
+            {
+                targetScale = startScaleMultiplier;
+                targetColor = normalColor;
+            }
+        }
 
         private bool FindNearestSlotTile(Vector3Int centerPos, int searchRadius, out Vector3Int cellPos)
         {
@@ -224,6 +257,7 @@ namespace UI
                     }
                 }
             }
+
             cellPos = nearestPos;
             return found;
         }
