@@ -89,11 +89,12 @@ MonoBehaviour:
   ghostAlpha: 0.7
   ghostOffset: {x: 0, y: 0}
   enableSnapping: 1
-  snapDistance: 100
-  snapSpeed: 15
+  searchRadius: 3
+  detectionDistance: 50
+  snapSpeed: 18
   towerData: {fileID: 0}
   startScaleMultiplier: 0.6
-  scaleSpeed: 8
+  scaleSpeed: 10
   colorLerpSpeed: 5
 --- !u!222 &899378862108174943
 CanvasRenderer:

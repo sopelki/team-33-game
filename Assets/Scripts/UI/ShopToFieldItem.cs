@@ -26,11 +26,16 @@ namespace UI
         [SerializeField]
         private Vector2 ghostOffset = Vector2.zero;
 
-        [Header("Snapping")]
+        [Header("Snapping & Detection")]
         [SerializeField]
         private bool enableSnapping = true;
+
         [SerializeField]
-        private float snapDistance = 50f;
+        private int searchRadius = 3;
+
+        [SerializeField]
+        private float detectionDistance = 50f;
+
         [SerializeField]
         private float snapSpeed = 20f;
 
@@ -125,7 +130,7 @@ namespace UI
             var worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
             var cellPos = fieldTilemap.WorldToCell(worldPos);
 
-            if (!FindNearestSlotTile(cellPos, 2, out var closestSlotPos))
+            if (!TryFindValidSlot(eventData, cellPos, out var closestSlotPos))
                 return;
 
             var spawnPos = fieldTilemap.GetCellCenterWorld(closestSlotPos);
@@ -234,40 +239,17 @@ namespace UI
             var worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
             var cellPos = fieldTilemap.WorldToCell(worldPos);
 
-            if (!FindNearestSlotTile(cellPos, 2, out var slotPos))
+            if (!TryFindValidSlot(eventData, cellPos, out var slotPos))
                 return false;
 
             if (towerSystem.IsCellOccupied(slotPos))
                 return false;
 
-            var slotWorldCenter = fieldTilemap.GetCellCenterWorld(slotPos);
-            var slotViewport = cam.WorldToViewportPoint(slotWorldCenter);
+            if (!TryGetSlotCanvasPosition(slotPos, eventData, out var slotCanvasLocal))
+                return false;
 
-            var slotLocalInViewport = new Vector2(
-                (slotViewport.x - 0.5f) * mapViewport.rect.width,
-                (slotViewport.y - 0.5f) * mapViewport.rect.height
-            );
-
-            var slotScreenPos = eventData.pressEventCamera
-                ? RectTransformUtility.WorldToScreenPoint(eventData.pressEventCamera,
-                    mapViewport.TransformPoint(slotLocalInViewport))
-                : RectTransformUtility.WorldToScreenPoint(null, mapViewport.TransformPoint(slotLocalInViewport));
-
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                (RectTransform)canvas.transform,
-                slotScreenPos,
-                eventData.pressEventCamera,
-                out var slotCanvasLocal);
-
-            var distance = Vector2.Distance(basePosition, slotCanvasLocal + ghostOffset);
-
-            if (distance < snapDistance)
-            {
-                snapPosition = slotCanvasLocal + ghostOffset;
-                return true;
-            }
-
-            return false;
+            snapPosition = slotCanvasLocal + ghostOffset;
+            return true;
         }
 
         private void CheckPlacementValidity(PointerEventData eventData)
@@ -290,7 +272,7 @@ namespace UI
             var worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
             var cellPos = fieldTilemap.WorldToCell(worldPos);
 
-            if (FindNearestSlotTile(cellPos, 2, out var slotPos))
+            if (TryFindValidSlot(eventData, cellPos, out var slotPos))
             {
                 var occupied = towerSystem.IsCellOccupied(slotPos);
 
@@ -312,15 +294,77 @@ namespace UI
             }
         }
 
-        private bool FindNearestSlotTile(Vector3Int centerPos, int searchRadius, out Vector3Int cellPos)
+
+        private bool TryFindValidSlot(PointerEventData eventData, Vector3Int centerCell, out Vector3Int validSlot)
+        {
+            validSlot = Vector3Int.zero;
+
+            if (!FindNearestSlotTile(centerCell, searchRadius, out var nearestSlot))
+                return false;
+
+            if (!TryGetSlotCanvasPosition(nearestSlot, eventData, out var slotCanvasPos))
+                return false;
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)canvas.transform,
+                eventData.position,
+                eventData.pressEventCamera,
+                out var cursorCanvasPos);
+
+            var cursorPosition = cursorCanvasPos + ghostOffset;
+            var distance = Vector2.Distance(cursorPosition, slotCanvasPos + ghostOffset);
+
+            if (distance <= detectionDistance)
+            {
+                validSlot = nearestSlot;
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool TryGetSlotCanvasPosition(Vector3Int slotCell, PointerEventData eventData,
+            out Vector2 canvasPosition)
+        {
+            canvasPosition = Vector2.zero;
+
+            var cam = Camera.main;
+            if (!cam || !mapViewport || !fieldTilemap)
+                return false;
+
+            var slotWorldCenter = fieldTilemap.GetCellCenterWorld(slotCell);
+
+            var slotViewport = cam.WorldToViewportPoint(slotWorldCenter);
+
+            var slotLocalInViewport = new Vector2(
+                (slotViewport.x - 0.5f) * mapViewport.rect.width,
+                (slotViewport.y - 0.5f) * mapViewport.rect.height
+            );
+
+            var slotScreenPos = eventData.pressEventCamera
+                ? RectTransformUtility.WorldToScreenPoint(
+                    eventData.pressEventCamera,
+                    mapViewport.TransformPoint(slotLocalInViewport))
+                : RectTransformUtility.WorldToScreenPoint(
+                    null,
+                    mapViewport.TransformPoint(slotLocalInViewport));
+
+            return RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)canvas.transform,
+                slotScreenPos,
+                eventData.pressEventCamera,
+                out canvasPosition);
+        }
+
+        private bool FindNearestSlotTile(Vector3Int centerPos, int slotSearchRadius, out Vector3Int cellPos)
         {
             var nearestPos = Vector3Int.zero;
             var nearestDistance = float.MaxValue;
             var found = false;
 
-            for (var x = centerPos.x - searchRadius; x <= centerPos.x + searchRadius; x++)
+            for (var x = centerPos.x - slotSearchRadius; x <= centerPos.x + slotSearchRadius; x++)
             {
-                for (var y = centerPos.y - searchRadius; y <= centerPos.y + searchRadius; y++)
+                for (var y = centerPos.y - slotSearchRadius; y <= centerPos.y + slotSearchRadius; y++)
                 {
                     var checkPos = new Vector3Int(x, y, centerPos.z);
                     var tile = fieldTilemap.GetTile(checkPos);
