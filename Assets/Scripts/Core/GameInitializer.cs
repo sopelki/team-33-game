@@ -36,7 +36,7 @@ namespace Core
         [SerializeField]
         private CameraSetup cameraSetup;
         [SerializeField]
-        private MenuScripts.GameOverMenu gameOverMenu;
+        private MenuScripts.EndGameMenu endGameMenu;
 
         [Header("Unit Settings")]
         [SerializeField]
@@ -59,14 +59,10 @@ namespace Core
         private List<WaveData> waves;
         [SerializeField]
         private float wavesDelay = 5f;
-
-        [Header("Panel Settings")]
-        [SerializeField]
-        private GameObject winPanel;
         
         [Header("Trap Settings")]
         [SerializeField] private TrapViewManager trapViewManager;
-
+        
         private MonsterSystem monsterSystem;
         private MonsterSpawner monsterSpawner;
         private CastleModel castleModel;
@@ -120,14 +116,14 @@ namespace Core
             else
                 Debug.LogWarning("GameInitializer: No castle found in objects. Check level JSON or ObjectMappings.");
 
-            if (gameOverMenu != null)
-                gameOverMenu.Initialize(castleModel);
+            if (endGameMenu != null)
+                endGameMenu.Initialize(castleModel);
 
             trapsModel = new TrapsModel();
             trapSystem = new TrapSystem(monsterSystem, trapsModel);
             monsterSpawner = new MonsterSpawner(spawnHexes, field, monsterSystem, unitSystem, waves, tilemap, trapSystem);
             waveManager = new WaveManager(monsterSpawner, monsterSystem, wavesDelay);
-            waveManager.OnGameWon += HandleGameWon;
+            waveManager.OnGameWon += endGameMenu.OpenWinMenu;
 
             towersModel = new TowersModel();
             towerSystem = new TowerSystem(castleSystem, towersModel, monsterSystem, projectileSystem);
@@ -186,12 +182,6 @@ namespace Core
                 item.Construct(trapSystem, field);
 
             waveManager.StartFirstWave();
-        }
-
-        private void HandleGameWon()
-        {
-            Time.timeScale = 0f;
-            winPanel.SetActive(true);
         }
     }
 }

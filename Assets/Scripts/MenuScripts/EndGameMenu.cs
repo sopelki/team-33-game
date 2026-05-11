@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Logic.Castle;
+using UnityEngine.EventSystems;
 
 namespace MenuScripts
 {
-    public class GameOverMenu : MonoBehaviour
+    public class EndGameMenu : MonoBehaviour
     {
         public GameObject gameOverPanel;
+        public GameObject gameWonPanel;
 
         [SerializeField]
         private Core.GameInitializer gameInitializer;
@@ -25,11 +28,9 @@ namespace MenuScripts
                 OpenGameOver();
         }
 
-        public void OpenGameOver()
-        {
-            gameOverPanel.SetActive(true);
-            Time.timeScale = 0f;
-        }
+        public void OpenGameOver() => OpenMenu(gameOverPanel);
+
+        public void OpenWinMenu() => OpenMenu(gameWonPanel);
 
         public void RestartGame()
         {
@@ -41,6 +42,16 @@ namespace MenuScripts
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene("MainMenu");
+        }
+
+        private static void OpenMenu(GameObject menu)
+        {
+            FindObjectsByType<MonoBehaviour>()
+                .Where(mb => mb is IBeginDragHandler or IEndDragHandler or IDragHandler)
+                .ToList()
+                .ForEach(mb => mb.enabled = false);
+            menu.SetActive(true);
+            Time.timeScale = 0f;
         }
 
         private void OnDestroy()
