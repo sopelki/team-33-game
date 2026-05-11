@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4748470915983087717}
   - component: {fileID: 7771766130602506605}
   - component: {fileID: 3363374694386802203}
+  - component: {fileID: -7808431081229951743}
   m_Layer: 5
   m_Name: MenuButton
   m_TagString: Untagged
@@ -156,6 +157,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-7808431081229951743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4719975985105502329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.2509804}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1001 &6250625779974735791
 PrefabInstance:
   m_ObjectHideFlags: 0
