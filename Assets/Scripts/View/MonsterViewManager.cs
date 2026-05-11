@@ -44,9 +44,7 @@ namespace View
         private void HandleTick()
         {
             foreach (var pair in views)
-            {
                 pair.Value.UpdateView();
-            }
         }
 
         private void HandleDied(MonsterModel model)

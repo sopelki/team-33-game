@@ -62,6 +62,8 @@ namespace Logic.Tower
             }
         }
 
+        public bool IsCellOccupied(Vector3Int cellPos) => towersModel.Towers.Any(t => t.GridPosition == cellPos);
+
         public bool TryPlaceTower(TowerData data, Vector3Int cellPos, Vector3 worldPos)
         {
             if (towersModel.Towers.Any(t => t.GridPosition == cellPos))
@@ -77,8 +79,6 @@ namespace Logic.Tower
             towersModel.AddTower(tower);
             return true;
         }
-        
-        // public void Clear() => towersModel.Clear();
 
         private void Shoot(TowerModel tower, MonsterModel target)
         {

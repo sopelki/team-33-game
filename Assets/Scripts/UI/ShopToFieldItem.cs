@@ -82,7 +82,7 @@ namespace UI
         {
             if (ghost != null)
                 Destroy(ghost);
-            
+
             var cam = Camera.main;
             if (cam == null || mapViewport == null || fieldTilemap == null)
                 return;
@@ -108,7 +108,7 @@ namespace UI
 
             if (towerSystem.TryPlaceTower(towerData, closestSlotPos, spawnPos))
                 Debug.Log("Tower placement request sent successfully");
-            
+
             targetScale = startScaleMultiplier;
         }
 
@@ -192,7 +192,10 @@ namespace UI
             var worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
             var cellPos = fieldTilemap.WorldToCell(worldPos);
 
-            targetScale = FindNearestSlotTile(cellPos, 2, out _) ? 1f : startScaleMultiplier;
+            if (FindNearestSlotTile(cellPos, 2, out var slotPos))
+                targetScale = !towerSystem.IsCellOccupied(slotPos) ? 1f : startScaleMultiplier;
+            else
+                targetScale = startScaleMultiplier;
         }
 
 

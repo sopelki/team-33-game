@@ -59,10 +59,7 @@ namespace View
 
             // Разворот спрайта по направлению движения
             if (spriteRenderer != null && isMoving)
-            {
                 spriteRenderer.flipX = model.CurrentDirection.x < 0;
-            }
-            
         }
     }
 

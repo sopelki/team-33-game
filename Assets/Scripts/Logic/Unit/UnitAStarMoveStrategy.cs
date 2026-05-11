@@ -237,9 +237,7 @@ namespace Logic.Unit
             pathIndex = 1;
 
             if (currentPath == null || currentPath.Count <= 1)
-            {
                 currentPath = null;
-            }
         }
 
         private void MoveAlongPath()

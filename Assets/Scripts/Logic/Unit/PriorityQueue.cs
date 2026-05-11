@@ -25,9 +25,7 @@ namespace Logic.Unit
             var first = _queues.First();
             var item = first.Value.Dequeue();
             if (first.Value.Count == 0)
-            {
                 _queues.Remove(first.Key);
-            }
             Count--;
             return item;
         }

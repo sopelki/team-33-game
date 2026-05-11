@@ -21574,7 +21574,7 @@ PrefabInstance:
     - target: {fileID: 7918087666245546974, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -25362254402286421, guid: adb2d23f33c45b54bb2cf3e6be3af10f, type: 3}
+      objectReference: {fileID: -4790209341967303251, guid: 35c09e87da8b3784db41c173b5ae9f7b, type: 3}
     - target: {fileID: 8274337136036674045, guid: 938a2403f8864b54abc1b97f3f8e6515, type: 3}
       propertyPath: canvas
       value: 
