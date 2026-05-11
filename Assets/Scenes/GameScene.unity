@@ -1213,7 +1213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3775926294943505921, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
       propertyPath: m_text
-      value: Gold
+      value: "\u0417\u043E\u043B\u043E\u0442\u043E"
       objectReference: {fileID: 0}
     - target: {fileID: 4358207405198625566, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
       propertyPath: m_AnchorMax.y
@@ -21267,9 +21267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3775926294943505921, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
       propertyPath: m_text
-      value: 'HP
-
-'
+      value: HP
       objectReference: {fileID: 0}
     - target: {fileID: 4358207405198625566, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
       propertyPath: m_AnchorMax.y
@@ -22241,6 +22239,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 62953399}
     m_Modifications:
+    - target: {fileID: 1828571262631121318, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2165089604719921017, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -22283,9 +22285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3775926294943505921, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
       propertyPath: m_text
-      value: 'Food
-
-'
+      value: "\u0415\u0434\u0430"
       objectReference: {fileID: 0}
     - target: {fileID: 4358207405198625566, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
       propertyPath: m_AnchorMax.y
