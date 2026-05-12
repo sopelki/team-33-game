@@ -45,10 +45,10 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 2800000, guid: 24ec0e140fb444a44ab96ee80844e18e, type: 3}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
+  - {fileID: 4879558530717255889}
   - {fileID: -3032411254372567658}
   - {fileID: 1822610512943261145}
-  - {fileID: 4879558530717255889}
-  m_RendererFeatureMap: 96f539d207b6ead5d925e0db9a364b19d1082174a1acb743
+  m_RendererFeatureMap: d1082174a1acb74396f539d207b6ead5d925e0db9a364b19
   m_UseNativeRenderPass: 0
   m_LayerMask:
     serializedVersion: 2
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: FullScreenPassRendererFeature
+  m_Name: VHS
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
   m_Active: 1
   injectionPoint: 550
