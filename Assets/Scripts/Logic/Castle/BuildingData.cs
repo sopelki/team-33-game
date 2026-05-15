@@ -18,18 +18,18 @@ namespace Logic.Castle
         [SerializeField]
         private string effectLabel = "Производство ресурсов";
 
-        public TooltipContent GetTooltipContent()
+        public TooltipContent GetTooltipContent(bool isBought = false)
         {
-            // #FFD700 - Золотой
-            // #FFEE58 - Светло-желтый
-            // #66BB6A - Зеленый
+            var priceInfo = isBought
+                ? string.Empty
+                : $"Цена: <color=#FFEE58>{baseCost} золота</color>";
 
             return new TooltipContent
             {
                 Title = $"<color=#FFD700><b>{type.GetRussianName()}</b></color>",
                 Description = $"<color=#BDBDBD>{description}</color>",
-                Cost = $"<color=#FFEE58>Цена: {baseCost} золота</color>",
-                SpecialInfo = $"<color=#66BB6A>{effectLabel}: +{baseProduction}</color>"
+                Cost = priceInfo,
+                SpecialInfo = $"{effectLabel}: <color=#66BB6A>+{baseProduction}</color>"
             };
         }
     }

@@ -27,7 +27,7 @@ namespace UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            GetComponent<TooltipTrigger>().StopDisplay();
+            GetComponent<TooltipTrigger>()?.StopDisplay();
 
             Debug.Log(canvas);
             if (inventoryItemPrefab == null || canvas == null)

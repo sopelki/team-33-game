@@ -5,11 +5,11 @@ namespace Interfaces
         public string Title;
         public string Description;
         public string Cost;
-        public string SpecialInfo; // "Дает +5 золота" или "Урон: 10"
+        public string SpecialInfo;
     }
 
     public interface ITooltipProvider
     {
-        TooltipContent GetTooltipContent();
+        TooltipContent GetTooltipContent(bool isBought = false);
     }
 }

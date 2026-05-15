@@ -18,7 +18,7 @@ namespace Logic.Tower
         [TextArea]
         public string description;
 
-        public TooltipContent GetTooltipContent()
+        public TooltipContent GetTooltipContent(bool isBought = false)
         {
             // #EF5350 - Красный (Урон)
             // #26C6DA - Голубой (Дальность)

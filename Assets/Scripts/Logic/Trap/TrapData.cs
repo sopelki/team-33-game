@@ -33,7 +33,7 @@ namespace Logic.Trap
             public string description;
 
             // TODO: допилить инфу
-            public TooltipContent GetTooltipContent()
+            public TooltipContent GetTooltipContent(bool isBought = false)
             {
                 return new TooltipContent
                 {

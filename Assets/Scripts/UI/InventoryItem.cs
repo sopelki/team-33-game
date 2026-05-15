@@ -66,6 +66,8 @@ namespace UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            GetComponent<TooltipTrigger>()?.StopDisplay();
+            
             canvasGroup.blocksRaycasts = false;
             targetColor = invalidColor;
 
@@ -117,7 +119,8 @@ namespace UI
             var trigger = GetComponent<TooltipTrigger>();
             if (trigger == null)
                 trigger = gameObject.AddComponent<TooltipTrigger>();
-            trigger.SetContent(buildingData);
+            
+            trigger.SetContent(buildingData, true);
         }
 
         public void Place(Transform slot)

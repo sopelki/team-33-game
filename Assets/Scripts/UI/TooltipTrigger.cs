@@ -9,15 +9,25 @@ namespace UI
     {
         private ITooltipProvider provider;
         private Coroutine delayCoroutine;
+        private bool isBought;
+
         [SerializeField]
         private float delay = 0.5f;
 
-        public void SetContent(ITooltipProvider tooltipProvider) => provider = tooltipProvider;
+        public void SetContent(ITooltipProvider tooltipProvider, bool bought = false)
+        {
+            provider = tooltipProvider;
+            isBought = bought;
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (eventData.pointerDrag != null)
+                return;
+
             if (provider == null)
                 return;
+
             delayCoroutine = StartCoroutine(ShowWithDelay());
         }
 
@@ -26,13 +36,16 @@ namespace UI
         private IEnumerator ShowWithDelay()
         {
             yield return new WaitForSecondsRealtime(delay);
-            TooltipUI.Instance.Show(provider.GetTooltipContent());
+            TooltipUI.Instance.Show(provider.GetTooltipContent(isBought));
         }
 
         public void StopDisplay()
         {
-            if (delayCoroutine != null) StopCoroutine(delayCoroutine);
-            if (TooltipUI.Instance != null) TooltipUI.Instance.Hide();
+            if (delayCoroutine != null)
+                StopCoroutine(delayCoroutine);
+
+            if (TooltipUI.Instance != null)
+                TooltipUI.Instance.Hide();
         }
 
         private void OnDisable() => StopDisplay();
