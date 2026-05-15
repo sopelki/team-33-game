@@ -113,6 +113,11 @@ namespace UI
         {
             buildingData = data;
             IsFromShop = fromShop;
+
+            var trigger = GetComponent<TooltipTrigger>();
+            if (trigger == null)
+                trigger = gameObject.AddComponent<TooltipTrigger>();
+            trigger.SetContent(buildingData);
         }
 
         public void Place(Transform slot)

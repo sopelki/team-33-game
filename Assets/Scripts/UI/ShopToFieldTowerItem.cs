@@ -82,14 +82,21 @@ namespace UI
 
             normalColor = new Color(1f, 1f, 1f, ghostAlpha);
             invalidColor = new Color(1f, 0.6f, 0.6f, ghostAlpha);
+
+            var trigger = gameObject.AddComponent<TooltipTrigger>();
+            trigger.SetContent(towerData);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (towerSystem == null) return;
+            GetComponent<TooltipTrigger>().StopDisplay();
+
+            if (towerSystem == null)
+                return;
 
             var prefabRenderer = towerData.viewPrefab.GetComponentInChildren<SpriteRenderer>();
-            if (prefabRenderer == null) return;
+            if (prefabRenderer == null)
+                return;
 
             CreateGhost(prefabRenderer);
 
@@ -145,7 +152,8 @@ namespace UI
 
         private void Update()
         {
-            if (!ghostRect) return;
+            if (!ghostRect)
+                return;
 
             if (isSnapping)
             {
@@ -283,7 +291,8 @@ namespace UI
         private void CheckPlacementValidity(PointerEventData eventData)
         {
             var cam = Camera.main;
-            if (!cam || !mapViewport || !fieldTilemap) return;
+            if (!cam || !mapViewport || !fieldTilemap)
+                return;
 
             if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
                     mapViewport, eventData.position, eventData.pressEventCamera, out var local))
