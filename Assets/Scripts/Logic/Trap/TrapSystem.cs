@@ -38,17 +38,20 @@ namespace Logic.Trap
         public bool CanPlaceTrap(TrapData data, Vector2Int axial)
         {
             if (castleSystem.Model.Gold < data.baseCost) return false;
-
-            var centerHex = field.GetHex(axial);
-            if (centerHex == null || centerHex.type != HexagonType.Path) return false;
-
             var hexes = GetTrapOccupiedHexes(axial);
+            
             foreach (var h in hexes)
             {
-                if (trapsModel.Traps.Any(t => t.Hexes.Contains(h))) return false;
-                if (field.GetHex(h) == null) return false;
+                var hexObj = field.GetHex(h);
+                
+                if (hexObj == null) 
+                    return false;
+                if (hexObj.type != HexagonType.Path)
+                    return false;
+                
+                if (trapsModel.Traps.Any(t => t.Hexes.Contains(h))) 
+                    return false;
             }
-
             return true;
         }
 
