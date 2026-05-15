@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using Interfaces;
 
 namespace Logic.Trap
 {
@@ -7,7 +7,7 @@ namespace Logic.Trap
     namespace Logic.Trap
     {
         [CreateAssetMenu(menuName = "Trap/Trap Data")]
-        public class TrapData : ScriptableObject
+        public class TrapData : ScriptableObject, ITooltipProvider
         {
             public TrapType trapType;
             
@@ -15,7 +15,7 @@ namespace Logic.Trap
             public int baseCost;
 
             [Header("Visual")]
-            public GameObject viewPrefab;   
+            public GameObject viewPrefab;
 
             [Header("Damage Zone")]
             public float tickInterval;
@@ -29,6 +29,22 @@ namespace Logic.Trap
             public int criticalDamage;
             public int requiredMonsters = 3;
             public int triggerRadius = 5;
+            private ITooltipProvider tooltipProviderImplementation;
+
+            [Header("Tooltip")]
+            public string description;
+
+            // TODO: допилить инфу
+            public TooltipContent GetTooltipContent(bool isBought = false)
+            {
+                return new TooltipContent
+                {
+                    Title = trapType.ToString(),
+                    Description = description,
+                    Cost = $"Цена: ",
+                    SpecialInfo = $"Урон: "
+                };
+            }
         }
     }
 }

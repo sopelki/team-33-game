@@ -66,6 +66,8 @@ namespace UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            GetComponent<TooltipTrigger>()?.StopDisplay();
+
             canvasGroup.blocksRaycasts = false;
             targetColor = invalidColor;
 
@@ -113,6 +115,12 @@ namespace UI
         {
             buildingData = data;
             IsFromShop = fromShop;
+
+            var trigger = GetComponent<TooltipTrigger>();
+            if (trigger == null)
+                trigger = gameObject.AddComponent<TooltipTrigger>();
+
+            trigger.SetContent(buildingData, true);
         }
 
         public void Place(Transform slot)
@@ -131,6 +139,12 @@ namespace UI
             transform.SetParent(dragHandler.MainCanvas.transform);
         }
 
-        private void ReturnToStart() => transform.SetParent(OriginalParent);
+        private void ReturnToStart()
+        {
+            transform.SetParent(OriginalParent);
+
+            if (dragHandler != null)
+                dragHandler.ResetPosition();
+        }
     }
 }
