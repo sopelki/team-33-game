@@ -29,6 +29,7 @@ namespace Logic.Castle
                 Title = $"<color=#FFD700><b>{type.GetRussianName()}</b></color>",
                 Description = $"<color=#BDBDBD>{description}</color>",
                 Cost = priceInfo,
+                //TODO: Добавить возможность вручную прописывать эффект
                 SpecialInfo = $"{effectLabel}: <color=#66BB6A>+{baseProduction}</color>"
             };
         }
