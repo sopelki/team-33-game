@@ -1,33 +1,39 @@
 ﻿using Logic.Trap;
-using Field;
-using HexagonScripts;
 using Logic.Trap.Logic.Trap;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace UI
 {
-    public class ShopToFieldTrapItem : MonoBehaviour,
-        IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class ShopToFieldTrapItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [Header("UI & Scene")]
         [SerializeField] private Canvas canvas;
         [SerializeField] private RectTransform mapViewport;
-        [SerializeField] private Tilemap tilemap;
+        [SerializeField] private Tilemap fieldTilemap;
+
+        [Header("Ghost Visuals")]
+        [SerializeField] private float ghostAlpha = 0.7f;
+        [SerializeField] private float startScaleMultiplier = 0.75f;
+        [SerializeField] private float scaleSpeed = 15f;
+        [SerializeField] private float colorLerpSpeed = 15f;
 
         [Header("Logic")]
         [SerializeField] private TrapData trapData;
-
-        [Header("Ghost")]
-        [SerializeField] private float ghostAlpha = 0.7f;
+        [SerializeField] private GameObject highlightPrefab; 
 
         private TrapSystem trapSystem;
         private Field.Field field;
-
         private GameObject ghost;
+        private RectTransform ghostRect;
         private Image ghostImage;
+        private List<GameObject> highlights = new();
+
+        private float targetScale, currentScale;
+        private Color targetColor, normalColor, invalidColor;
 
         public void Construct(TrapSystem trapSystem, Field.Field field)
         {
@@ -35,153 +41,141 @@ namespace UI
             this.field = field;
         }
 
+        private void Awake()
+        {
+            if (canvas == null) canvas = GetComponentInParent<Canvas>();
+            normalColor = new Color(1f, 1f, 1f, ghostAlpha);
+            invalidColor = new Color(1f, 0.4f, 0.4f, ghostAlpha);
+        }
+
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (trapSystem == null) return;
+            
+            foreach (var h in highlights)
+                if (h != null) 
+                    Destroy(h);
+            highlights.Clear();
 
             var prefabRenderer = trapData.viewPrefab.GetComponentInChildren<SpriteRenderer>();
-            if (prefabRenderer == null) return;
-
-            ghost = new GameObject("TrapGhost",
-                typeof(RectTransform),
-                typeof(CanvasRenderer),
-                typeof(Image));
-
+    
+            ghost = new GameObject("TrapGhost", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
             ghost.transform.SetParent(canvas.transform, false);
-
+            ghostRect = ghost.GetComponent<RectTransform>();
             ghostImage = ghost.GetComponent<Image>();
             ghostImage.sprite = prefabRenderer.sprite;
-            ghostImage.color = new Color(1, 1, 1, ghostAlpha);
+            ghostImage.preserveAspect = true;
             ghostImage.raycastTarget = false;
+
+            currentScale = startScaleMultiplier;
+            targetScale = startScaleMultiplier;
+            targetColor = normalColor;
+
+            // Создаем ровно 3 контура
+            for (int i = 0; i < 3; i++)
+            {
+                var h = Instantiate(highlightPrefab);
+                h.SetActive(false);
+                highlights.Add(h);
+            }
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (ghost == null) return;
+            if (ghostRect == null) return;
 
+            // Движение за мышкой
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvas.transform as RectTransform,
-                eventData.position,
-                eventData.pressEventCamera,
+                (RectTransform)canvas.transform, 
+                eventData.position, 
+                eventData.pressEventCamera, 
                 out var localPoint);
+            ghostRect.localPosition = localPoint;
 
-            ghost.GetComponent<RectTransform>().localPosition = localPoint;
+            UpdatePlacementFeedback(eventData);
+        }
+
+        private void UpdatePlacementFeedback(PointerEventData eventData)
+        {
+            if (TryGetCellUnderMouse(eventData, out Vector3Int cellPos))
+            {
+                Vector2Int axial = HexagonScripts.HexagonMath.OffsetToAxial(cellPos.x, cellPos.y);
+                bool isValid = trapSystem.CanPlaceTrap(trapData, axial);
+        
+                targetColor = isValid ? normalColor : invalidColor;
+                targetScale = isValid ? 1.05f : startScaleMultiplier;
+
+                var hexes = trapSystem.GetTrapOccupiedHexes(axial);
+                for (int i = 0; i < highlights.Count; i++)
+                {
+                    var hexObj = field.GetHex(hexes[i]);
+                    if (hexObj != null)
+                    {
+                        highlights[i].SetActive(true);
+                        // Ставим Z = -0.5f, чтобы контур был ГАРАНТИРОВАННО над землей
+                        Vector3 worldPos = fieldTilemap.GetCellCenterWorld(hexObj.offset);
+                        worldPos.z = -0.5f; 
+                        highlights[i].transform.position = worldPos;
+                
+                        if (highlights[i].TryGetComponent<SpriteRenderer>(out var sr))
+                        {
+                            sr.color = isValid ? new Color(0, 1, 0, 0.7f) : new Color(1, 0, 0, 0.7f);
+                        }
+                    }
+                    else highlights[i].SetActive(false);
+                }
+            }
+            else
+            {
+                // Теперь здесь КРАСНЫЙ (invalidColor), а не синий
+                targetColor = invalidColor; 
+                targetScale = startScaleMultiplier;
+                highlights.ForEach(h => h.SetActive(false));
+            }
+        }
+
+        // ПОЛНАЯ КОПИЯ МЕТОДА ИЗ БАШЕН
+        private bool TryGetCellUnderMouse(PointerEventData eventData, out Vector3Int cellPos)
+        {
+            cellPos = Vector3Int.zero;
+            var cam = Camera.main;
+            if (!cam || !mapViewport || !fieldTilemap) return false;
+
+            // ВАЖНО: используем eventData.pressEventCamera как в башнях
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(mapViewport, eventData.position, eventData.pressEventCamera, out var local))
+                return false;
+
+            var u = local.x / mapViewport.rect.width + 0.5f;
+            var v = local.y / mapViewport.rect.height + 0.5f;
+
+            if (u < 0f || u > 1f || v < 0f || v > 1f) return false;
+
+            var zDist = Mathf.Abs(cam.transform.position.z - fieldTilemap.transform.position.z);
+            var worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
+            cellPos = fieldTilemap.WorldToCell(worldPos);
+            
+            return true;
+        }
+
+        private void Update()
+        {
+            if (ghost == null) return;
+            currentScale = Mathf.Lerp(currentScale, targetScale, Time.deltaTime * scaleSpeed);
+            ghostRect.localScale = Vector3.one * currentScale;
+            ghostImage.color = Color.Lerp(ghostImage.color, targetColor, Time.deltaTime * colorLerpSpeed);
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            // if (ghost != null)
-            //     Destroy(ghost);
-            //
-            // var cam = Camera.main;
-            // if (!cam) return;
-            //
-            // var world = cam.ScreenToWorldPoint(eventData.position);
-            // var cell = fieldTilemap.WorldToCell(world);
-            //
-            // var axial = HexagonMath.OffsetToAxial(cell.x, cell.y);
-            //
-            // var hex = field.GetHex(axial);
-            // if (hex == null)
-            //     return;
-            //
-            // if (!field.IsWalkable(hex))
-            //     return;
-            //
-            // trapSystem.TryPlaceTrap(trapData, axial);
-            
-            if (ghost != null)
+            if (TryGetCellUnderMouse(eventData, out Vector3Int cellPos))
             {
-                Destroy(ghost);
-                ghost = null;
+                Vector2Int axial = HexagonScripts.HexagonMath.OffsetToAxial(cellPos.x, cellPos.y);
+                trapSystem.TryPlaceTrap(trapData, axial);
             }
 
-            if (trapSystem == null || field == null)
-                return;
-
-            var cam = Camera.main;
-            if (!cam || mapViewport == null)
-                return;
-
-            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                    mapViewport,
-                    eventData.position,
-                    eventData.pressEventCamera,
-                    out var local))
-                return;
-
-            // переводим в нормализованные координаты viewport
-            var u = local.x / mapViewport.rect.width + 0.5f;
-            var v = local.y / mapViewport.rect.height + 0.5f;
-
-            var zDist = Mathf.Abs(cam.transform.position.z - tilemap.transform.position.z);
-
-            var world = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
-
-            var cell = tilemap.WorldToCell(world);
-
-            Debug.Log("Offset cell: " + cell);
-
-            var axial = HexagonScripts.HexagonMath.OffsetToAxial(cell.x, cell.y);
-
-            Debug.Log("Axial: " + axial);
-
-            var hex = field.GetHex(axial);
-            if (hex == null)
-                return;
-
-            if (!field.IsWalkable(hex))
-                return;
-
-            trapSystem.TryPlaceTrap(trapData, axial);
-        
-
-            
-            // if (ghost != null)
-            //     Destroy(ghost);
-            //
-            // if (trapSystem == null || field == null)
-            // {
-            //     Debug.LogError("TrapSystem or Field is NULL");
-            //     return;
-            // }
-            //
-            // var cam = Camera.main;
-            // if (!cam)
-            // {
-            //     Debug.LogError("Camera is NULL");
-            //     return;
-            // }
-            //
-            // var world = cam.ScreenToWorldPoint(eventData.position);
-            // var cell = fieldTilemap.WorldToCell(world);
-            //
-            // Debug.Log("Offset cell: " + cell);
-            //
-            // // 🔥 ВАЖНО — перевести в axial
-            // var axial = HexagonScripts.HexagonMath.OffsetToAxial(cell.x, cell.y);
-            //
-            // Debug.Log("Trying to place trap at axial: " + axial);
-            //
-            // var hex = field.GetHex(axial);
-            //
-            // Debug.Log("Hex exists? " + (hex != null));
-            //
-            // if (hex == null)
-            //     return;
-            //
-            // Debug.Log("Hex type: " + hex.type);
-            //
-            // if (!field.IsWalkable(hex))
-            // {
-            //     Debug.Log("Hex is NOT walkable");
-            //     return;
-            // }
-            //
-            // var placed = trapSystem.TryPlaceTrap(trapData, axial);
-            //
-            // Debug.Log("Trap placed? " + placed);
-
+            if (ghost != null) Destroy(ghost);
+            highlights.ForEach(h => { if(h != null) Destroy(h); });
+            highlights.Clear();
         }
     }
 }

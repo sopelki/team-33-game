@@ -8,7 +8,7 @@ namespace Logic.Trap
     public class TrapModel
     {
         public TrapData Data { get; }
-        public Vector2Int Hex { get; }
+        public List<Vector2Int> Hexes { get; }
 
         public bool IsTriggered { get; private set; }
 
@@ -18,10 +18,10 @@ namespace Logic.Trap
         // Для SlowZone — храним конкретные дебаффы
         public readonly Dictionary<MonsterModel, SlowDebuff> ActiveSlowDebuffs = new();
 
-        public TrapModel(TrapData data, Vector2Int hex)
+        public TrapModel(TrapData data, List<Vector2Int> hexes)
         {
             Data = data;
-            Hex = hex;
+            Hexes = hexes;
         }
 
         public void Trigger()

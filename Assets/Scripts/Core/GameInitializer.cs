@@ -120,7 +120,7 @@ namespace Core
                 endGameMenu.Initialize(castleModel);
 
             trapsModel = new TrapsModel();
-            trapSystem = new TrapSystem(monsterSystem, trapsModel);
+            trapSystem = new TrapSystem(monsterSystem, trapsModel, field, castleSystem);
             monsterSpawner = new MonsterSpawner(spawnHexes, field, monsterSystem, unitSystem, waves, tilemap, trapSystem);
             waveManager = new WaveManager(monsterSpawner, monsterSystem, wavesDelay);
             waveManager.OnGameWon += endGameMenu.OpenWinMenu;

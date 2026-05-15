@@ -32,18 +32,34 @@
 
             private void HandleTrapAdded(TrapModel trap)
             {
-                Debug.Log($"Trap axial: {trap.Hex}");
-                var hexObj = field.GetHex(trap.Hex);
-                if (hexObj == null)
-                    return;
+                // var hexObj = field.GetHex(trap.Hex);
+                // if (hexObj == null)
+                //     return;
+                //
+                // var worldPos = tilemap.GetCellCenterWorld(hexObj.offset);
+                //
+                // // worldPos.z = -0.1f;   // ✅ очень важно
+                //
+                // var viewGo = Instantiate(trap.Data.viewPrefab, worldPos, Quaternion.identity);
+                // var view = viewGo.GetComponent<TrapView>();
+                //
+                // views.Add(trap, view);
+                var sumPos = Vector3.zero;
+                foreach (var h in trap.Hexes)
+                {
+                    var hexObj = field.GetHex(h);
+                    sumPos += tilemap.GetCellCenterWorld(hexObj.offset);
+                }
+                var centerPos = sumPos / trap.Hexes.Count;
+                centerPos.z = -0.1f;
 
-                var worldPos = tilemap.GetCellCenterWorld(hexObj.offset);
-
-                // worldPos.z = -0.1f;   // ✅ очень важно
-
-                var viewGo = Instantiate(trap.Data.viewPrefab, worldPos, Quaternion.identity);
+                var viewGo = Instantiate(trap.Data.viewPrefab, centerPos, Quaternion.identity);
                 var view = viewGo.GetComponent<TrapView>();
-
+                var prefabRenderer = trap.Data.viewPrefab.GetComponentInChildren<SpriteRenderer>();
+                if (prefabRenderer != null)
+                {
+                    view.Initialize(prefabRenderer.sprite);
+                }
                 views.Add(trap, view);
             }
         }

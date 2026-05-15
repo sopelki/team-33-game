@@ -10,6 +10,9 @@ namespace Logic.Trap
         public class TrapData : ScriptableObject
         {
             public TrapType trapType;
+            
+            [Header("Cost")]
+            public int baseCost;
 
             [Header("Visual")]
             public GameObject viewPrefab;   

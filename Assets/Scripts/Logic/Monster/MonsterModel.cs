@@ -85,7 +85,12 @@ namespace Logic.Monster
 
         public void SetHex(Vector2Int hex) => CurrentHex = hex;
 
-        public void TakeDamage(int damage) => currentHealth -= damage;
+        // public void TakeDamage(int damage) => currentHealth -= damage;
+        public void TakeDamage(int damage)
+        {
+            Debug.Log($"урон {damage}");
+            currentHealth -= damage;
+        }
 
         public void SetStrategies(IMovementStrategy movement, IAttackStrategy attack)
         {
