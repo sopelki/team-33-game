@@ -34,12 +34,6 @@ namespace Logic.Trap
 
         public TooltipContent GetTooltipContent(bool isBought = false)
         {
-            // Используем те же цвета, что и в TowerData:
-            // #EF5350 - Красный (Урон)
-            // #26C6DA - Голубой (Замедление / Радиус)
-            // #FFA726 - Оранжевый (Интервал)
-            // #AB47BC - Фиолетовый (Спец. инфо)
-
             var stats = trapType switch
             {
                 TrapType.DamageZone => $"Урон: <color=#EF5350>{tickDamage}</color>\n" +

@@ -30,6 +30,8 @@ namespace Core
         [SerializeField]
         private WaveNotificationUI waveNotificationUI;
         [SerializeField]
+        private HintUI startGameHintUI;
+        [SerializeField]
         private TickManager tickManager;
         [SerializeField]
         private TowerViewManager towerViewManager;
@@ -79,7 +81,8 @@ namespace Core
         private WaveManager waveManager;
         private TrapSystem trapSystem;
         private TrapsModel trapsModel;
-        
+        private GameFlowManager gameFlowManager;
+
         private bool gameStarted;
 
         private static readonly List<Vector2Int> spawnHexes = new()
@@ -193,26 +196,19 @@ namespace Core
             var trapShopItems = FindObjectsByType<ShopToFieldTrapItem>();
             foreach (var item in trapShopItems)
                 item.Construct(trapSystem, field);
-
-            towerSystem.OnFirstTowerPlaced += StartGame;
-            trapSystem.OnFirstTrapPlaced += StartGame;
-            castleSystem.OnFirstBuildingPlaced += StartGame;
-        }
-
-        private void StartGame()
-        {
-            if (gameStarted)
-                return;
-
-            gameStarted = true;
-
-            towerSystem.OnFirstTowerPlaced -= StartGame;
-            trapSystem.OnFirstTrapPlaced -= StartGame;
-            castleSystem.OnFirstBuildingPlaced -= StartGame;
-
-            waveManager.StartGame();
             
-            Debug.Log("Player placed first object. Starting game.");
+            if (startGameHintUI != null)
+                startGameHintUI.Initialize();
+            
+            gameFlowManager = new GameFlowManager(
+                waveManager,
+                towerSystem,
+                trapSystem,
+                castleSystem,
+                startGameHintUI
+            );
+            
+            gameFlowManager.Initialize();
         }
     }
 }

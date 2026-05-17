@@ -17,8 +17,6 @@ namespace UI
         [SerializeField]
         private float fadeDuration = 0.5f;
         [SerializeField]
-        private float shadowOpacity = 0.72f;
-        [SerializeField]
         private float targetOpacity = 0.75f;
 
         private Coroutine displayCoroutine;
@@ -27,9 +25,6 @@ namespace UI
         {
             if (canvasGroup == null)
                 canvasGroup = GetComponent<CanvasGroup>();
-
-            if (shadowText != null)
-                shadowText.color = new Color(0, 0, 0, shadowOpacity);
 
             canvasGroup.alpha = 0;
         }
@@ -45,7 +40,8 @@ namespace UI
         private IEnumerator DisplayWaveCoroutine(int waveNumber)
         {
             var text = $"Началась волна {waveNumber}";
-            waveText.text = text;
+            if (waveText)
+                waveText.text = text;
 
             if (shadowText)
                 shadowText.text = text;
