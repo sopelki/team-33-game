@@ -23,12 +23,12 @@ namespace Logic.Tower
             var stats =
                 $"Урон: <color=#EF5350>{projectileData.damage}</color>\n" +
                 $"Целей: <color=#AB47BC>{targetsCount}</color>\n" +
-                $"Скорость: <color=#FFA726>{fireRate}с</color>\n" +
-                $"Дальность: <color=#26C6DA>{range}</color>";
-
+                $"Скорость: <color=#FF7733>{fireRate}с</color>\n" +
+                $"Дальность: <color=#FFA726>{range}</color>";
+            
             return new TooltipContent
             {
-                Title = $"<color=#FFD700><b>{type.GetRussianName()}</b></color>",
+                Title = type.GetRussianName(),
                 Description = description,
                 Cost = $"Цена: <color=#FFEE58>{baseCost} золота</color>",
                 SpecialInfo = stats

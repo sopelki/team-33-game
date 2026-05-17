@@ -16,7 +16,7 @@ MonoBehaviour:
   settings:
     renderPassEvent: 550
     psxColorDepth: 6
-    psxDitherIntensity: 0.5
+    psxDitherIntensity: 0.75
     psxPosterization: 0.64
     psxResolutionScale: 1
     psxSaturationBoost: 1.1
