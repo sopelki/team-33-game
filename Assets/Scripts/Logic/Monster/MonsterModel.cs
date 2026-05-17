@@ -18,16 +18,14 @@ namespace Logic.Monster
         public readonly MonsterData Data;
 
         public int MaxHealth { get; }
-        public int Damage => baseDamage;
-        public float MoveSpeed =>
-            DebuffSystem.ModifyMoveSpeed(baseMoveSpeed);
+        public int Damage { get; }
+        public float MoveSpeed => DebuffSystem.ModifyMoveSpeed(baseMoveSpeed);
         public float AttackRadius { get; }
         public float AttackCooldown { get; }
         public int GoldReward { get; }
 
         private int currentHealth;
-        private float baseMoveSpeed;
-        private readonly int baseDamage;
+        private readonly float baseMoveSpeed;
 
         private IMovementStrategy movementStrategy;
         private IAttackStrategy attackStrategy;
@@ -45,7 +43,7 @@ namespace Logic.Monster
             Data = data;
 
             MaxHealth = Mathf.RoundToInt(data.maxHealth * healthMultiplier);
-            baseDamage = Mathf.RoundToInt(data.damage * damageMultiplier);
+            Damage = Mathf.RoundToInt(data.damage * damageMultiplier);
             baseMoveSpeed = data.moveSpeed * speedMultiplier;
 
             AttackRadius = data.attackRadius;
@@ -65,7 +63,7 @@ namespace Logic.Monster
             }
 
             CurrentVelocity = Vector3.zero;
-            
+
             DebuffSystem.Tick(TickManager.Instance.tickInterval);
             attackStrategy?.Tick();
 
@@ -85,12 +83,7 @@ namespace Logic.Monster
 
         public void SetHex(Vector2Int hex) => CurrentHex = hex;
 
-        // public void TakeDamage(int damage) => currentHealth -= damage;
-        public void TakeDamage(int damage)
-        {
-            Debug.Log($"урон {damage}");
-            currentHealth -= damage;
-        }
+        public void TakeDamage(int damage) => currentHealth -= damage;
 
         public void SetStrategies(IMovementStrategy movement, IAttackStrategy attack)
         {

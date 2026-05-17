@@ -43,10 +43,10 @@ namespace Logic.Trap
             var stats = trapType switch
             {
                 TrapType.DamageZone => $"Урон: <color=#EF5350>{tickDamage}</color>\n" +
-                                       $"Интервал: <color=#FFA726>{tickInterval}с</color>",
+                                       $"Интервал: <color=#FF7733>{tickInterval}с</color>",
 
                 TrapType.SlowZone => $"Замедление: <color=#26C6DA>{slowPercent * 100f}%</color>\n" +
-                                     $"Интервал: <color=#FFA726>{tickInterval}с</color>",
+                                     $"Интервал: <color=#FF7733>{tickInterval}с</color>",
 
                 TrapType.BearTrap => $"Крит. урон: <color=#EF5350>{criticalDamage}</color>\n" +
                                      $"Радиус: <color=#26C6DA>{triggerRadius}</color>\n" +
@@ -57,8 +57,8 @@ namespace Logic.Trap
 
             return new TooltipContent
             {
-                Title = $"<color=#FFD700><b>{trapType.GetRussianName()}</b></color>",
-                Description = $"<color=#BDBDBD>{description}</color>",
+                Title = trapType.GetRussianName(),
+                Description = description,
                 Cost = $"Цена: <color=#FFEE58>{baseCost} золота</color>",
                 SpecialInfo = stats
             };

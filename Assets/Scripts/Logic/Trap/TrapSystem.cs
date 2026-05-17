@@ -11,10 +11,14 @@ namespace Logic.Trap
 {
     public class TrapSystem
     {
+        public event Action OnFirstTrapPlaced;
+        
         private readonly MonsterSystem monsterSystem;
         private readonly TrapsModel trapsModel;
         private readonly Field.Field field;
         private readonly CastleSystem castleSystem;
+        
+        private bool firstTrapPlaced;
 
         public TrapSystem(MonsterSystem monsterSystem, TrapsModel trapsModel, Field.Field field,
             CastleSystem castleSystem)
@@ -58,14 +62,24 @@ namespace Logic.Trap
 
         public bool TryPlaceTrap(TrapData data, Vector2Int hex)
         {
-            if (!CanPlaceTrap(data, hex)) return false;
+            if (!CanPlaceTrap(data, hex))
+                return false;
 
             if (castleSystem.TrySpendGold(data.baseCost))
             {
                 var trap = new TrapModel(data, GetTrapOccupiedHexes(hex));
                 trapsModel.AddTrap(trap);
+                
+                if (!firstTrapPlaced)
+                {
+                    firstTrapPlaced = true;
+                    OnFirstTrapPlaced?.Invoke();
+                    Debug.Log("First trap placed. Game can start.");
+                }
+                
                 return true;
             }
+            
             return false;
         }
 

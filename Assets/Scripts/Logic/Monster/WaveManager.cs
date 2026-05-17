@@ -17,6 +17,8 @@ namespace Logic.Monster
         private readonly float delayBetweenWaves;
         private int currentWaveNumber;
 
+        private bool gameStarted;
+
         public WaveManager(MonsterSpawner spawner, MonsterSystem monsterSystem, float delayBetweenWaves)
         {
             this.spawner = spawner;
@@ -28,6 +30,9 @@ namespace Logic.Monster
 
         public void Tick()
         {
+            if (!gameStarted)
+                return;
+
             if (waitingForNextWave && monsterSystem.GetAllMonsters().Count == 0)
             {
                 waitingForNextWave = false;
@@ -58,13 +63,28 @@ namespace Logic.Monster
             }
         }
 
-        private void OnWaveFinishedSpawning() => waitingForNextWave = true;
-
-        public void StartFirstWave()
+        public void StartGame()
         {
+            if (gameStarted)
+            {
+                Debug.LogWarning("Game already started!");
+                return;
+            }
+
+            gameStarted = true;
             currentWaveNumber = 1;
             OnWaveStarting?.Invoke(currentWaveNumber);
             spawner.StartNextWave();
+            Debug.Log("Game started! First wave incoming...");
         }
+
+        // public void StartFirstWave()
+        // {
+        //     currentWaveNumber = 1;
+        //     OnWaveStarting?.Invoke(currentWaveNumber);
+        //     spawner.StartNextWave();
+        // }
+
+        private void OnWaveFinishedSpawning() => waitingForNextWave = true;
     }
 }

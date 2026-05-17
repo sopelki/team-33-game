@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Logic.Castle;
@@ -9,11 +10,15 @@ namespace Logic.Tower
 {
     public class TowerSystem : Interfaces.ITickable
     {
+        public event Action OnFirstTowerPlaced;
+        
         private readonly CastleSystem castleSystem;
         private readonly TowersModel towersModel;
         private readonly ProjectileSystem projectileSystem;
         private readonly MonsterSystem monsterSystem;
-
+        
+        private bool firstTowerPlaced;
+        
         public TowerSystem(
             CastleSystem castleSystem,
             TowersModel towersModel,
@@ -77,6 +82,14 @@ namespace Logic.Tower
 
             var tower = new TowerModel(data, cellPos, worldPos);
             towersModel.AddTower(tower);
+            
+            if (!firstTowerPlaced)
+            {
+                firstTowerPlaced = true;
+                OnFirstTowerPlaced?.Invoke();
+                Debug.Log("First tower placed!. Game can start.");
+            }
+            
             return true;
         }
 

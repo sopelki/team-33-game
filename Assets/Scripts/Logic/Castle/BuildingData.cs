@@ -47,8 +47,8 @@ namespace Logic.Castle
 
             return new TooltipContent
             {
-                Title = $"<color=#FFD700><b>{type.GetRussianName()}</b></color>",
-                Description = $"<color=#BDBDBD>{description}</color>",
+                Title = type.GetRussianName(),
+                Description = description,
                 Cost = priceInfo,
                 SpecialInfo = stats
             };
