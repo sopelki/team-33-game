@@ -509,7 +509,6 @@ MonoBehaviour:
   - {fileID: -8186968272690591729}
   - {fileID: -3978695733392391637}
   - {fileID: -1083910812058648046}
-  - {fileID: 4838683586538854799}
 --- !u!114 &156332030701414761
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -840,7 +839,7 @@ MonoBehaviour:
     m_Value: {r: 1.025134, g: 0.9861467, b: 1.1486983, a: 1}
   hueShift:
     m_OverrideState: 1
-    m_Value: 8
+    m_Value: 0
   saturation:
     m_OverrideState: 1
     m_Value: -32
