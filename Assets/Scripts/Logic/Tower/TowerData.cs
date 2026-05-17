@@ -29,7 +29,7 @@ namespace Logic.Tower
             return new TooltipContent
             {
                 Title = $"<color=#FFD700><b>{type.GetRussianName()}</b></color>",
-                Description = $"<color=#BDBDBD>{description}</color>",
+                Description = description,
                 Cost = $"Цена: <color=#FFEE58>{baseCost} золота</color>",
                 SpecialInfo = stats
             };
