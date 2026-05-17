@@ -901,7 +901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40.51
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21117,11 +21117,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 570.87
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40.51
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -22584,8 +22584,10 @@ MonoBehaviour:
   hintText: {fileID: 916308945}
   shadowText: {fileID: 369761023}
   canvasGroup: {fileID: 846591566}
-  fadeInDuration: 0.33
+  fadeInDuration: 0.75
   fadeOutDuration: 0.33
+  displayDuration: 6
+  targetOpacity: 0.75
 --- !u!222 &846591571
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26712,7 +26714,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1558017284
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26732,7 +26734,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 210.00008, y: 45.255005}
-  m_SizeDelta: {x: 620.87, y: 90.509995}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1558017285
 MonoBehaviour:
@@ -26834,8 +26836,7 @@ MonoBehaviour:
   shadowText: {fileID: 422250292}
   canvasGroup: {fileID: 1558017288}
   displayDuration: 3
-  fadeDuration: 0.33
-  shadowOpacity: 0.75
+  fadeDuration: 0.5
   targetOpacity: 0.75
 --- !u!1 &1558438401
 GameObject:

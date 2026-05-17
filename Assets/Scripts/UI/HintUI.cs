@@ -17,10 +17,12 @@ namespace UI
         [SerializeField]
         private float fadeOutDuration = 0.5f;
         [SerializeField]
+        public float displayDuration = 3f;
+        [SerializeField]
         private float targetOpacity = 0.75f;
 
         private Coroutine fadeCoroutine;
-        
+
         public void Initialize()
         {
             if (canvasGroup == null)
@@ -33,7 +35,7 @@ namespace UI
         {
             if (hintText == null)
                 return;
-            
+
             if (shadowText == null)
                 return;
 
@@ -42,8 +44,8 @@ namespace UI
 
             hintText.text = message;
             shadowText.text = message;
-            
-            fadeCoroutine = StartCoroutine(FadeIn());
+
+            fadeCoroutine = StartCoroutine(ShowAndHideHintCycle());
         }
 
         public void HideHint()
@@ -52,6 +54,15 @@ namespace UI
                 StopCoroutine(fadeCoroutine);
 
             fadeCoroutine = StartCoroutine(FadeOut());
+        }
+
+        private IEnumerator ShowAndHideHintCycle()
+        {
+            yield return StartCoroutine(FadeIn());
+
+            yield return new WaitForSeconds(displayDuration);
+
+            yield return StartCoroutine(FadeOut());
         }
 
         private IEnumerator FadeIn()

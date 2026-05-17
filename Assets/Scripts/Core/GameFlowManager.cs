@@ -17,8 +17,10 @@ namespace Core
         
         private bool gameStarted;
         private float timeSinceStart;
-        private bool hasShownHint;
-        private const float HintDelay = 10f;
+        private float timeSinceLastHint;
+        private bool hintCycleStarted;
+        private const float HintStartDelay = 5f;
+        private const float HintCycleInterval = 20f;
 
         public GameFlowManager(
             WaveManager waveManager,
@@ -41,7 +43,8 @@ namespace Core
             castleSystem.OnFirstBuildingPlaced += OnFirstObjectPlaced;
             
             timeSinceStart = 0f;
-            hasShownHint = false;
+            timeSinceLastHint = 0f;
+            hintCycleStarted = false;
             
             TickManager.Instance.OnTick += Tick;
             
@@ -53,16 +56,25 @@ namespace Core
             if (gameStarted)
                 return;
 
-            timeSinceStart += TickManager.Instance.tickInterval;
+            var deltaTime = TickManager.Instance.tickInterval;
+            timeSinceStart += deltaTime;
+            timeSinceLastHint += deltaTime;
             
-            if (!hasShownHint && timeSinceStart >= HintDelay)
+            if (!hintCycleStarted && timeSinceStart >= HintStartDelay)
             {
-                hasShownHint = true;
-                
+                hintCycleStarted = true;
                 if (hintUI != null)
-                    hintUI.ShowHint("Защитите королевство, пока на вас не напали монстры");
-                
-                Debug.Log($"Hint shown at {timeSinceStart}s");
+                    hintUI.ShowHint("Защититесь от монстров до начала первой волны");
+                timeSinceLastHint = -hintUI.displayDuration;
+                Debug.Log("Hint cycle started");
+            }
+            
+            if (hintCycleStarted && timeSinceLastHint >= HintCycleInterval)
+            {
+                if (hintUI != null)
+                    hintUI.ShowHint("Пока вы не поставите башню, ловушку или здание игра не начнется");
+                timeSinceLastHint = -hintUI.displayDuration;
+                Debug.Log($"Hint repeated at {timeSinceStart}s, TimeSinceLastHint: {timeSinceLastHint}s");
             }
         }
 
