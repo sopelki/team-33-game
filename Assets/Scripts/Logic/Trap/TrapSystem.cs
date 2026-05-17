@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Logic.Monster;
 using Core;
 using Logic.Castle;
-using Logic.Trap.Logic.Trap;
 using HexagonScripts;
 
 namespace Logic.Trap
@@ -16,12 +16,13 @@ namespace Logic.Trap
         private readonly Field.Field field;
         private readonly CastleSystem castleSystem;
 
-        public TrapSystem(MonsterSystem monsterSystem, TrapsModel trapsModel, Field.Field field, CastleSystem castleSys)
+        public TrapSystem(MonsterSystem monsterSystem, TrapsModel trapsModel, Field.Field field,
+            CastleSystem castleSystem)
         {
             this.field = field;
             this.monsterSystem = monsterSystem;
             this.trapsModel = trapsModel;
-            this.castleSystem = castleSys;
+            this.castleSystem = castleSystem;
             TickManager.Instance.OnTick += Tick;
         }
 
@@ -31,7 +32,7 @@ namespace Logic.Trap
             {
                 centerHex,
                 centerHex + new Vector2Int(1, 0),
-                centerHex + new Vector2Int(0, 1) 
+                centerHex + new Vector2Int(0, 1)
             };
         }
 
@@ -39,17 +40,17 @@ namespace Logic.Trap
         {
             if (castleSystem.Model.Gold < data.baseCost) return false;
             var hexes = GetTrapOccupiedHexes(axial);
-            
+
             foreach (var h in hexes)
             {
                 var hexObj = field.GetHex(h);
-                
-                if (hexObj == null) 
+
+                if (hexObj == null)
                     return false;
                 if (hexObj.type != HexagonType.Path)
                     return false;
-                
-                if (trapsModel.Traps.Any(t => t.Hexes.Contains(h))) 
+
+                if (trapsModel.Traps.Any(t => t.Hexes.Contains(h)))
                     return false;
             }
             return true;
@@ -58,7 +59,7 @@ namespace Logic.Trap
         public bool TryPlaceTrap(TrapData data, Vector2Int hex)
         {
             if (!CanPlaceTrap(data, hex)) return false;
-            
+
             if (castleSystem.TrySpendGold(data.baseCost))
             {
                 var trap = new TrapModel(data, GetTrapOccupiedHexes(hex));
@@ -101,15 +102,25 @@ namespace Logic.Trap
         {
             var delta = TickManager.Instance.tickInterval;
             var monsters = monsterSystem.GetAllMonsters();
-            foreach (var trap in trapsModel.Traps.ToList())
+            foreach (var trap in trapsModel.Traps.ToList().Where(trap => !trap.IsTriggered))
             {
-                if (trap.IsTriggered) continue;
-                if (trap.Data.trapType == TrapType.DamageZone) HandleDamageZone(trap, monsters, delta);
-                else if (trap.Data.trapType == TrapType.BearTrap) HandleBearTrap(trap, monsters);
+                switch (trap.Data.trapType)
+                {
+                    case TrapType.DamageZone:
+                        HandleDamageZone(trap, monsters, delta);
+                        break;
+                    case TrapType.BearTrap:
+                        HandleBearTrap(trap, monsters);
+                        break;
+                    case TrapType.SlowZone:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
         }
 
-        private void HandleDamageZone(TrapModel trap, IReadOnlyList<MonsterModel> monsters, float delta)
+        private static void HandleDamageZone(TrapModel trap, IReadOnlyList<MonsterModel> monsters, float delta)
         {
             trap.TickTimer += delta;
             if (trap.TickTimer < trap.Data.tickInterval) return;
@@ -117,8 +128,10 @@ namespace Logic.Trap
             {
                 trap.TickTimer -= trap.Data.tickInterval;
                 foreach (var monster in monsters)
+                {
                     if (!monster.IsDead && trap.Hexes.Contains(monster.CurrentHex))
                         monster.TakeDamage(trap.Data.tickDamage);
+                }
             }
         }
 
@@ -128,7 +141,7 @@ namespace Logic.Trap
             if (inZone.Count >= trap.Data.requiredMonsters)
             {
                 foreach (var m in inZone) m.TakeDamage(trap.Data.criticalDamage);
-                trap.Trigger(); 
+                trap.Trigger();
                 trapsModel.RemoveTrap(trap);
             }
         }

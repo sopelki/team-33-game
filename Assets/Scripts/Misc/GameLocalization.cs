@@ -17,5 +17,13 @@ namespace Misc
             Logic.Tower.TowerType.Mage => "Башня магов",
             _ => "Башня"
         };
+        
+        public static string GetRussianName(this Logic.Trap.TrapType type) => type switch
+        {
+            Logic.Trap.TrapType.DamageZone => "Колья",
+            Logic.Trap.TrapType.SlowZone => "Смола",
+            Logic.Trap.TrapType.BearTrap => "Капкан",
+            _ => "Ловушка"
+        };
     }
 }

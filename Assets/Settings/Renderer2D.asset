@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3032411254372567658
+--- !u!114 &-2536271145950807744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,17 +9,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: Pixelate
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
-  m_Active: 0
-  injectionPoint: 550
-  fetchColorBuffer: 1
-  requirements: 4
-  passMaterial: {fileID: 2100000, guid: dd9692bff39e8684083b317e9aabe6b2, type: 2}
-  passIndex: 0
-  bindDepthStencilAttachment: 0
-  m_Version: 1
+  m_Script: {fileID: 11500000, guid: a8f14f2e8a8a4e4b9b1b7d7a9f6b3c11, type: 3}
+  m_Name: PSXRendererFeature
+  m_EditorClassIdentifier: Retro.PSXEffects.Runtime::Retro.PSXEffects.PSXRendererFeature
+  m_Active: 1
+  settings:
+    renderPassEvent: 550
+    psxColorDepth: 6
+    psxDitherIntensity: 0.5
+    psxPosterization: 0.64
+    psxResolutionScale: 1
+    psxSaturationBoost: 1.1
+    psxDarkening: 0
+    colorBleedIntensity: 0.1
+    chromaticShift: 0
+    verticalBlur: 0.5
+    vhsTracking: 0
+    signalNoise: 0.002
+    colorTemperature: 0.2
+    pixelPerfectSnapping: 0.5
+    paletteReduction: 0
+    lcdGhosting: 0.3
+    pixelGridIntensity: 0
+    pixelGridSize: 1.5
+    gameBoyMode: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,10 +58,9 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 2800000, guid: 24ec0e140fb444a44ab96ee80844e18e, type: 3}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
-  - {fileID: -3032411254372567658}
-  - {fileID: 1822610512943261145}
-  - {fileID: 4879558530717255889}
-  m_RendererFeatureMap: 96f539d207b6ead5d925e0db9a364b19d1082174a1acb743
+  - {fileID: -2536271145950807744}
+  - {fileID: 2634734218947782728}
+  m_RendererFeatureMap: 4079879bd45acddc48e8f20dd0749024
   m_UseNativeRenderPass: 0
   m_LayerMask:
     serializedVersion: 2
@@ -79,7 +91,7 @@ MonoBehaviour:
   m_PostProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_DefaultMaterialType: 0
   m_DefaultCustomMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
---- !u!114 &1822610512943261145
+--- !u!114 &2634734218947782728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,34 +100,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: DitherDown
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Script: {fileID: 11500000, guid: 5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b, type: 3}
+  m_Name: CRTRendererFeature
+  m_EditorClassIdentifier: Retro.PSXEffects.Runtime::Retro.PSXEffects.CRTRendererFeature
   m_Active: 1
-  injectionPoint: 550
-  fetchColorBuffer: 1
-  requirements: 4
-  passMaterial: {fileID: 2100000, guid: b19d8cca54f572c4184d86d1a7c06af1, type: 2}
-  passIndex: 0
-  bindDepthStencilAttachment: 0
-  m_Version: 1
---- !u!114 &4879558530717255889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: VHS
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
-  m_Active: 1
-  injectionPoint: 550
-  fetchColorBuffer: 1
-  requirements: 4
-  passMaterial: {fileID: 2100000, guid: f1ec1fb988c34c14890a6cf6bc56baae, type: 2}
-  passIndex: 0
-  bindDepthStencilAttachment: 0
-  m_Version: 1
+  settings:
+    renderPassEvent: 550
+    pixelSize: 1
+    scanlineIntensity: 0.2
+    scanlineCount: 256
+    curvature: 0.025
+    chromaticAberration: 0
+    vignette: 0.059
+    brightness: 1
+    phosphorIntensity: 0.02
+    flickerIntensity: 0
+    rollingScanlineIntensity: 0
+    rollingScanlineSpeed: 0.1
+    glowIntensity: 0.1
+    glowSpread: 3
+    noiseIntensity: 0
+    colorBleedIntensity: 0
+    interlacingIntensity: 0

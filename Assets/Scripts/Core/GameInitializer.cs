@@ -28,6 +28,8 @@ namespace Core
         [SerializeField]
         private CastleUI castleUI;
         [SerializeField]
+        private WaveNotificationUI waveNotificationUI;
+        [SerializeField]
         private TickManager tickManager;
         [SerializeField]
         private TowerViewManager towerViewManager;
@@ -59,10 +61,11 @@ namespace Core
         private List<WaveData> waves;
         [SerializeField]
         private float wavesDelay = 5f;
-        
+
         [Header("Trap Settings")]
-        [SerializeField] private TrapViewManager trapViewManager;
-        
+        [SerializeField]
+        private TrapViewManager trapViewManager;
+
         private MonsterSystem monsterSystem;
         private MonsterSpawner monsterSpawner;
         private CastleModel castleModel;
@@ -113,17 +116,25 @@ namespace Core
 
             if (castleView != null)
                 castleView.Initialize(castleModel, tilemap, field);
-            else
-                Debug.LogWarning("GameInitializer: No castle found in objects. Check level JSON or ObjectMappings.");
 
             if (endGameMenu != null)
                 endGameMenu.Initialize(castleModel);
 
+
             trapsModel = new TrapsModel();
             trapSystem = new TrapSystem(monsterSystem, trapsModel, field, castleSystem);
-            monsterSpawner = new MonsterSpawner(spawnHexes, field, monsterSystem, unitSystem, waves, tilemap, trapSystem);
+            
+            monsterSpawner =
+                new MonsterSpawner(spawnHexes, field, monsterSystem, unitSystem, waves, tilemap, trapSystem);
+            
             waveManager = new WaveManager(monsterSpawner, monsterSystem, wavesDelay);
             waveManager.OnGameWon += endGameMenu.OpenWinMenu;
+
+            if (waveNotificationUI != null)
+            {
+                waveNotificationUI.Initialize();
+                waveManager.OnWaveStarting += waveNotificationUI.ShowWaveNotification;
+            }
 
             towersModel = new TowersModel();
             towerSystem = new TowerSystem(castleSystem, towersModel, monsterSystem, projectileSystem);
@@ -165,7 +176,7 @@ namespace Core
 
             if (projectileViewManager != null)
                 projectileViewManager.Initialize(projectileSystem);
-            
+
             if (trapViewManager != null)
                 trapViewManager.Initialize(trapsModel, field, tilemap);
 
@@ -176,7 +187,7 @@ namespace Core
             var slots = FindObjectsByType<DropSlot>();
             foreach (var slot in slots)
                 slot.Construct(castleSystem);
-            
+
             var trapShopItems = FindObjectsByType<ShopToFieldTrapItem>();
             foreach (var item in trapShopItems)
                 item.Construct(trapSystem, field);

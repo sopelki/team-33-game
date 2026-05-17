@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3032411254372567658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: Pixelate
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Active: 0
+  injectionPoint: 550
+  fetchColorBuffer: 1
+  requirements: 4
+  passMaterial: {fileID: 2100000, guid: dd9692bff39e8684083b317e9aabe6b2, type: 2}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
+--- !u!114 &-2536271145950807744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f14f2e8a8a4e4b9b1b7d7a9f6b3c11, type: 3}
+  m_Name: PSXRendererFeature
+  m_EditorClassIdentifier: Retro.PSXEffects.Runtime::Retro.PSXEffects.PSXRendererFeature
+  m_Active: 0
+  settings:
+    renderPassEvent: 550
+    psxColorDepth: 5
+    psxDitherIntensity: 1
+    psxPosterization: 0.5
+    psxResolutionScale: 1
+    psxSaturationBoost: 1.5
+    psxDarkening: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11145981673336645838492a2d98e247, type: 3}
+  m_Name: NoEffectsRenderer
+  m_EditorClassIdentifier: 
+  debugShaders:
+    debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
+    hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
+    probeVolumeSamplingDebugComputeShader: {fileID: 7200000, guid: 53626a513ea68ce47b59dc1299fe3959, type: 3}
+  probeVolumeResources:
+    probeVolumeDebugShader: {fileID: 4800000, guid: e5c6678ed2aaa91408dd3df699057aae, type: 3}
+    probeVolumeFragmentationDebugShader: {fileID: 4800000, guid: 03cfc4915c15d504a9ed85ecc404e607, type: 3}
+    probeVolumeOffsetDebugShader: {fileID: 4800000, guid: 53a11f4ebaebf4049b3638ef78dc9664, type: 3}
+    probeVolumeSamplingDebugShader: {fileID: 4800000, guid: 8f96cd657dc40064aa21efcc7e50a2e7, type: 3}
+    probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 57d7c4c16e2765b47a4d2069b311bffe, type: 3}
+    probeSamplingDebugTexture: {fileID: 2800000, guid: 24ec0e140fb444a44ab96ee80844e18e, type: 3}
+    probeVolumeBlendStatesCS: {fileID: 0}
+  m_RendererFeatures:
+  - {fileID: -3032411254372567658}
+  - {fileID: 1822610512943261145}
+  - {fileID: 4879558530717255889}
+  - {fileID: 2634734218947782728}
+  - {fileID: -2536271145950807744}
+  m_RendererFeatureMap: 96f539d207b6ead5d925e0db9a364b19d1082174a1acb74348e8f20dd07490244079879bd45acddc
+  m_UseNativeRenderPass: 0
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_TransparencySortMode: 3
+  m_TransparencySortAxis: {x: 0, y: 1, z: 0}
+  m_HDREmulationScale: 1
+  m_LightRenderTextureScale: 0.5
+  m_LightBlendStyles:
+  - name: Multiply
+    maskTextureChannel: 0
+    blendMode: 1
+  - name: Additive
+    maskTextureChannel: 0
+    blendMode: 0
+  - name: Multiply with Mask
+    maskTextureChannel: 1
+    blendMode: 1
+  - name: Additive with Mask
+    maskTextureChannel: 1
+    blendMode: 0
+  m_UseDepthStencilBuffer: 1
+  m_UseCameraSortingLayersTexture: 0
+  m_CameraSortingLayersTextureBound: -1
+  m_CameraSortingLayerDownsamplingMethod: 0
+  m_MaxLightRenderTextureCount: 16
+  m_MaxShadowRenderTextureCount: 1
+  m_PostProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
+  m_DefaultMaterialType: 0
+  m_DefaultCustomMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+--- !u!114 &1822610512943261145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: DitherDown
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Active: 0
+  injectionPoint: 550
+  fetchColorBuffer: 1
+  requirements: 4
+  passMaterial: {fileID: 2100000, guid: b19d8cca54f572c4184d86d1a7c06af1, type: 2}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
+--- !u!114 &2634734218947782728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b, type: 3}
+  m_Name: CRTRendererFeature
+  m_EditorClassIdentifier: Retro.PSXEffects.Runtime::Retro.PSXEffects.CRTRendererFeature
+  m_Active: 0
+  settings:
+    renderPassEvent: 550
+    pixelSize: 1
+    scanlineIntensity: 0.15
+    scanlineCount: 256
+    curvature: 0
+    chromaticAberration: 0
+    vignette: 0.084
+    brightness: 1.417
+    phosphorIntensity: 0
+    flickerIntensity: 0
+    rollingScanlineIntensity: 0
+    rollingScanlineSpeed: 0.5
+    glowIntensity: 0
+    glowSpread: 3
+    noiseIntensity: 0
+    colorBleedIntensity: 0.605
+    interlacingIntensity: 0.079
+--- !u!114 &4879558530717255889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: VHS
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Active: 0
+  injectionPoint: 550
+  fetchColorBuffer: 1
+  requirements: 4
+  passMaterial: {fileID: 2100000, guid: f1ec1fb988c34c14890a6cf6bc56baae, type: 2}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1

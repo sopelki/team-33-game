@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Interfaces;
 using Logic.Unit;
@@ -10,7 +11,7 @@ namespace Logic.Castle
     public class CastleSystem : ITickable
     {
         public static CastleSystem Instance { get; private set; }
-        
+
         private static readonly Vector2Int spawnHex = new(-28, 21); // Поменять, если нужна другая точка спавна
 
         private readonly UnitSystem unitSystem;
@@ -37,15 +38,16 @@ namespace Logic.Castle
             this.tilemap = tilemap;
             Instance = this;
         }
-        
+
+        public CastleModel Model { get; }
+
         public void RegisterCastleData(List<Vector3> worldPositions, List<Vector2Int> hexes)
-        
+
         {
             Model.WallWorldPositions = worldPositions;
             Model.WallHexes = hexes;
-            Debug.Log($"Замок зарегистрирован в логике! Точек стены: {hexes.Count}");
+            Debug.Log($"Castle registered in logic. Wall hexes count: {hexes.Count}");
         }
-        public CastleModel Model { get; }
 
         public void Tick()
         {
@@ -64,6 +66,37 @@ namespace Logic.Castle
                 return;
             spawnTimer = 0f;
             SpawnUnitsFromBarracks();
+        }
+
+
+        public bool TrySpendGold(int price)
+        {
+            if (Model.Gold < price)
+                return false;
+
+            Model.Gold -= price;
+            Model.Changed();
+            return true;
+        }
+
+        public void AddGold(int amount)
+        {
+            Model.Gold += amount;
+            Model.Changed();
+        }
+
+
+        public bool TryBuyBuilding(BuildingData data)
+        {
+            if (!TrySpendGold(data.baseCost))
+                return false;
+
+            var instance = new BuildingModel(data);
+            Model.Buildings.Add(instance);
+
+            ApplyBuff(data);
+
+            return true;
         }
 
         private void SpawnUnitsFromBarracks()
@@ -111,43 +144,24 @@ namespace Logic.Castle
                 Model.Changed();
         }
 
-
-        public bool TryBuyBuilding(BuildingData data)
+        private void ApplyBuff(BuildingData data)
         {
-            if (!TrySpendGold(data.baseCost))
-                return false;
-
-            var instance = new BuildingModel(data);
-            Model.Buildings.Add(instance);
-            
-            if (data.type == BuildingType.Blacksmith)
+            switch (data.type)
             {
-                unitSystem.AddBuff(new AttackPercentBuff());
-                Debug.Log("Кузница построена: будущие юниты получат +25% к атаке");
+                case BuildingType.Blacksmith:
+                    unitSystem.AddBuff(new AttackPercentBuff(data.buffValue));
+                    Debug.Log($"Blacksmith built: units get +{data.buffValue * 100}% attack.");
+                    break;
+                case BuildingType.Hospital:
+                    unitSystem.AddBuff(new HealthPercentBuff(data.buffValue));
+                    Debug.Log($"Hospital built: units get +{data.buffValue * 100}% health.");
+                    break;
+                case BuildingType.Farm:
+                case BuildingType.Barracks:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            else if (data.type == BuildingType.Hospital)
-            {
-                unitSystem.AddBuff(new HealthPercentBuff());
-                Debug.Log("Больница построена: будущие юниты получат +25% к здоровью");
-            }
-
-            return true;
-        }
-
-        public bool TrySpendGold(int price)
-        {
-            if (Model.Gold < price)
-                return false;
-
-            Model.Gold -= price;
-            Model.Changed();
-            return true;
-        }
-        
-        public void AddGold(int amount)
-        {
-            Model.Gold += amount;
-            Model.Changed();
         }
     }
 }

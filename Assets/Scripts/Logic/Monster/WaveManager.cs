@@ -6,6 +6,7 @@ namespace Logic.Monster
     public class WaveManager : ITickable
     {
         public event System.Action OnGameWon;
+        public event System.Action<int> OnWaveStarting;
 
         private readonly MonsterSpawner spawner;
         private readonly MonsterSystem monsterSystem;
@@ -14,6 +15,7 @@ namespace Logic.Monster
         private bool isDelaying;
         private float delayTimer;
         private readonly float delayBetweenWaves;
+        private int currentWaveNumber;
 
         public WaveManager(MonsterSpawner spawner, MonsterSystem monsterSystem, float delayBetweenWaves)
         {
@@ -49,6 +51,8 @@ namespace Logic.Monster
                 if (delayTimer <= 0f)
                 {
                     isDelaying = false;
+                    currentWaveNumber++;
+                    OnWaveStarting?.Invoke(currentWaveNumber);
                     spawner.StartNextWave();
                 }
             }
@@ -56,6 +60,11 @@ namespace Logic.Monster
 
         private void OnWaveFinishedSpawning() => waitingForNextWave = true;
 
-        public void StartFirstWave() => spawner.StartNextWave();
+        public void StartFirstWave()
+        {
+            currentWaveNumber = 1;
+            OnWaveStarting?.Invoke(currentWaveNumber);
+            spawner.StartNextWave();
+        }
     }
 }
