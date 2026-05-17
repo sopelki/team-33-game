@@ -79,6 +79,8 @@ namespace Core
         private WaveManager waveManager;
         private TrapSystem trapSystem;
         private TrapsModel trapsModel;
+        
+        private bool gameStarted;
 
         private static readonly List<Vector2Int> spawnHexes = new()
         {
@@ -123,10 +125,10 @@ namespace Core
 
             trapsModel = new TrapsModel();
             trapSystem = new TrapSystem(monsterSystem, trapsModel, field, castleSystem);
-            
+
             monsterSpawner =
                 new MonsterSpawner(spawnHexes, field, monsterSystem, unitSystem, waves, tilemap, trapSystem);
-            
+
             waveManager = new WaveManager(monsterSpawner, monsterSystem, wavesDelay);
             waveManager.OnGameWon += endGameMenu.OpenWinMenu;
 
@@ -192,7 +194,25 @@ namespace Core
             foreach (var item in trapShopItems)
                 item.Construct(trapSystem, field);
 
-            waveManager.StartFirstWave();
+            towerSystem.OnFirstTowerPlaced += StartGame;
+            trapSystem.OnFirstTrapPlaced += StartGame;
+            castleSystem.OnFirstBuildingPlaced += StartGame;
+        }
+
+        private void StartGame()
+        {
+            if (gameStarted)
+                return;
+
+            gameStarted = true;
+
+            towerSystem.OnFirstTowerPlaced -= StartGame;
+            trapSystem.OnFirstTrapPlaced -= StartGame;
+            castleSystem.OnFirstBuildingPlaced -= StartGame;
+
+            waveManager.StartGame();
+            
+            Debug.Log("Player placed first object. Starting game.");
         }
     }
 }

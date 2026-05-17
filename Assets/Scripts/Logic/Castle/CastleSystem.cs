@@ -10,10 +10,10 @@ namespace Logic.Castle
 {
     public class CastleSystem : ITickable
     {
+        public event System.Action OnFirstBuildingPlaced;
         public static CastleSystem Instance { get; private set; }
 
         private static readonly Vector2Int spawnHex = new(-28, 21); // Поменять, если нужна другая точка спавна
-
         private readonly UnitSystem unitSystem;
         private readonly UnitData unitData;
         private readonly Field.Field field;
@@ -23,6 +23,7 @@ namespace Logic.Castle
         private const float ResourceInterval = 1f;
         private const float SpawnInterval = 1f;
 
+        private bool firstBuildingPlaced;
 
         public CastleSystem(
             CastleModel model,
@@ -95,6 +96,13 @@ namespace Logic.Castle
             Model.Buildings.Add(instance);
 
             ApplyBuff(data);
+
+            if (!firstBuildingPlaced)
+            {
+                firstBuildingPlaced = true;
+                OnFirstBuildingPlaced?.Invoke();
+                Debug.Log("First building placed. Game can start.");
+            }
 
             return true;
         }
