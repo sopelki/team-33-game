@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2273944330815825048}
   - component: {fileID: 899378862108174943}
   m_Layer: 5
-  m_Name: FieldShopSlot
+  m_Name: FieldShopTowerSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,17 +86,18 @@ MonoBehaviour:
   mapViewport: {fileID: 0}
   fieldTilemap: {fileID: 0}
   slotTile: {fileID: 11400000, guid: 7b7b59e8a9176ba47913fef81288eec8, type: 2}
-  ghostAlpha: 0.7
   ghostOffset: {x: 0, y: 0}
   enableSnapping: 1
   searchRadius: 3
   detectionDistance: 50
+  ghostValidColor: {r: 1, g: 1, b: 1, a: 0.7}
+  ghostInvalidColor: {r: 1, g: 0.6, b: 0.6, a: 0.7}
+  startScaleMultiplier: 0.6
+  scaleSpeed: 10
+  colorLerpSpeed: 15
   snapSpeed: 25
   unSnapSpeed: 25
   towerData: {fileID: 0}
-  startScaleMultiplier: 0.6
-  scaleSpeed: 10
-  colorLerpSpeed: 5
 --- !u!222 &899378862108174943
 CanvasRenderer:
   m_ObjectHideFlags: 0

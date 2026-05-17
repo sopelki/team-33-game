@@ -19,26 +19,31 @@ namespace UI
         [SerializeField]
         private TileBase slotTile;
 
-        [Header("Ghost")]
-        [Range(0f, 1f)]
-        [SerializeField]
-        private float ghostAlpha = 0.7f;
+        [Header("Ghost Settings")]
         [SerializeField]
         private Vector2 ghostOffset = Vector2.zero;
-
-        [Header("Snapping & Detection")]
         [SerializeField]
         private bool enableSnapping = true;
-
         [SerializeField]
         private int searchRadius = 3;
-
         [SerializeField]
         private float detectionDistance = 50f;
 
+        [Header("Ghost Colors")]
+        [SerializeField]
+        private Color ghostValidColor = new(1f, 1f, 1f, 0.7f);
+        [SerializeField]
+        private Color ghostInvalidColor = new(1f, 0.6f, 0.6f, 0.7f);
+
+        [Header("Animation & Speeds")]
+        [SerializeField]
+        private float startScaleMultiplier = 0.75f;
+        [SerializeField]
+        private float scaleSpeed = 15f;
+        [SerializeField]
+        private float colorLerpSpeed = 15f;
         [SerializeField]
         private float snapSpeed = 20f;
-
         [SerializeField]
         private float unSnapSpeed = 15f;
 
@@ -46,25 +51,13 @@ namespace UI
         [SerializeField]
         private TowerData towerData;
 
-        [Header("Animation")]
-        [SerializeField]
-        private float startScaleMultiplier = 0.75f;
-        [SerializeField]
-        private float scaleSpeed = 15f;
-        [SerializeField]
-        private float colorLerpSpeed = 15f;
-
         private TowerSystem towerSystem;
-
         private GameObject ghost;
         private RectTransform ghostRect;
         private Image ghostImage;
 
         private float targetScale;
         private float currentScale;
-
-        private Color normalColor;
-        private Color invalidColor;
         private Color targetColor;
 
         private Vector2 targetGhostPosition;
@@ -80,16 +73,14 @@ namespace UI
             if (canvas == null)
                 canvas = GetComponentInParent<Canvas>();
 
-            normalColor = new Color(1f, 1f, 1f, ghostAlpha);
-            invalidColor = new Color(1f, 0.6f, 0.6f, ghostAlpha);
-
             var trigger = gameObject.AddComponent<TooltipTrigger>();
             trigger.SetContent(towerData);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            GetComponent<TooltipTrigger>().StopDisplay();
+            if (TryGetComponent<TooltipTrigger>(out var trigger))
+                trigger.StopDisplay();
 
             if (towerSystem == null)
                 return;
@@ -102,7 +93,7 @@ namespace UI
 
             currentScale = startScaleMultiplier;
             targetScale = startScaleMultiplier;
-            targetColor = normalColor;
+            targetColor = ghostValidColor;
             isSnapping = false;
             wasSnapping = false;
 
@@ -192,10 +183,7 @@ namespace UI
 
         private void CreateGhost(SpriteRenderer prefabRenderer)
         {
-            ghost = new GameObject(name + "_ghost",
-                typeof(RectTransform),
-                typeof(CanvasRenderer),
-                typeof(Image));
+            ghost = new GameObject(name + "_ghost", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
 
             ghost.transform.SetParent(canvas.transform, false);
             ghostRect = ghost.GetComponent<RectTransform>();
@@ -204,10 +192,9 @@ namespace UI
             ghostImage.sprite = prefabRenderer.sprite;
             ghostImage.preserveAspect = true;
             ghostImage.raycastTarget = false;
-            ghostImage.color = normalColor;
+            ghostImage.color = ghostValidColor;
 
             var sprite = prefabRenderer.sprite;
-
             ghostRect.pivot = new Vector2(
                 sprite.pivot.x / sprite.rect.width,
                 sprite.pivot.y / sprite.rect.height
@@ -216,7 +203,6 @@ namespace UI
             if (Camera.main != null)
             {
                 var pixelsPerUnit = Screen.height / (Camera.main.orthographicSize * 2f);
-
                 var spriteSize = new Vector2(
                     sprite.rect.width / sprite.pixelsPerUnit,
                     sprite.rect.height / sprite.pixelsPerUnit
@@ -259,7 +245,6 @@ namespace UI
         private bool TryGetSnapPosition(PointerEventData eventData, Vector2 basePosition, out Vector2 snapPosition)
         {
             snapPosition = basePosition;
-
             var cam = Camera.main;
             if (!cam || !mapViewport || !fieldTilemap)
                 return false;
@@ -277,10 +262,8 @@ namespace UI
 
             if (!TryFindValidSlot(eventData, cellPos, out var slotPos))
                 return false;
-
             if (towerSystem.IsCellOccupied(slotPos))
                 return false;
-
             if (!TryGetSlotCanvasPosition(slotPos, eventData, out var slotCanvasLocal))
                 return false;
 
@@ -298,46 +281,34 @@ namespace UI
                     mapViewport, eventData.position, eventData.pressEventCamera, out var local))
             {
                 targetScale = startScaleMultiplier;
-                targetColor = normalColor;
+                targetColor = ghostValidColor;
                 return;
             }
 
             var u = local.x / mapViewport.rect.width + 0.5f;
             var v = local.y / mapViewport.rect.height + 0.5f;
-
             var zDist = Mathf.Abs(cam.transform.position.z - fieldTilemap.transform.position.z);
             var worldPos = cam.ViewportToWorldPoint(new Vector3(u, v, zDist));
             var cellPos = fieldTilemap.WorldToCell(worldPos);
 
             if (TryFindValidSlot(eventData, cellPos, out var slotPos))
             {
-                var occupied = towerSystem.IsCellOccupied(slotPos);
-
-                if (!occupied)
-                {
-                    targetScale = 1f;
-                    targetColor = normalColor;
-                }
-                else
-                {
-                    targetScale = startScaleMultiplier;
-                    targetColor = invalidColor;
-                }
+                var isOccupied = towerSystem.IsCellOccupied(slotPos);
+                targetScale = isOccupied ? startScaleMultiplier : 1f;
+                targetColor = isOccupied ? ghostInvalidColor : ghostValidColor;
             }
             else
             {
                 targetScale = startScaleMultiplier;
-                targetColor = normalColor;
+                targetColor = ghostValidColor;
             }
         }
 
         private bool TryFindValidSlot(PointerEventData eventData, Vector3Int centerCell, out Vector3Int validSlot)
         {
             validSlot = Vector3Int.zero;
-
             if (!FindNearestSlotTile(centerCell, searchRadius, out var nearestSlot))
                 return false;
-
             if (!TryGetSlotCanvasPosition(nearestSlot, eventData, out var slotCanvasPos))
                 return false;
 
@@ -355,7 +326,6 @@ namespace UI
                 validSlot = nearestSlot;
                 return true;
             }
-
             return false;
         }
 
@@ -363,7 +333,6 @@ namespace UI
             out Vector2 canvasPosition)
         {
             canvasPosition = Vector2.zero;
-
             var cam = Camera.main;
             if (!cam || !mapViewport || !fieldTilemap)
                 return false;
@@ -376,13 +345,8 @@ namespace UI
                 (slotViewport.y - 0.5f) * mapViewport.rect.height
             );
 
-            var slotScreenPos = eventData.pressEventCamera
-                ? RectTransformUtility.WorldToScreenPoint(
-                    eventData.pressEventCamera,
-                    mapViewport.TransformPoint(slotLocalInViewport))
-                : RectTransformUtility.WorldToScreenPoint(
-                    null,
-                    mapViewport.TransformPoint(slotLocalInViewport));
+            var slotScreenPos = RectTransformUtility.WorldToScreenPoint(eventData.pressEventCamera,
+                mapViewport.TransformPoint(slotLocalInViewport));
 
             return RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 (RectTransform)canvas.transform,
@@ -416,7 +380,6 @@ namespace UI
                     }
                 }
             }
-
             cellPos = nearestPos;
             return found;
         }

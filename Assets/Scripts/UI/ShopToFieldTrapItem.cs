@@ -20,7 +20,6 @@ namespace UI
         private Tilemap fieldTilemap;
 
         [Header("Ghost Visuals")]
-        private const float GhostAlpha = 0.7f;
         [SerializeField]
         private float startScaleMultiplier = 0.75f;
         [SerializeField]
@@ -34,24 +33,32 @@ namespace UI
         [SerializeField]
         private GameObject highlightPrefab;
 
-        [Header("UI & Animation")]
+        [Header("Ghost Colors")]
+        [SerializeField]
+        private Color ghostValidColor = new(1f, 1f, 1f, 0.7f);
+        [SerializeField]
+        private Color ghostInvalidColor = new(1f, 0.4f, 0.4f, 0.7f);
+
+        [Header("Highlight Colors")]
+        [SerializeField]
+        private Color highlightValidColor = new(0f, 1f, 0f, 0.5f);
+        [SerializeField]
+        private Color highlightInvalidColor = new(1f, 0f, 0f, 0.5f);
+
+        [Header("Animation State")]
         [SerializeField]
         private float targetScale;
         [SerializeField]
+        private float validSizeScale = 1.05f;
         private float currentScale;
-        [SerializeField]
-        private Color normalColor = new(1f, 1f, 1f, GhostAlpha);
-        [SerializeField]
-        private Color invalidColor = new(1f, 0.4f, 0.4f, GhostAlpha);
-
         private Color targetColor;
+
         private TrapSystem trapSystem;
         private Field.Field field;
         private GameObject ghost;
         private RectTransform ghostRect;
         private Image ghostImage;
         private readonly List<GameObject> highlights = new();
-
 
         public void Construct(TrapSystem trapSystem, Field.Field field)
         {
@@ -63,17 +70,17 @@ namespace UI
         {
             if (canvas == null)
                 canvas = GetComponentInParent<Canvas>();
-            normalColor = new Color(1f, 1f, 1f, GhostAlpha);
-            invalidColor = new Color(1f, 0.4f, 0.4f, GhostAlpha);
+
+            var trigger = gameObject.AddComponent<TooltipTrigger>();
+            trigger.SetContent(trapData);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (trapSystem == null) return;
+            if (trapSystem == null)
+                return;
 
-            foreach (var h in highlights.Where(h => h != null))
-                Destroy(h);
-            highlights.Clear();
+            ClearHighlights();
 
             var prefabRenderer = trapData.viewPrefab.GetComponentInChildren<SpriteRenderer>();
 
@@ -87,7 +94,7 @@ namespace UI
 
             currentScale = startScaleMultiplier;
             targetScale = startScaleMultiplier;
-            targetColor = normalColor;
+            targetColor = ghostValidColor;
 
             for (var i = 0; i < 3; i++)
             {
@@ -119,12 +126,18 @@ namespace UI
                 var axial = HexagonScripts.HexagonMath.OffsetToAxial(cellPos.x, cellPos.y);
                 var isValid = trapSystem.CanPlaceTrap(trapData, axial);
 
-                targetColor = isValid ? normalColor : invalidColor;
-                targetScale = isValid ? 1.05f : startScaleMultiplier;
+                targetColor = isValid ? ghostValidColor : ghostInvalidColor;
+                targetScale = isValid ? validSizeScale : startScaleMultiplier;
 
                 var hexes = trapSystem.GetTrapOccupiedHexes(axial);
                 for (var i = 0; i < highlights.Count; i++)
                 {
+                    if (i >= hexes.Count)
+                    {
+                        highlights[i].SetActive(false);
+                        continue;
+                    }
+
                     var hexObj = field.GetHex(hexes[i]);
                     if (hexObj != null)
                     {
@@ -134,14 +147,14 @@ namespace UI
                         highlights[i].transform.position = worldPos;
 
                         if (highlights[i].TryGetComponent<SpriteRenderer>(out var sr))
-                            sr.color = isValid ? new Color(0, 1, 0, 0.5f) : new Color(1, 0, 0, 0.5f);
+                            sr.color = isValid ? highlightValidColor : highlightInvalidColor;
                     }
                     else highlights[i].SetActive(false);
                 }
             }
             else
             {
-                targetColor = invalidColor;
+                targetColor = ghostInvalidColor;
                 targetScale = startScaleMultiplier;
                 highlights.ForEach(h => h.SetActive(false));
             }
@@ -189,11 +202,14 @@ namespace UI
             }
 
             if (ghost != null) Destroy(ghost);
-            highlights.ForEach(h =>
-            {
-                if (h != null)
-                    Destroy(h);
-            });
+            ClearHighlights();
+        }
+
+        private void ClearHighlights()
+        {
+            foreach (var h in highlights.Where(h => h != null))
+                Destroy(h);
+
             highlights.Clear();
         }
     }
