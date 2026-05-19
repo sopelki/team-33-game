@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Audio;
 using Field;
 using Logic.Castle;
 using Logic.Monster;
@@ -68,6 +69,10 @@ namespace Core
         [SerializeField]
         private TrapViewManager trapViewManager;
 
+        [Header("Audio")]
+        [SerializeField]
+        private SoundData soundData;
+
         private MonsterSystem monsterSystem;
         private MonsterSpawner monsterSpawner;
         private CastleModel castleModel;
@@ -111,8 +116,8 @@ namespace Core
             castleModel = new CastleModel(startHp, startGold, startFood);
             monsterSystem = new MonsterSystem();
             projectileSystem = new ProjectileSystem(monsterSystem);
-            unitSystem = new UnitSystem(monsterSystem, field, tilemap);
-            castleSystem = new CastleSystem(castleModel, unitSystem, soldierData, field, tilemap);
+            unitSystem = new UnitSystem(monsterSystem, field, tilemap, soundData);
+            castleSystem = new CastleSystem(castleModel, unitSystem, soldierData, field, tilemap, soundData);
 
             castleView = FindAnyObjectByType<CastleView>();
 
@@ -127,10 +132,10 @@ namespace Core
 
 
             trapsModel = new TrapsModel();
-            trapSystem = new TrapSystem(monsterSystem, trapsModel, field, castleSystem);
+            trapSystem = new TrapSystem(monsterSystem, trapsModel, field, castleSystem, soundData);
 
             monsterSpawner =
-                new MonsterSpawner(spawnHexes, field, monsterSystem, unitSystem, waves, tilemap, trapSystem);
+                new MonsterSpawner(spawnHexes, field, monsterSystem, unitSystem, waves, tilemap, trapSystem, soundData);
 
             waveManager = new WaveManager(monsterSpawner, monsterSystem, wavesDelay);
             waveManager.OnGameWon += endGameMenu.OpenWinMenu;
@@ -142,7 +147,7 @@ namespace Core
             }
 
             towersModel = new TowersModel();
-            towerSystem = new TowerSystem(castleSystem, towersModel, monsterSystem, projectileSystem);
+            towerSystem = new TowerSystem(castleSystem, towersModel, monsterSystem, projectileSystem, soundData);
 
             if (tickManager == null)
                 return;
@@ -154,6 +159,7 @@ namespace Core
             tickManager.OnTick += monsterSpawner.Tick;
             tickManager.OnTick += projectileSystem.Tick;
             tickManager.OnTick += waveManager.Tick;
+            tickManager.OnTick += trapSystem.Tick;
 
             unitSystem.OnUnitDied += _ =>
             {
@@ -196,10 +202,10 @@ namespace Core
             var trapShopItems = FindObjectsByType<ShopToFieldTrapItem>();
             foreach (var item in trapShopItems)
                 item.Construct(trapSystem, field);
-            
+
             if (startGameHintUI != null)
                 startGameHintUI.Initialize();
-            
+
             gameFlowManager = new GameFlowManager(
                 waveManager,
                 towerSystem,
@@ -207,8 +213,16 @@ namespace Core
                 castleSystem,
                 startGameHintUI
             );
-            
+
             gameFlowManager.Initialize();
+            
+            if (soundData != null && soundData.backgroundMusic != null)
+            {
+                AudioManager.Instance.PlayMusic(soundData.backgroundMusic);
+                Debug.Log("Background music started");
+            }
+            else
+                Debug.LogWarning("SoundData or background music clip is missing!");
         }
     }
 }

@@ -3,13 +3,15 @@ using Interfaces;
 using Logic.Castle;
 using UnityEngine;
 using Logic.Unit;
+using Audio;
 
 namespace Logic.Monster
 {
     public class MonsterAttackStrategy : IAttackStrategy
     {
-        private readonly MonsterModel monster;
+        private readonly MonsterModel monsterModel;
         private readonly UnitSystem unitSystem;
+        private readonly SoundData soundData;
 
         private float currentCooldown;
         private IDamageable currentTarget;
@@ -17,10 +19,11 @@ namespace Logic.Monster
         public bool IsAttacking => currentTarget != null;
 
 
-        public MonsterAttackStrategy(MonsterModel monsterModel, UnitSystem unitSystem)
+        public MonsterAttackStrategy(MonsterModel monsterModel, UnitSystem unitSystem, SoundData soundData)
         {
-            monster = monsterModel;
+            this.monsterModel = monsterModel;
             this.unitSystem = unitSystem;
+            this.soundData = soundData;
         }
 
         public void Tick()
@@ -41,11 +44,11 @@ namespace Logic.Monster
                         return;
                     }
                     targetPos = castle.Model.WallWorldPositions
-                        .OrderBy(p => Vector3.Distance(monster.WorldPosition, p))
+                        .OrderBy(p => Vector3.Distance(monsterModel.WorldPosition, p))
                         .First();
                 }
 
-                if (currentTarget.IsDead || Vector3.Distance(targetPos, monster.WorldPosition) > monster.AttackRadius)
+                if (currentTarget.IsDead || Vector3.Distance(targetPos, monsterModel.WorldPosition) > monsterModel.AttackRadius)
                     currentTarget = null;
             }
 
@@ -55,7 +58,7 @@ namespace Logic.Monster
                     .GetAllUnits()
                     .Where(u => !u.IsDead)
                     .FirstOrDefault(u =>
-                        Vector3.Distance(u.WorldPosition, monster.WorldPosition) <= monster.AttackRadius);
+                        Vector3.Distance(u.WorldPosition, monsterModel.WorldPosition) <= monsterModel.AttackRadius);
 
                 if (nearbyUnit != null)
                     currentTarget = nearbyUnit;
@@ -63,7 +66,7 @@ namespace Logic.Monster
                 {
                     foreach (var wallPos in castle.Model.WallWorldPositions)
                     {
-                        if (Vector3.Distance(wallPos, monster.WorldPosition) <= monster.AttackRadius)
+                        if (Vector3.Distance(wallPos, monsterModel.WorldPosition) <= monsterModel.AttackRadius)
                         {
                             currentTarget = castle.Model;
                             break;
@@ -80,9 +83,12 @@ namespace Logic.Monster
                 currentCooldown -= Core.TickManager.Instance.tickInterval;
                 return;
             }
+            
+            if (soundData != null && soundData.monsterAttackSound != null)
+                AudioManager.Instance.PlaySfx(soundData.monsterAttackSound, 0.7f);
 
-            currentTarget.TakeDamage(monster.Damage);
-            currentCooldown = monster.AttackCooldown;
+            currentTarget.TakeDamage(monsterModel.Damage);
+            currentCooldown = monsterModel.AttackCooldown;
         }
     }
 }

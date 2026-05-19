@@ -5,6 +5,7 @@ using Logic.Castle;
 using Logic.Monster;
 using Logic.Projectile;
 using UnityEngine;
+using Audio;
 
 namespace Logic.Tower
 {
@@ -16,6 +17,7 @@ namespace Logic.Tower
         private readonly TowersModel towersModel;
         private readonly ProjectileSystem projectileSystem;
         private readonly MonsterSystem monsterSystem;
+        private readonly SoundData soundData;
         
         private bool firstTowerPlaced;
         
@@ -23,12 +25,14 @@ namespace Logic.Tower
             CastleSystem castleSystem,
             TowersModel towersModel,
             MonsterSystem monsterSystem,
-            ProjectileSystem projectileSystem)
+            ProjectileSystem projectileSystem,
+            SoundData soundData)
         {
             this.castleSystem = castleSystem;
             this.towersModel = towersModel;
             this.monsterSystem = monsterSystem;
             this.projectileSystem = projectileSystem;
+            this.soundData = soundData;
         }
 
         public void Tick()
@@ -82,6 +86,9 @@ namespace Logic.Tower
 
             var tower = new TowerModel(data, cellPos, worldPos);
             towersModel.AddTower(tower);
+            
+            if (soundData != null && soundData.towerPlaceSound != null)
+                AudioManager.Instance.PlaySfx(soundData.towerPlaceSound);
             
             if (!firstTowerPlaced)
             {

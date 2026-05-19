@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Audio;
 using Logic.Monster;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -13,6 +14,7 @@ namespace Logic.Unit
         private readonly Field.Field field;
         private readonly Tilemap tilemap;
         private readonly List<Buff> buffs = new();
+        private readonly SoundData soundData;
 
         public event Action<UnitModel> OnUnitCreated;
         // public event Action<UnitModel> OnUnitMoved;
@@ -21,11 +23,13 @@ namespace Logic.Unit
         public UnitSystem(
             MonsterSystem monsterSystem,
             Field.Field field,
-            Tilemap tilemap)
+            Tilemap tilemap,
+            SoundData soundData)
         {
             this.monsterSystem = monsterSystem;
             this.field = field;
             this.tilemap = tilemap;
+            this.soundData = soundData;
         }
         
         public void AddBuff(Buff buff) => buffs.Add(buff);
@@ -39,7 +43,7 @@ namespace Logic.Unit
             
             unit.ResetHealth();
             
-            var attack = new UnitAttackStrategy(unit, monsterSystem);
+            var attack = new UnitAttackStrategy(unit, monsterSystem, soundData);
             var movement = new UnitAStarMoveStrategy(
                 unit,
                 monsterSystem,

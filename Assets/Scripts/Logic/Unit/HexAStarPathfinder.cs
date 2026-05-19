@@ -116,7 +116,7 @@ namespace Logic.Unit
         {
             this.field = field;
             // Используем один экземпляр System.Random для настоящей случайности
-            this.randomGenerator = new System.Random();
+            randomGenerator = new System.Random();
         }
 
         public List<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)

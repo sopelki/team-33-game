@@ -6,6 +6,7 @@ using Logic.Monster;
 using Core;
 using Logic.Castle;
 using HexagonScripts;
+using Audio;
 
 namespace Logic.Trap
 {
@@ -17,17 +18,19 @@ namespace Logic.Trap
         private readonly TrapsModel trapsModel;
         private readonly Field.Field field;
         private readonly CastleSystem castleSystem;
+        private readonly SoundData soundData;
         
         private bool firstTrapPlaced;
 
         public TrapSystem(MonsterSystem monsterSystem, TrapsModel trapsModel, Field.Field field,
-            CastleSystem castleSystem)
+            CastleSystem castleSystem,  SoundData soundData)
         {
             this.field = field;
             this.monsterSystem = monsterSystem;
             this.trapsModel = trapsModel;
             this.castleSystem = castleSystem;
-            TickManager.Instance.OnTick += Tick;
+            this.soundData = soundData;
+            // TickManager.Instance.OnTick += Tick;
         }
 
         public List<Vector2Int> GetTrapOccupiedHexes(Vector2Int centerHex)
@@ -76,6 +79,9 @@ namespace Logic.Trap
                 var trap = new TrapModel(data, GetTrapOccupiedHexes(hex));
                 trapsModel.AddTrap(trap);
                 
+                if (soundData != null && soundData.trapPlaceSound != null)
+                    AudioManager.Instance.PlaySfx(soundData.trapPlaceSound);
+                
                 if (!firstTrapPlaced)
                 {
                     firstTrapPlaced = true;
@@ -118,7 +124,7 @@ namespace Logic.Trap
             }
         }
 
-        private void Tick()
+        public void Tick()
         {
             var delta = TickManager.Instance.tickInterval;
             var monsters = monsterSystem.GetAllMonsters();
