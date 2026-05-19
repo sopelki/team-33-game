@@ -48,7 +48,17 @@ namespace UI
         [SerializeField]
         private float targetScale;
         [SerializeField]
-        private float validSizeScale = 1.05f;
+        private float validSizeScale = 1f;
+        
+        [Header("Animation & Speeds")]
+        [SerializeField] private float snapSpeed = 20f;
+        [SerializeField] private float unSnapSpeed = 15f;
+        [SerializeField] private Vector2 ghostOffset = Vector2.zero;
+        
+        private Vector2 targetGhostPosition;
+        private Vector2 currentGhostPosition;
+        private bool isSnapping;
+        private bool wasSnapping;
         private float currentScale;
         private Color targetColor;
 
@@ -90,6 +100,26 @@ namespace UI
             ghostImage.sprite = prefabRenderer.sprite;
             ghostImage.preserveAspect = true;
             ghostImage.raycastTarget = false;
+            
+            var sprite = prefabRenderer.sprite;
+            ghostRect.pivot = new Vector2(0.5f, 0.5f);
+
+            if (Camera.main != null)
+            {
+                var pixelsPerUnit = Screen.height / (Camera.main.orthographicSize * 2f);
+                var spriteSize = new Vector2(
+                    sprite.rect.width / sprite.pixelsPerUnit,
+                    sprite.rect.height / sprite.pixelsPerUnit
+                );
+
+                var prefabScale = prefabRenderer.transform.localScale;
+                spriteSize.x *= prefabScale.x;
+                spriteSize.y *= prefabScale.y;
+
+                ghostRect.sizeDelta = spriteSize * pixelsPerUnit / canvas.scaleFactor;
+            }
+            
+            ghostRect.anchorMin = ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
 
             currentScale = startScaleMultiplier;
             targetScale = startScaleMultiplier;
@@ -120,6 +150,8 @@ namespace UI
 
         private void UpdatePlacementFeedback(PointerEventData eventData)
         {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)canvas.transform, eventData.position, eventData.pressEventCamera, out var mouseLocalPoint);
             if (TryGetCellUnderMouse(eventData, out var cellPos))
             {
                 var axial = HexagonScripts.HexagonMath.OffsetToAxial(cellPos.x, cellPos.y);
@@ -127,6 +159,21 @@ namespace UI
 
                 targetColor = isValid ? ghostValidColor : ghostInvalidColor;
                 targetScale = isValid ? validSizeScale : startScaleMultiplier;
+                
+                var hexObj = field.GetHex(axial);
+                
+                // Используем наш новый точный метод через Tilemap и Viewport!
+                if (hexObj != null && isValid && TryGetSlotCanvasPosition(hexObj.offset, eventData, out var snappedCanvasPos))
+                {
+                    targetGhostPosition = snappedCanvasPos + ghostOffset;
+                    isSnapping = true;
+                }
+                else
+                {
+                    // Если место занято или нет денег - просто следуем за мышкой
+                    targetGhostPosition = mouseLocalPoint + ghostOffset;
+                    isSnapping = false;
+                }
 
                 var hexes = trapSystem.GetTrapOccupiedHexes(axial);
                 for (var i = 0; i < highlights.Count; i++)
@@ -137,13 +184,13 @@ namespace UI
                         continue;
                     }
 
-                    var hexObj = field.GetHex(hexes[i]);
-                    if (hexObj != null)
+                    var hObj = field.GetHex(hexes[i]);
+                    if (hObj != null)
                     {
                         highlights[i].SetActive(true);
-                        var worldPos = fieldTilemap.GetCellCenterWorld(hexObj.offset);
-                        worldPos.z = -0.5f;
-                        highlights[i].transform.position = worldPos;
+                        var hWorldPos = fieldTilemap.GetCellCenterWorld(hObj.offset);
+                        hWorldPos.z = -0.5f;
+                        highlights[i].transform.position = hWorldPos;
 
                         if (highlights[i].TryGetComponent<SpriteRenderer>(out var sr))
                             sr.color = isValid ? highlightValidColor : highlightInvalidColor;
@@ -187,6 +234,20 @@ namespace UI
         {
             if (!ghost)
                 return;
+            if (isSnapping)
+            {
+                currentGhostPosition = Vector2.Lerp(currentGhostPosition, targetGhostPosition, Time.deltaTime * snapSpeed);
+                wasSnapping = true;
+            }
+            else if (wasSnapping)
+            {
+                currentGhostPosition = Vector2.Lerp(currentGhostPosition, targetGhostPosition, Time.deltaTime * unSnapSpeed);
+                if (Vector2.Distance(currentGhostPosition, targetGhostPosition) < 1f)
+                    wasSnapping = false;
+            }
+            else
+                currentGhostPosition = targetGhostPosition;
+            ghostRect.localPosition = currentGhostPosition;
             currentScale = Mathf.Lerp(currentScale, targetScale, Time.deltaTime * scaleSpeed);
             ghostRect.localScale = Vector3.one * currentScale;
             ghostImage.color = Color.Lerp(ghostImage.color, targetColor, Time.deltaTime * colorLerpSpeed);
@@ -210,6 +271,31 @@ namespace UI
                 Destroy(h);
 
             highlights.Clear();
+        }
+        
+        private bool TryGetSlotCanvasPosition(Vector3Int slotCell, PointerEventData eventData, out Vector2 canvasPosition)
+        {
+            canvasPosition = Vector2.zero;
+            var cam = Camera.main;
+            if (!cam || !mapViewport || !fieldTilemap)
+                return false;
+
+            var slotWorldCenter = fieldTilemap.GetCellCenterWorld(slotCell);
+            var slotViewport = cam.WorldToViewportPoint(slotWorldCenter);
+
+            var slotLocalInViewport = new Vector2(
+                (slotViewport.x - 0.5f) * mapViewport.rect.width,
+                (slotViewport.y - 0.5f) * mapViewport.rect.height
+            );
+
+            var slotScreenPos = RectTransformUtility.WorldToScreenPoint(eventData.pressEventCamera,
+                mapViewport.TransformPoint(slotLocalInViewport));
+
+            return RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                (RectTransform)canvas.transform,
+                slotScreenPos,
+                eventData.pressEventCamera,
+                out canvasPosition);
         }
     }
 }
