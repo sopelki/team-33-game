@@ -61,10 +61,10 @@ namespace Logic.Unit
             {
                 if (distance <= meleeRange && 
                     soundData.unitMeleeAttackSounds is { Length: > 0 })
-                    AudioManager.Instance.PlayRandomSfx(soundData.unitMeleeAttackSounds, 0.8f);
+                    AudioManager.Instance.PlayRandomSfx(soundData.unitMeleeAttackSounds, soundData.unitMeleeAttackVolume);
                 else if (distance > meleeRange && 
                          soundData.unitRangeAttackSounds is { Length: > 0 })
-                    AudioManager.Instance.PlayRandomSfx(soundData.unitRangeAttackSounds, 0.8f);
+                    AudioManager.Instance.PlayRandomSfx(soundData.unitRangeAttackSounds, soundData.unitRangeAttackVolume);
             }
 
             foreach (var monster in targets)

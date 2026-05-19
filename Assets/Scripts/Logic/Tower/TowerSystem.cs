@@ -102,13 +102,23 @@ namespace Logic.Tower
 
         private void Shoot(TowerModel tower, MonsterModel target)
         {
-            var sound = tower.Data.type == TowerType.Mage
-                ? soundData.mageTowerHitSounds
-                : soundData.archerTowerHitSounds;
+            AudioClip[] sound;
+            float volume;
+            
+            if (tower.Data.type == TowerType.Mage)
+            {
+                sound = soundData.mageTowerShootSounds;
+                volume = soundData.mageShootVolume;
+            }
+            else
+            {
+                sound = soundData.archerTowerShootSounds;
+                volume = soundData.archerShootVolume;
+            }
 
             if (soundData != null &&
                 soundData.archerTowerShootSounds is { Length: > 0 })
-                AudioManager.Instance.PlayRandomSfx(sound, 0.75f);
+                AudioManager.Instance.PlayRandomSfx(sound, volume);
 
             var firePoint = tower.WorldPosition +
                             new Vector3(tower.Data.projectileData.xOffset, tower.Data.projectileData.yOffset, 0);

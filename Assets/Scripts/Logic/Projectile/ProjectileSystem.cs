@@ -127,11 +127,23 @@ namespace Logic.Projectile
 
         private void PlayHitSound(bool isHoming)
         {
-            var sound = isHoming ? soundData.mageTowerHitSounds : soundData.archerTowerHitSounds;
+            AudioClip[] sound;
+            float volume;
+            
+            if (isHoming)
+            {
+                sound = soundData.mageTowerHitSounds;
+                volume = soundData.mageHitVolume;
+            }
+            else
+            {
+                sound = soundData.archerTowerHitSounds;
+                volume = soundData.archerHitVolume;
+            }
 
             if (soundData != null &&
                 soundData.archerTowerHitSounds is { Length: > 0 })
-                AudioManager.Instance.PlayRandomSfx(sound, 0.8f);
+                AudioManager.Instance.PlayRandomSfx(sound, volume);
         }
 
 

@@ -88,7 +88,7 @@ namespace Logic.Monster
             }
 
             if (soundData != null && soundData.monsterAttackSounds is { Length: > 0 })
-                AudioManager.Instance.PlayRandomSfx(soundData.monsterAttackSounds, 0.7f);
+                AudioManager.Instance.PlayRandomSfx(soundData.monsterAttackSounds, soundData.monsterAttackVolume);
 
             currentTarget.TakeDamage(monsterModel.Damage);
             currentCooldown = monsterModel.AttackCooldown;

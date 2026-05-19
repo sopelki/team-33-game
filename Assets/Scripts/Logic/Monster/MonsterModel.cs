@@ -94,7 +94,7 @@ namespace Logic.Monster
             
             if (soundData != null && 
                 soundData.monsterDamageSounds is { Length: > 0 })
-                AudioManager.Instance.PlayRandomSfx(soundData.monsterDamageSounds, 0.6f);
+                AudioManager.Instance.PlayRandomSfx(soundData.monsterDamageSounds, soundData.monsterDamageVolume);
         }
 
         public void SetStrategies(IMovementStrategy movement, IAttackStrategy attack)
