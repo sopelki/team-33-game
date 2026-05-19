@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Audio;
 using UnityEngine;
 using Logic.Unit;
 using Interfaces;
@@ -23,6 +24,7 @@ namespace Logic.Monster
         private readonly Tilemap tilemap;
         private readonly List<WaveData> waves;
         private readonly TrapSystem trapSystem;
+        private readonly SoundData soundData;
 
         private int currentWaveIndex = -1;
         private int spawnedInCurrentWave;
@@ -41,7 +43,8 @@ namespace Logic.Monster
             UnitSystem unitSystem,
             List<WaveData> waves,
             Tilemap tilemap,
-            TrapSystem trapSystem)
+            TrapSystem trapSystem,
+            SoundData soundData)
         {
             this.spawnHexes = spawnHexes;
             this.field = field;
@@ -50,6 +53,7 @@ namespace Logic.Monster
             this.waves = waves;
             this.tilemap = tilemap;
             this.trapSystem = trapSystem;
+            this.soundData = soundData;
         }
 
         public void StartNextWave()
@@ -110,7 +114,7 @@ namespace Logic.Monster
             );
 
             var movement = new HexMoveToTargetStrategy(monster, field, tilemap, trapSystem);
-            var attack = new MonsterAttackStrategy(monster, unitSystem);
+            var attack = new MonsterAttackStrategy(monster, unitSystem, soundData);
             monster.SetStrategies(movement, attack);
 
             monsterSystem.AddMonster(monster);

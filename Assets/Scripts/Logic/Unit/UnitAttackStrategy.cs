@@ -2,6 +2,7 @@
 using Interfaces;
 using UnityEngine;
 using Logic.Monster;
+using Audio;
 
 namespace Logic.Unit
 {
@@ -9,18 +10,20 @@ namespace Logic.Unit
     {
         private readonly UnitModel unit;
         private readonly MonsterSystem monsterSystem;
+        private readonly SoundData soundData;
 
         private float currentCooldown;
-        private bool isAttacking;
-    
-        public bool IsAttacking => isAttacking;
+
+        public bool IsAttacking { get; private set; }
 
         public UnitAttackStrategy(
             UnitModel unit,
-            MonsterSystem monsterSystem)
+            MonsterSystem monsterSystem,
+            SoundData soundData)
         {
             this.unit = unit;
             this.monsterSystem = monsterSystem;
+            this.soundData = soundData;
         }
 
         public void Tick()
@@ -29,11 +32,11 @@ namespace Logic.Unit
             if (currentCooldown > 0f)
             {
                 currentCooldown -= Core.TickManager.Instance.tickInterval;
-                isAttacking = true;
+                IsAttacking = true;
                 return;
             }
             
-            isAttacking = false;
+            IsAttacking = false;
             unit.AttackType = 0;
 
             var targets = monsterSystem.GetAllMonsters()
@@ -54,12 +57,20 @@ namespace Logic.Unit
             var distance = Vector3.Distance(closest.WorldPosition, unit.WorldPosition);
             var meleeRange = unit.UnitData.attackRadius * 0.5f;
             unit.AttackType = distance <= meleeRange ? 1 : 2;
-
+            
+            if (soundData != null)
+            {
+                if (distance <= meleeRange && soundData.unitMeleeAttackSound != null)
+                    AudioManager.Instance.PlaySfx(soundData.unitMeleeAttackSound, 0.8f);
+                else if (distance > meleeRange && soundData.unitRangeAttackSound != null)
+                    AudioManager.Instance.PlaySfx(soundData.unitRangeAttackSound, 0.8f);
+            }
+            
             foreach (var monster in targets)
                 monster.TakeDamage(unit.GetAttack());
 
             currentCooldown = unit.UnitData.attackCooldown;
-            isAttacking = true;
+            IsAttacking = true;
         }
     }
 }

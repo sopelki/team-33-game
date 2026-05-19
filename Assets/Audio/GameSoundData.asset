@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9373f305ab45e88306003a93445b28, type: 3}
+  m_Name: GameSoundData
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.SoundData
+  towerPlaceSound: {fileID: 8300000, guid: 611255a0583684e49928d428fe7c86c0, type: 3}
+  trapPlaceSound: {fileID: 8300000, guid: 611255a0583684e49928d428fe7c86c0, type: 3}
+  buildingPlaceSound: {fileID: 8300000, guid: 611255a0583684e49928d428fe7c86c0, type: 3}
+  monsterAttackSound: {fileID: 8300000, guid: 9fc1b31c0728f9c4db471d64ab470a77, type: 3}
+  monsterDamageSound: {fileID: 0}
+  unitMeleeAttackSound: {fileID: 0}
+  unitRangeAttackSound: {fileID: 0}
+  unitDamageSound: {fileID: 0}
+  backgroundMusic: {fileID: 8300000, guid: 3b1d538dccbd69d488bc032da714b0b4, type: 3}
