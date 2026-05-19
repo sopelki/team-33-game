@@ -11,15 +11,23 @@ namespace Audio
         public AudioClip buildingPlaceSound;
 
         [Header("Monster Attack Sounds")]
-        public AudioClip monsterAttackSound;
-        public AudioClip monsterDamageSound;
+        public AudioClip[] monsterAttackSounds;
+        public AudioClip[] monsterDamageSounds;
 
         [Header("Unit Attack Sounds")]
-        public AudioClip unitMeleeAttackSound;
-        public AudioClip unitRangeAttackSound;
-        public AudioClip unitDamageSound;
+        public AudioClip[] unitMeleeAttackSounds;
+        public AudioClip[] unitRangeAttackSounds;
+        public AudioClip[] unitDamageSounds;
 
         [Header("Background Music")]
         public AudioClip backgroundMusic;
+
+        public AudioClip GetRandomClip(AudioClip[] clips)
+        {
+            if (clips == null || clips.Length == 0)
+                return null;
+
+            return clips[Random.Range(0, clips.Length)];
+        }
     }
 }
