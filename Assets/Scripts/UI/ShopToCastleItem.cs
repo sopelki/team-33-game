@@ -8,17 +8,21 @@ namespace UI
 {
     public class ShopToCastleItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        [SerializeField] private Canvas canvas;
-        [SerializeField] private GameObject inventoryItemPrefab;
-        [SerializeField] private BuildingData buildingData;
+        [SerializeField]
+        private Canvas canvas;
+        [SerializeField]
+        private GameObject inventoryItemPrefab;
+        [SerializeField]
+        private BuildingData buildingData;
 
         [Header("Feedback")]
-        [SerializeField] private Image iconImage;
-        [SerializeField] private float fadeDuration = 0.1f;
+        [SerializeField]
+        private Image iconImage;
+        [SerializeField]
+        private float fadeDuration = 0.1f;
 
         private Image sourceImage;
         private CanvasGroup iconCanvasGroup;
-        private Coroutine fadeCoroutine;
 
         private void Awake()
         {
@@ -38,7 +42,7 @@ namespace UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (inventoryItemPrefab == null || canvas == null || iconImage == null)
+            if (inventoryItemPrefab == null || canvas == null)
                 return;
 
             iconCanvasGroup.alpha = 0f;
@@ -71,10 +75,10 @@ namespace UI
 
         private void HandleItemDropped()
         {
-            if (fadeCoroutine != null)
-                StopCoroutine(fadeCoroutine);
+            if (!gameObject.activeInHierarchy)
+                return;
 
-            fadeCoroutine = StartCoroutine(FadeIn());
+            StartCoroutine(FadeIn());
         }
 
         private IEnumerator FadeIn()
@@ -89,10 +93,14 @@ namespace UI
             }
 
             iconCanvasGroup.alpha = 1f;
-            fadeCoroutine = null;
         }
 
-        public void OnDrag(PointerEventData eventData) { }
-        public void OnEndDrag(PointerEventData eventData) { }
+        public void OnDrag(PointerEventData eventData)
+        {
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+        }
     }
 }

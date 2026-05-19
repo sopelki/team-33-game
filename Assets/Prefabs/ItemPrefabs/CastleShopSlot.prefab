@@ -94,7 +94,7 @@ MonoBehaviour:
   inventoryItemPrefab: {fileID: 0}
   buildingData: {fileID: 0}
   iconImage: {fileID: 7918087666245546974}
-  fadeDuration: 0.2
+  fadeDuration: 0.1
 --- !u!1 &7013590033123846204
 GameObject:
   m_ObjectHideFlags: 0

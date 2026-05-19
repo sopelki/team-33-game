@@ -117,5 +117,10 @@ namespace UI
             transform.SetParent(OriginalParent);
             dragHandler?.ResetPosition();
         }
+        
+        private void OnDestroy()
+        {
+            OnDropped?.Invoke();
+        }
     }
 }
