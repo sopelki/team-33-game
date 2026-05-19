@@ -14,6 +14,12 @@ namespace Audio
         public AudioClip[] monsterAttackSounds;
         public AudioClip[] monsterDamageSounds;
 
+        [Header("Tower Sounds")]
+        public AudioClip[] archerTowerShootSounds;
+        public AudioClip[] archerTowerHitSounds;
+        public AudioClip[] mageTowerShootSounds;
+        public AudioClip[] mageTowerHitSounds;
+
         [Header("Unit Attack Sounds")]
         public AudioClip[] unitMeleeAttackSounds;
         public AudioClip[] unitRangeAttackSounds;
@@ -21,13 +27,5 @@ namespace Audio
 
         [Header("Background Music")]
         public AudioClip backgroundMusic;
-
-        public AudioClip GetRandomClip(AudioClip[] clips)
-        {
-            if (clips == null || clips.Length == 0)
-                return null;
-
-            return clips[Random.Range(0, clips.Length)];
-        }
     }
 }

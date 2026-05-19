@@ -12,15 +12,15 @@ namespace Logic.Tower
     public class TowerSystem : Interfaces.ITickable
     {
         public event Action OnFirstTowerPlaced;
-        
+
         private readonly CastleSystem castleSystem;
         private readonly TowersModel towersModel;
         private readonly ProjectileSystem projectileSystem;
         private readonly MonsterSystem monsterSystem;
         private readonly SoundData soundData;
-        
+
         private bool firstTowerPlaced;
-        
+
         public TowerSystem(
             CastleSystem castleSystem,
             TowersModel towersModel,
@@ -86,22 +86,30 @@ namespace Logic.Tower
 
             var tower = new TowerModel(data, cellPos, worldPos);
             towersModel.AddTower(tower);
-            
+
             if (soundData != null && soundData.towerPlaceSound != null)
                 AudioManager.Instance.PlaySfx(soundData.towerPlaceSound);
-            
+
             if (!firstTowerPlaced)
             {
                 firstTowerPlaced = true;
                 OnFirstTowerPlaced?.Invoke();
                 Debug.Log("First tower placed!. Game can start.");
             }
-            
+
             return true;
         }
 
         private void Shoot(TowerModel tower, MonsterModel target)
         {
+            var sound = tower.Data.type == TowerType.Mage
+                ? soundData.mageTowerHitSounds
+                : soundData.archerTowerHitSounds;
+
+            if (soundData != null &&
+                soundData.archerTowerShootSounds is { Length: > 0 })
+                AudioManager.Instance.PlayRandomSfx(sound, 0.75f);
+
             var firePoint = tower.WorldPosition +
                             new Vector3(tower.Data.projectileData.xOffset, tower.Data.projectileData.yOffset, 0);
 

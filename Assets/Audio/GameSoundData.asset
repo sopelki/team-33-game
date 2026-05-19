@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9373f305ab45e88306003a93445b28, type: 3}
   m_Name: GameSoundData
   m_EditorClassIdentifier: Assembly-CSharp::Audio.SoundData
-  towerPlaceSound: {fileID: 8300000, guid: 20ed1b11be4f8ff4d9653f6327259f6d, type: 3}
-  trapPlaceSound: {fileID: 8300000, guid: 0af300f76a9efff4ebef7c1370c60971, type: 3}
-  buildingPlaceSound: {fileID: 8300000, guid: c6acd04016e3aec44a13809cbbd39807, type: 3}
+  towerPlaceSound: {fileID: 8300000, guid: 9a997be0ff3388a4dbef75bfa0181b14, type: 3}
+  trapPlaceSound: {fileID: 8300000, guid: d4d5af712910ed04692bfbc74763a39e, type: 3}
+  buildingPlaceSound: {fileID: 8300000, guid: 86588df3d0100924ea263810b583a242, type: 3}
   monsterAttackSounds:
   - {fileID: 8300000, guid: 14f86c9f3f9e76d4b8475fd6dff5cbdd, type: 3}
   - {fileID: 8300000, guid: 9404784c32614ae4da63877a68ffb18e, type: 3}
@@ -27,6 +27,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e684d2c7d2882f14cac3868775e77d24, type: 3}
   - {fileID: 8300000, guid: 82a0d044e1a2b1f449b7fd4766e7ed32, type: 3}
   - {fileID: 8300000, guid: b89c473e20c797543b851e7d6b29768f, type: 3}
+  archerTowerShootSounds:
+  - {fileID: 8300000, guid: 86a82b0ddf0bd9043bfaf161bf2b4131, type: 3}
+  - {fileID: 8300000, guid: 82882693af6c11344a1614a053d8df94, type: 3}
+  archerTowerHitSounds:
+  - {fileID: 8300000, guid: 0b359d7a4b53edb4f90d9d61e6579b2f, type: 3}
+  - {fileID: 8300000, guid: 3c9a6c0e941a87d40a36f396e64b148e, type: 3}
+  - {fileID: 8300000, guid: a72749647949f7946b89286bb4652fb7, type: 3}
+  mageTowerShootSounds:
+  - {fileID: 8300000, guid: 26f64397a430a94499249659318ab4d5, type: 3}
+  - {fileID: 8300000, guid: a341f26a1e2a46947b3009bde7cea9e0, type: 3}
+  - {fileID: 8300000, guid: 0e0952e41e79d7a4fb81435f8b8c5562, type: 3}
+  mageTowerHitSounds:
+  - {fileID: 8300000, guid: 9aef4cc7448eec54e9a2e121895c02b5, type: 3}
+  - {fileID: 8300000, guid: 3418614959fe2c34ebe1b4343831987c, type: 3}
   unitMeleeAttackSounds:
   - {fileID: 8300000, guid: f786602a76cfc1a4081208b6d3054d01, type: 3}
   - {fileID: 8300000, guid: 9e9c859028fd81f4c820922e83270b6e, type: 3}

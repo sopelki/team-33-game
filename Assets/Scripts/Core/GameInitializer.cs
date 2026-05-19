@@ -115,7 +115,7 @@ namespace Core
 
             castleModel = new CastleModel(startHp, startGold, startFood);
             monsterSystem = new MonsterSystem();
-            projectileSystem = new ProjectileSystem(monsterSystem);
+            projectileSystem = new ProjectileSystem(monsterSystem, soundData);
             unitSystem = new UnitSystem(monsterSystem, field, tilemap, soundData);
             castleSystem = new CastleSystem(castleModel, unitSystem, soldierData, field, tilemap, soundData);
 
