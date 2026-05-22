@@ -81,8 +81,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1841721055
-  m_SortingLayer: 3
+  m_SortingLayerID: 114094293
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 3486939950096845021, guid: 9fe9078f879fa1c4690b126ef37ac6da, type: 3}
@@ -108,7 +108,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::View.TrapView
   spriteRenderer: {fileID: 1846624115943362225}
-  outlineRenderer: {fileID: 6520591090295714558}
   outline: {fileID: 6931159194218472792}
 --- !u!61 &-5753805010066677897
 BoxCollider2D:
