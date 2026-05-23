@@ -8,6 +8,15 @@ namespace View
         [SerializeField]
         private SpriteRenderer spriteRenderer;
 
+        [Header("Animation Settings")]
+        [SerializeField]
+        private Sprite[] animationFrames;
+        [SerializeField]
+        private float framesPerSecond = 12f;
+        
+        private int currentFrameIndex;
+        private float animationTimer;
+
         private ProjectileModel model;
         private Vector3 lastVisualPosition;
 
@@ -31,12 +40,17 @@ namespace View
 
             if (!spriteRenderer)
                 spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            
+            currentFrameIndex = 0;
+            animationTimer = 0f;
         }
 
         private void Update()
         {
             if (model == null)
                 return;
+
+            UpdateAnimation();
 
             var t = model.TravelProgress;
             var groundPosition = Vector3.Lerp(model.StartPosition, model.TargetPoint, t);
@@ -62,6 +76,21 @@ namespace View
             }
             
             spriteRenderer.sortingOrder = yForSorting > model.TowerBaseY ? 0 : 2;
+        }
+
+        private void UpdateAnimation()
+        {
+            if (animationFrames == null || animationFrames.Length == 0)
+                return;
+
+            animationTimer += Time.deltaTime;
+
+            if (animationTimer >= 1f / framesPerSecond)
+            {
+                animationTimer = 0f;
+                currentFrameIndex = (currentFrameIndex + 1) % animationFrames.Length;
+                spriteRenderer.sprite = animationFrames[currentFrameIndex];
+            }
         }
 
         private void ApplyRotation(Vector3 currentPos)
