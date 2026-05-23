@@ -9,63 +9,59 @@ namespace View
         private static readonly int moveY = Animator.StringToHash("MoveY");
         private MonsterModel model;
         private Vector3 previousPosition;
-        
-        [SerializeField] private Animator animator;
+
+        [SerializeField]
+        private Animator animator;
         private Vector2 targetDirection;
         private Vector2 currentSmoothDirection;
-        [SerializeField] private float smoothingSpeed = 10f;
+        [SerializeField]
+        private float smoothingSpeed = 10f;
+        private Vector3 visualOffset;
 
 
-        public void Initialize(MonsterModel model)
+        public void Initialize(MonsterModel model, float visualOffset)
         {
             this.model = model;
             transform.position = model.WorldPosition;
             previousPosition = model.WorldPosition;
+            this.visualOffset = new Vector3(0, model.Data.visualOffsetY, 0);
         }
-        
+
         public void UpdateView()
         {
-            var currentPosition = model.WorldPosition;
-            var direction = currentPosition - previousPosition;
+            var logicalPosition = model.WorldPosition;
+            var direction = logicalPosition - previousPosition;
 
-            transform.position = currentPosition;
+            transform.position = logicalPosition + visualOffset;
 
             if (direction.sqrMagnitude > 0.0001f)
             {
-                // UpdateDirection(direction);
                 targetDirection = new Vector2(direction.x, direction.y).normalized;
-                previousPosition = currentPosition;
+                previousPosition = logicalPosition;
             }
-            // else 
-            // {
-            //     // Если монстр стоит, можно занулить параметры, 
-            //     // чтобы он перешел в Idle
-            //     animator.SetFloat("MoveX", 0);
-            //     animator.SetFloat("MoveY", 0);
-            // }
         }
-        
+
         private void Update()
         {
             if (!animator) return;
 
             currentSmoothDirection = Vector2.Lerp(
-                currentSmoothDirection, 
-                targetDirection, 
+                currentSmoothDirection,
+                targetDirection,
                 Time.deltaTime * smoothingSpeed
             );
 
             animator.SetFloat(moveX, currentSmoothDirection.x);
             animator.SetFloat(moveY, currentSmoothDirection.y);
         }
-        
+
         // private void UpdateDirection(Vector3 direction)
         // {
         //     direction.Normalize();
         //     animator.SetFloat("MoveX", direction.x, 0.1f, Time.deltaTime);
         //     animator.SetFloat("MoveY", direction.y, 0.1f, Time.deltaTime);
         // }
-        
+
         // private void Update()
         // {
         //     if (currentFrames == null || currentFrames.Length == 0) return;
@@ -115,6 +111,5 @@ namespace View
         //             spriteRenderer.sprite = currentFrames[0];
         //     }
         // }
-        
     }
 }
