@@ -11,7 +11,7 @@ namespace View
         [SerializeField] private List<Vector2Int> castleHexes = new();
 
         public List<Vector3> WallWorldPositions { get; } = new();
-        public List<Vector2Int> WallHexes => castleHexes;
+        // public List<Vector2Int> WallHexes => castleHexes;
         public CastleModel Model { get; private set; }
         public Field.Field Field { get; private set; }
 
@@ -58,7 +58,6 @@ namespace View
         
         private void OnDrawGizmos()
         {
-            // Рисует красные сферы в редакторе там, где сейчас гексы стены
             Gizmos.color = Color.red;
             if (WallWorldPositions != null)
             {

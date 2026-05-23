@@ -11,8 +11,8 @@ namespace View
         [Serializable]
         public struct BuffMap
         {
-            public string buffClassName; // Сюда пишем "AttackPercentBuff" или "HealthPercentBuff"
-            public GameObject glowPrefab; // Префаб магического свечения
+            public string buffClassName;
+            public GameObject glowPrefab;
         }
 
         public List<BuffMap> mappings;

@@ -45,6 +45,9 @@ TagManager:
   - name: Map
     uniqueID: 1152692229
     locked: 0
+  - name: Trap
+    uniqueID: 290984539
+    locked: 0
   - name: Units
     uniqueID: 2317228607
     locked: 0

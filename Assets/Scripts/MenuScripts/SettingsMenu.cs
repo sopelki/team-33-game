@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using Audio;
-using UI;
 
 namespace MenuScripts
 {
@@ -12,27 +10,38 @@ namespace MenuScripts
         private GameObject pausePanel;
         [SerializeField]
         private GameObject gameOverPanel;
+        [SerializeField]
+        private GameObject gameWonPanel;
+        [SerializeField]
+        private GameObject mainMenuPanel;
 
         private GameObject lastPanel;
 
         public void OpenSettings()
         {
             if (pausePanel != null && pausePanel.activeSelf)
-            {
                 lastPanel = pausePanel;
-                pausePanel.SetActive(false);
-            }
+
             else if (gameOverPanel != null && gameOverPanel.activeSelf)
-            {
                 lastPanel = gameOverPanel;
-                gameOverPanel.SetActive(false);
-            }
+
+            else if (gameWonPanel != null && gameWonPanel.activeSelf)
+                lastPanel = gameWonPanel;
+
+            else if (mainMenuPanel != null && mainMenuPanel.activeSelf)
+                lastPanel = mainMenuPanel;
+
+            if (lastPanel != null)
+                lastPanel.SetActive(false);
 
             settingsPanel.SetActive(true);
         }
 
         public void CloseSettings()
         {
+            PlayerPrefs.Save();
+            Debug.Log("Settings Saved to Disk");
+
             if (settingsPanel != null)
                 settingsPanel.SetActive(false);
 

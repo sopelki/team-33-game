@@ -12,7 +12,9 @@ namespace MenuScripts
         {
             UIBlocker.BlockAll();
             
-            if (pausePanel == null) pausePanel = gameObject;
+            if (pausePanel == null)
+                pausePanel = gameObject;
+            
             pausePanel.SetActive(true);
             Time.timeScale = 0f;
         }
@@ -21,7 +23,9 @@ namespace MenuScripts
         {
             UIBlocker.UnblockAll();
             
-            if (pausePanel != null) pausePanel.SetActive(false);
+            if (pausePanel != null)
+                pausePanel.SetActive(false);
+            
             Time.timeScale = 1f;
         }
 

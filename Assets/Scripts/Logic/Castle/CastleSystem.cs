@@ -24,8 +24,10 @@ namespace Logic.Castle
         private const float ResourceInterval = 1f;
         private const float SpawnInterval = 1f;
         private readonly SoundData soundData;
+        public CastleModel Model { get; }
 
         private bool firstBuildingPlaced;
+
 
         public CastleSystem(
             CastleModel model,
@@ -43,8 +45,6 @@ namespace Logic.Castle
             this.soundData = soundData;
             Instance = this;
         }
-
-        public CastleModel Model { get; }
 
         public void RegisterCastleData(List<Vector3> worldPositions, List<Vector2Int> hexes)
 
@@ -72,12 +72,12 @@ namespace Logic.Castle
             spawnTimer = 0f;
             SpawnUnitsFromBarracks();
         }
-        
+
         public bool CanAfford(int price)
         {
             return Model.Gold >= price;
         }
-        
+
         public bool TrySpendGold(int price)
         {
             if (Model.Gold < price)
@@ -104,7 +104,7 @@ namespace Logic.Castle
             Model.Buildings.Add(instance);
 
             ApplyBuff(data);
-            
+
             if (soundData != null && soundData.buildingPlaceSound != null)
                 AudioManager.Instance.PlaySfx(soundData.buildingPlaceSound, soundData.buildingPlacementVolume);
 
