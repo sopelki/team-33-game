@@ -1,7 +1,9 @@
-﻿using Audio;
+﻿using System;
+using Audio;
 using Core;
 using UnityEngine;
 using Interfaces;
+using Unity.VisualScripting;
 
 namespace Logic.Monster
 {
@@ -33,6 +35,12 @@ namespace Logic.Monster
         private IMovementStrategy movementStrategy;
         private IAttackStrategy attackStrategy;
         private readonly SoundData soundData;
+        
+        private bool deathEventSent;
+        
+        public event Action OnAttack;
+        public event Action OnDamaged; 
+        public event Action OnDied;
 
         public MonsterModel(
             Vector3 startWorldPos,
@@ -92,11 +100,33 @@ namespace Logic.Monster
 
         public void TakeDamage(int damage)
         {
+            if (IsDead) 
+                return;
             currentHealth -= damage;
+            
+            OnDamaged?.Invoke();
             
             if (soundData != null && 
                 soundData.monsterDamageSounds is { Length: > 0 })
                 AudioManager.Instance.PlayRandomSfx(soundData.monsterDamageSounds, soundData.monsterDamageVolume);
+            if (currentHealth <= 0)
+            {
+                Die();
+            }
+        }
+        
+        public void Attack()
+        {
+            OnAttack?.Invoke();
+        }
+
+        public void Die()
+        {
+            if (deathEventSent) 
+                return;
+            
+            deathEventSent = true;
+            OnDied?.Invoke();
         }
 
         public void SetStrategies(IMovementStrategy movement, IAttackStrategy attack)

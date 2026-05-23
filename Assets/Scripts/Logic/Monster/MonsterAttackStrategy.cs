@@ -86,6 +86,8 @@ namespace Logic.Monster
                 currentCooldown -= Core.TickManager.Instance.tickInterval;
                 return;
             }
+            
+            monsterModel.Attack();
 
             if (soundData != null && soundData.monsterAttackSounds is { Length: > 0 })
                 AudioManager.Instance.PlayRandomSfx(soundData.monsterAttackSounds, soundData.monsterAttackVolume);

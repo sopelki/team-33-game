@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Core;
 using UnityEngine;
 using Logic.Monster;
@@ -42,16 +43,18 @@ namespace View
         
         private void HandleTick()
         {
-            foreach (var pair in views)
+            foreach (var pair in views.ToList())
+            {
                 pair.Value.UpdateView();
+            }
         }
 
         private void HandleDied(MonsterModel model)
         {
-            if (!views.TryGetValue(model, out var view))
-                return;
-
-            Destroy(view.gameObject);
+            // if (!views.TryGetValue(model, out var view))
+            //     return;
+            //
+            // Destroy(view.gameObject);
             views.Remove(model);
         }
         
