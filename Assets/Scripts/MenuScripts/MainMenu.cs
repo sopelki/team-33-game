@@ -10,6 +10,8 @@ namespace MenuScripts
         private MenuAudioData menuAudioData;
         [SerializeField]
         private SoundData gameplaySoundData;
+        [SerializeField]
+        private SettingsMenu settingsMenu;
 
         private void Start()
         {
@@ -30,14 +32,16 @@ namespace MenuScripts
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
-                Application.Quit();
+            Application.Quit();
 #endif
-            Debug.Log("Game is exited.");
         }
-        
-        public void Settings()
+
+        public void OpenSettings()
         {
-            Debug.Log("Settings opened");
+            if (settingsMenu != null)
+                settingsMenu.OpenSettings();
+            else
+                Debug.LogError("SettingsMenu reference is missing in MainMenu script!");
         }
     }
 }

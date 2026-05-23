@@ -117,7 +117,7 @@ MonoBehaviour:
     flickerIntensity: 0
     rollingScanlineIntensity: 0
     rollingScanlineSpeed: 0.1
-    glowIntensity: 0.1
+    glowIntensity: 0.005
     glowSpread: 3
     noiseIntensity: 0
     colorBleedIntensity: 0

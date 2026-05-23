@@ -75,12 +75,12 @@ namespace Audio
             PlaySfx(randomClip, volumeMultiplier);
         }
 
-        public void SetMusicVolume(float volume)
-        {
-            musicVolume = Mathf.Clamp01(volume);
-            if (musicSource != null)
-                musicSource.volume = musicVolume;
-        }
+        // public void SetMusicVolume(float volume)
+        // {
+        //     musicVolume = Mathf.Clamp01(volume);
+        //     if (musicSource != null)
+        //         musicSource.volume = musicVolume;
+        // }
 
         public void SetSfxVolume(float volume) => sfxVolume = Mathf.Clamp01(volume);
 
@@ -88,6 +88,10 @@ namespace Audio
         
         public float GetSfxVolume() => sfxVolume;
 
-        private void ApplyVolumes() => musicSource.volume = musicVolume;
+        private void ApplyVolumes() 
+        {
+            musicSource.volume = 1f;
+            sfxSource.volume = 1f;
+        }
     }
 }
