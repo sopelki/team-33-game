@@ -13,7 +13,7 @@ namespace View
         private Sprite[] animationFrames;
         [SerializeField]
         private float framesPerSecond = 12f;
-        
+
         private int currentFrameIndex;
         private float animationTimer;
 
@@ -40,7 +40,7 @@ namespace View
 
             if (!spriteRenderer)
                 spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            
+
             currentFrameIndex = 0;
             animationTimer = 0f;
         }
@@ -55,11 +55,14 @@ namespace View
             var t = model.TravelProgress;
             var groundPosition = Vector3.Lerp(model.StartPosition, model.TargetPoint, t);
             float yForSorting;
-            
+
             if (model.Data.isHoming)
             {
                 transform.position = model.Position;
-                RotateTowards(model.Target?.WorldPosition ?? model.Position);
+
+                var lookTarget = model.Target?.HitPosition ?? model.Position;
+                RotateTowards(lookTarget);
+
                 yForSorting = model.Position.y;
             }
             else
@@ -71,10 +74,10 @@ namespace View
 
                 ApplyRotation(currentVisualPosition);
                 lastVisualPosition = currentVisualPosition;
-                
-                yForSorting = groundPosition.y;
+
+                yForSorting = groundPosition.y - (model.Target?.Data.hitOffsetY ?? 0) * t;
             }
-            
+
             spriteRenderer.sortingOrder = yForSorting > model.TowerBaseY ? 0 : 2;
         }
 
@@ -105,8 +108,13 @@ namespace View
 
         private void RotateTowards(Vector3 targetPosition)
         {
-            var dir = (targetPosition - transform.position).normalized;
-            var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            var dir = targetPosition - transform.position;
+
+            if (dir.sqrMagnitude < 0.01f)
+                return;
+
+            var direction = dir.normalized;
+            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
     }

@@ -10,8 +10,6 @@ namespace View
         private MonsterModel model;
         private Vector3 previousPosition;
         
-        // [SerializeField] private SpriteRenderer spriteRenderer;
-
         [SerializeField] private Animator animator;
         private Vector2 targetDirection;
         private Vector2 currentSmoothDirection;
@@ -41,7 +39,7 @@ namespace View
             // else 
             // {
             //     // Если монстр стоит, можно занулить параметры, 
-            //     // чтобы он перешел в Idle (если ты его добавишь)
+            //     // чтобы он перешел в Idle
             //     animator.SetFloat("MoveX", 0);
             //     animator.SetFloat("MoveY", 0);
             // }
@@ -51,14 +49,12 @@ namespace View
         {
             if (!animator) return;
 
-            // Плавно перетекаем из текущего направления в целевое
             currentSmoothDirection = Vector2.Lerp(
                 currentSmoothDirection, 
                 targetDirection, 
                 Time.deltaTime * smoothingSpeed
             );
 
-            // Отправляем в аниматор уже сглаженные значения
             animator.SetFloat(moveX, currentSmoothDirection.x);
             animator.SetFloat(moveY, currentSmoothDirection.y);
         }
