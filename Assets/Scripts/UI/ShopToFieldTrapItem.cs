@@ -207,8 +207,7 @@ namespace UI
 
                 var hexObj = field.GetHex(axial);
 
-                if (hexObj != null && isValid &&
-                    TryGetSlotCanvasPosition(hexObj.offset, eventData, out var snappedCanvasPos))
+                if (hexObj != null && isValid && TryGetSlotCanvasPosition(hexObj.offset, eventData, out var snappedCanvasPos))
                 {
                     targetGhostPosition = snappedCanvasPos + ghostOffset;
                     isSnapping = true;
