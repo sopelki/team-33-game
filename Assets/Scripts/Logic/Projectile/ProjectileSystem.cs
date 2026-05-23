@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Audio;
 using Logic.Monster;
-using Logic.Tower;
 using UnityEngine;
 
 namespace Logic.Projectile

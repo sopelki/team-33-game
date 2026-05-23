@@ -11,8 +11,8 @@ namespace View
         private SpriteRenderer spriteRenderer;
         private UnitBuffsViewManager buffsView;
 
-        private static readonly int IsMoving = Animator.StringToHash("isMoving");
-        private static readonly int AttackType = Animator.StringToHash("attackType");
+        private static readonly int isMoving = Animator.StringToHash("isMoving");
+        private static readonly int attackType = Animator.StringToHash("attackType");
 
         public void Initialize(UnitModel modelToInitialize, UnitBuffsViewManager buffsViewManager)
         {
@@ -39,26 +39,22 @@ namespace View
             }
         }
 
-        public void SetPosition(Vector3 worldPos)
-        {
-            transform.position = worldPos;
-        }
+        public void SetPosition(Vector3 worldPos) => transform.position = worldPos;
 
         private void Update()
         {
             if (model == null)
                 return;
             transform.position = model.WorldPosition;
-            var isMoving = model.CurrentDirection.sqrMagnitude > 0.01f;
+            var isMovingNow = model.CurrentDirection.sqrMagnitude > 0.01f;
 
-            if (animator != null)
+            if (animator)
             {
-                animator.SetBool(IsMoving, isMoving);
-                animator.SetInteger(AttackType, model.AttackType);
+                animator.SetBool(isMoving, isMovingNow);
+                animator.SetInteger(attackType, model.AttackType);
             }
 
-            // Разворот спрайта по направлению движения
-            if (spriteRenderer != null && isMoving)
+            if (spriteRenderer && isMovingNow)
                 spriteRenderer.flipX = model.CurrentDirection.x < 0;
         }
     }
