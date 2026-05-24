@@ -10,8 +10,9 @@ namespace Logic.Castle
     {
         public int Hp { get; set; }
         public int Gold { get; set; }
-        public int Food { get; set; }
-        public int CurrentUnits { get; set; }
+        // public int Food { get; set; }
+        // public int CurrentUnits { get; set; }
+        public int MaxSupply { get; set; }
 
         public List<Vector2Int> WallHexes { get; set; } = new();
         public List<Vector3> WallWorldPositions { get; set; } = new();
@@ -28,12 +29,12 @@ namespace Logic.Castle
             OnChanged?.Invoke();
         }
 
-        public CastleModel(int initialHp, int initialGold, int initialFood, SoundData soundData)
+        public CastleModel(int initialHp, int initialGold, int startSupply, SoundData soundData)
         {
             Hp = initialHp;
             Gold = initialGold;
-            Food = initialFood;
             this.soundData = soundData;
+            MaxSupply = startSupply;
         }
 
         public bool IsDead => Hp <= 0;

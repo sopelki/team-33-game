@@ -14,14 +14,14 @@ namespace Logic.Castle
         public event Action OnFirstBuildingPlaced;
         public static CastleSystem Instance { get; private set; }
 
-        private static readonly Vector2Int spawnHex = new(-28, 21); // Поменять, если нужна другая точка спавна
+        private static readonly Vector2Int spawnHex = new(-20, 15); // Поменять, если нужна другая точка спавна
         private readonly UnitSystem unitSystem;
         private readonly UnitData unitData;
         private readonly Field.Field field;
         private readonly Tilemap tilemap;
-        private float resourceTimer;
+        // private float resourceTimer;
         private float spawnTimer;
-        private const float ResourceInterval = 1f;
+        // private const float ResourceInterval = 1f;
         private const float SpawnInterval = 1f;
         private readonly SoundData soundData;
         public CastleModel Model { get; }
@@ -44,7 +44,15 @@ namespace Logic.Castle
             this.tilemap = tilemap;
             this.soundData = soundData;
             Instance = this;
+            this.unitSystem.OnUnitDied += HandleUnitDied;
         }
+        
+        private void HandleUnitDied(UnitModel unit)
+        {
+            Model.Changed(); 
+        }
+        
+        public int CurrentUnitsCount => unitSystem?.GetAllUnits().Count ?? 0;
 
         public void RegisterCastleData(List<Vector3> worldPositions, List<Vector2Int> hexes)
 
@@ -57,15 +65,8 @@ namespace Logic.Castle
         public void Tick()
         {
             var dt = Core.TickManager.Instance.tickInterval;
-
-            resourceTimer += dt;
+            
             spawnTimer += dt;
-
-            if (resourceTimer >= ResourceInterval)
-            {
-                resourceTimer = 0f;
-                ProduceResources();
-            }
 
             if (!(spawnTimer >= SpawnInterval))
                 return;
@@ -73,10 +74,7 @@ namespace Logic.Castle
             SpawnUnitsFromBarracks();
         }
 
-        public bool CanAfford(int price)
-        {
-            return Model.Gold >= price;
-        }
+        public bool CanAfford(int price) => Model.Gold >= price;
 
         public bool TrySpendGold(int price)
         {
@@ -102,6 +100,11 @@ namespace Logic.Castle
 
             var instance = new BuildingModel(data);
             Model.Buildings.Add(instance);
+            
+            if (data.type == BuildingType.Farm)
+            {
+                Model.MaxSupply += data.supplyProvided;
+            }
 
             ApplyBuff(data);
 
@@ -114,7 +117,8 @@ namespace Logic.Castle
                 OnFirstBuildingPlaced?.Invoke();
                 Debug.Log("First building placed. Game can start.");
             }
-
+            
+            Model.Changed();
             return true;
         }
 
@@ -127,14 +131,13 @@ namespace Logic.Castle
 
             for (var i = 0; i < barracksCount; i++)
             {
-                if (Model.Food < unitData.foodCost)
+                if (unitSystem.GetAllUnits().Count >= Model.MaxSupply)
                     return;
 
                 SpawnUnit();
             }
         }
-
-        // TODO: Поменять логику использования еды юнитами (например, чтобы они тратили еду, находясь на поле)
+        
         private void SpawnUnit()
         {
             var hex = field.GetHex(spawnHex);
@@ -144,23 +147,7 @@ namespace Logic.Castle
 
             var worldPos = tilemap.GetCellCenterWorld(hex.offset);
             unitSystem.SpawnUnit(worldPos, spawnHex, unitData);
-            Model.Food -= unitData.foodCost;
-            Model.CurrentUnits++;
             Model.Changed();
-        }
-
-
-        private void ProduceResources()
-        {
-            var changed = false;
-            foreach (var building in Model.Buildings.Where(building => building.Data.type == BuildingType.Farm))
-            {
-                Model.Food += building.Production;
-                changed = true;
-            }
-
-            if (changed)
-                Model.Changed();
         }
 
         private void ApplyBuff(BuildingData data)

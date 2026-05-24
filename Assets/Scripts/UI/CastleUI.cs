@@ -1,5 +1,7 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Logic.Castle;
+using Logic.Unit;
 using TMPro;
 using UnityEngine;
 
@@ -15,10 +17,12 @@ namespace UI
         private TextMeshProUGUI foodText;
 
         private CastleModel model;
+        private CastleSystem castleSystem;
 
-        public void Initialize(CastleModel castleModel)
+        public void Initialize(CastleSystem castleSystem)
         {
-            model = castleModel;
+            model = castleSystem.Model;
+            this.castleSystem = castleSystem;
             model.OnChanged += UpdateUI;
             UpdateUI();
         }
@@ -33,7 +37,7 @@ namespace UI
         {
             hpText.text = Math.Max(0, model.Hp).ToString();
             goldText.text = model.Gold.ToString();
-            foodText.text = model.Food.ToString();
+            foodText.text = $"{castleSystem.CurrentUnitsCount} / {model.MaxSupply}";
         }
     }
 }

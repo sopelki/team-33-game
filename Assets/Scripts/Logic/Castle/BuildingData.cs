@@ -10,6 +10,7 @@ namespace Logic.Castle
         public BuildingType type;
         public int baseProduction;
         public int baseCost;
+        public int supplyProvided;
 
         [Header("Buff Settings")]
         [Range(0f, 1f)]
@@ -40,9 +41,12 @@ namespace Logic.Castle
                 stats = customSpecialInfo;
             else
             {
-                stats = type is BuildingType.Blacksmith or BuildingType.Hospital
-                    ? $"{effectLabel}: <color=#66BB6A>+{buffValue * 100f}%</color>"
-                    : $"{effectLabel}: <color=#66BB6A>+{baseProduction}</color>";
+                if (type is BuildingType.Blacksmith or BuildingType.Hospital)
+                    stats = $"{effectLabel}: <color=#66BB6A>+{buffValue * 100f}%</color>";
+                else if (type == BuildingType.Farm)
+                    stats = $"{effectLabel}: <color=#66BB6A>+{supplyProvided}</color>";
+                else
+                    stats = $"{effectLabel}: <color=#66BB6A>+{baseProduction}</color>";
             }
 
             return new TooltipContent

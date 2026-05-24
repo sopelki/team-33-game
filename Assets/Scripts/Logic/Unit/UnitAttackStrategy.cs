@@ -49,10 +49,11 @@ namespace Logic.Unit
             if (targets.Count == 0)
                 return;
         
-            var closest = targets
+            var sortedTargets = targets
                 .OrderBy(m => Vector3.Distance(m.WorldPosition, unit.WorldPosition))
-                .First();
+                .ToList();
         
+            var closest = sortedTargets.First();
             var distance = Vector3.Distance(closest.WorldPosition, unit.WorldPosition);
             var meleeRange = unit.UnitData.attackRadius * 0.5f;
             unit.AttackType = distance <= meleeRange ? 1 : 2;
@@ -68,9 +69,20 @@ namespace Logic.Unit
                          soundData.unitRangeAttackSounds is { Length: > 0 })
                     AudioManager.Instance.PlayRandomSfx(soundData.unitRangeAttackSounds, soundData.unitRangeAttackVolume);
             }
+            
+            var viewDirection = unit.CurrentDirection.normalized;
+            if (viewDirection.sqrMagnitude < 0.001f)
+            {
+                viewDirection = (closest.WorldPosition - unit.WorldPosition).normalized;
+            }
 
             foreach (var monster in targets)
-                monster.TakeDamage(unit.GetAttack());
+            {
+                var directionToMonster = (monster.WorldPosition - unit.WorldPosition).normalized;
+                var dotProduct = Vector3.Dot(viewDirection, directionToMonster);
+                if (dotProduct >= 0.5f || monster == closest)
+                    monster.TakeDamage(unit.GetAttack());
+            }
 
             currentCooldown = unit.UnitData.attackCooldown;
             IsAttacking = true;
