@@ -24,6 +24,10 @@ namespace Logic.Unit
         
         private float repathTimer;
         private const float repathDelay = 0.5f;
+        
+        private float patrolWaitTimer;
+        private bool isPatrolling;
+        private Vector2Int spawnHex = new(-12, 9);
 
         public UnitAStarMoveStrategy(
             UnitModel unit,
@@ -44,7 +48,8 @@ namespace Logic.Unit
 
         public void Tick()
         {
-            repathTimer -= Core.TickManager.Instance.tickInterval;
+            var dt = Core.TickManager.Instance.tickInterval;
+            repathTimer -= dt;
             var monsters = monsterSystem.GetAllMonsters()
                 .Where(m => !m.IsDead)
                 .ToList();
@@ -58,8 +63,15 @@ namespace Logic.Unit
                     currentTarget = null;
                 }
 
-                currentPath = null;
+                isPatrolling = true;
+                HandleIdlePatrol(dt);
                 return;
+            }
+            
+            if (isPatrolling)
+            {
+                isPatrolling = false;
+                currentPath = null;
             }
 
             const float crowdPenalty = 2f;
@@ -69,28 +81,22 @@ namespace Logic.Unit
                     Vector3.Distance(m.WorldPosition, unit.WorldPosition) +
                     m.TargetedByUnits * crowdPenalty)
                 .First();
-
-            // ✅ если в радиусе атаки — стоим
+            
             if (Vector3.Distance(target.WorldPosition, unit.WorldPosition)
                 <= unit.UnitData.attackRadius)
             {
                 currentPath = null;
                 return;
             }
-
-            // ✅ если цель сменилась — строим новый путь
             if (repathTimer <= 0f &&
                 (currentTarget != target ||
                  Vector2Int.Distance(currentTargetHex, target.CurrentHex) > 1))
             {
-                // ✅ если цель меняется — уменьшаем счётчик у старой
                 if (currentTarget != null && currentTarget != target)
                 {
                     currentTarget.TargetedByUnits =
                         Mathf.Max(0, currentTarget.TargetedByUnits - 1);
                 }
-
-                // ✅ назначаем новую цель
                 if (currentTarget != target)
                 {
                     currentTarget = target;
@@ -100,8 +106,6 @@ namespace Logic.Unit
                 BuildNewPath(target);
                 repathTimer = repathDelay;
             }
-
-            // ✅ если путь закончился
             if (currentPath == null || pathIndex >= currentPath.Count)
             {
                 currentPath = null;
@@ -149,11 +153,7 @@ namespace Logic.Unit
                 unit.CurrentDirection = direction;
             }
         }
-
-        /// <summary>
-        /// Возвращает либо саму цель, либо случайную соседнюю клетку.
-        /// Это даёт вариативность без дёргания.
-        /// </summary>
+        
         private Vector2Int GetRandomizedGoal(Vector2Int center)
         {
             var centerHex = field.GetHex(center);
@@ -166,12 +166,53 @@ namespace Logic.Unit
 
             if (neighbours.Count == 0)
                 return center;
-
-            // 50% шанс идти прямо в цель
+            
             if (Random.value < 0.5f)
                 return center;
 
             return neighbours[Random.Range(0, neighbours.Count)].coordinates;
+        }
+        
+        private void HandleIdlePatrol(float dt)
+        {
+            if (currentPath != null && pathIndex < currentPath.Count)
+            {
+                MoveAlongPath();
+                return;
+            }
+            
+            var distanceToRallyPoint = Vector2Int.Distance(unit.CurrentHex, spawnHex);
+            if (distanceToRallyPoint > 10f)
+            {
+                currentPath = null;
+                unit.CurrentDirection = Vector3.zero;
+                return;
+            }
+            
+            patrolWaitTimer -= dt;
+            if (patrolWaitTimer > 0f)
+                return;
+            
+            var radius = 2; 
+            var randomX = Random.Range(-radius, radius + 1);
+            var randomY = Random.Range(-radius, radius + 1);
+            var potentialHex = spawnHex + new Vector2Int(randomX, randomY);
+
+            var hexObj = field.GetHex(potentialHex);
+            
+            if (hexObj != null && field.IsWalkable(hexObj))
+            {
+                currentPath = pathfinder.FindPath(unit.CurrentHex, potentialHex);
+                pathIndex = 1;
+
+                if (currentPath == null || currentPath.Count <= 1)
+                {
+                    currentPath = null;
+                }
+                
+                
+                patrolWaitTimer = Random.Range(2f, 5f); 
+            }
         }
     }
 }

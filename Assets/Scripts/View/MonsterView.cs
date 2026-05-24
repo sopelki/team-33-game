@@ -84,7 +84,7 @@ namespace View
         }
         
         private void HandleAttack() => animator.SetTrigger(IsAttacking);
-        private void HandleDamaged() => animator.SetTrigger(IsDamaged);
+        private void HandleDamaged() => animator.SetBool(IsDamaged, true);
         private void HandleDeath() => animator.SetBool(IsDead, true);
         
         
