@@ -1,31 +1,30 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace MenuScripts
 {
     public class SettingsMenu : MonoBehaviour
     {
         [SerializeField]
-        private GameObject settingsPanel;
+        private FadePanel settingsPanel;
         [SerializeField]
-        private GameObject pausePanel;
+        private FadePanel pausePanel;
         [SerializeField]
-        private GameObject gameOverPanel;
+        private FadePanel gameOverPanel;
         [SerializeField]
-        private GameObject gameWonPanel;
+        private FadePanel gameWonPanel;
         [SerializeField]
-        private GameObject mainMenuPanel;
+        private FadePanel mainMenuPanel;
 
-        private GameObject lastPanel;
+        private FadePanel lastPanel;
 
         public void OpenSettings()
         {
             lastPanel = FindActivePanel();
 
             if (lastPanel != null)
-                lastPanel.SetActive(false);
+                lastPanel.Hide();
 
-            settingsPanel.SetActive(true);
+            settingsPanel.Show();
         }
 
         public void CloseSettings()
@@ -33,24 +32,24 @@ namespace MenuScripts
             PlayerPrefs.Save();
 
             if (settingsPanel != null)
-                settingsPanel.SetActive(false);
+                settingsPanel.Hide();
 
             if (lastPanel != null)
-                lastPanel.SetActive(true);
+                lastPanel.Show();
         }
 
-        private GameObject FindActivePanel()
+        private FadePanel FindActivePanel()
         {
-            if (pausePanel != null && pausePanel.activeSelf)
+            if (pausePanel != null && pausePanel.GetComponent<CanvasGroup>().alpha > 0)
                 return pausePanel;
 
-            if (gameOverPanel != null && gameOverPanel.activeSelf)
+            if (gameOverPanel != null && gameOverPanel.GetComponent<CanvasGroup>().alpha > 0)
                 return gameOverPanel;
 
-            if (gameWonPanel != null && gameWonPanel.activeSelf)
+            if (gameWonPanel != null && gameWonPanel.GetComponent<CanvasGroup>().alpha > 0)
                 return gameWonPanel;
 
-            if (mainMenuPanel != null && mainMenuPanel.activeSelf)
+            if (mainMenuPanel != null && mainMenuPanel.GetComponent<CanvasGroup>().alpha > 0)
                 return mainMenuPanel;
 
             return null;

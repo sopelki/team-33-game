@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 725261010793783519}
   - component: {fileID: 4022012242122736045}
   - component: {fileID: 8548336018444262466}
+  - component: {fileID: 5550843414177878620}
   m_Layer: 5
   m_Name: EndGamePanel
   m_TagString: Untagged
@@ -149,10 +150,23 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6829448409298105952}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &5550843414177878620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6829448409298105952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7592d7e2d5542e9a53dbf7cab1050c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuScripts.FadePanel
+  fadeDuration: 0.05
 --- !u!1 &7764573155034314874
 GameObject:
   m_ObjectHideFlags: 0

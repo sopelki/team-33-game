@@ -10,14 +10,12 @@ namespace MenuScripts
     [RequireComponent(typeof(AudioSource))]
     public class EndGameMenu : MonoBehaviour
     {
-        public GameObject gameOverPanel;
-        public GameObject gameWonPanel;
+        public FadePanel gameOverPanel;
+        public FadePanel gameWonPanel;
 
         [Header("Settings")]
         [SerializeField]
         private float panelDelay = 0.5f;
-        [SerializeField]
-        private float fadeDuration = 1.5f;
 
         [Header("Audio")]
         [SerializeField]
@@ -28,6 +26,8 @@ namespace MenuScripts
         [Header("References")]
         [SerializeField]
         private Core.GameInitializer gameInitializer;
+        [SerializeField]
+        private FadePanel menuBackground;
 
         private CastleModel model;
         private AudioSource audioSource;
@@ -36,12 +36,6 @@ namespace MenuScripts
         {
             audioSource = GetComponent<AudioSource>();
             audioSource.ignoreListenerPause = true;
-
-            if (gameOverPanel)
-                gameOverPanel.SetActive(false);
-
-            if (gameWonPanel)
-                gameWonPanel.SetActive(false);
         }
 
         public void Initialize(CastleModel castleModel)
@@ -60,7 +54,7 @@ namespace MenuScripts
 
         public void OpenWinMenu() => StartCoroutine(EndGameSequence(gameWonPanel, gameWonSound));
 
-        private IEnumerator EndGameSequence(GameObject panel, AudioClip clip)
+        private IEnumerator EndGameSequence(FadePanel panel, AudioClip clip)
         {
             if (!panel)
                 yield break;
@@ -73,26 +67,16 @@ namespace MenuScripts
 
             yield return new WaitForSecondsRealtime(panelDelay);
 
-            var cg = panel.GetComponent<CanvasGroup>();
-
-            if (!cg)
-                cg = panel.AddComponent<CanvasGroup>();
-
-            cg.alpha = 0;
-            panel.SetActive(true);
             UIBlocker.BlockAll();
-
             Time.timeScale = 0f;
 
-            var elapsed = 0f;
-            while (elapsed < fadeDuration)
+            if (menuBackground)
             {
-                elapsed += Time.unscaledDeltaTime;
-                cg.alpha = Mathf.Lerp(0f, 1f, elapsed / fadeDuration);
-                yield return null;
+                menuBackground.SetFadeDuration(panel.GetComponent<FadePanel>().FadeDuration); 
+                menuBackground.Show();
             }
 
-            cg.alpha = 1f;
+            panel.Show();
         }
 
         public void RestartGame()

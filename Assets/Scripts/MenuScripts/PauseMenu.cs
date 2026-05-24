@@ -6,26 +6,36 @@ namespace MenuScripts
 {
     public class PauseMenu : MonoBehaviour
     {
-        [SerializeField] private GameObject pausePanel;
+        [SerializeField]
+        private FadePanel menuBackground;
+        [SerializeField]
+        private FadePanel pausePanel;
 
         public void OpenPause()
         {
             UIBlocker.BlockAll();
-            
+
             if (pausePanel == null)
-                pausePanel = gameObject;
-            
-            pausePanel.SetActive(true);
+                pausePanel = GetComponent<FadePanel>();
+
+            if (menuBackground != null)
+                menuBackground.Show();
+
+            pausePanel.Show();
+
             Time.timeScale = 0f;
         }
 
         public void ResumeGame()
         {
             UIBlocker.UnblockAll();
-            
+
+            if (menuBackground != null)
+                menuBackground.Hide();
+
             if (pausePanel != null)
-                pausePanel.SetActive(false);
-            
+                pausePanel.Hide();
+
             Time.timeScale = 1f;
         }
 
