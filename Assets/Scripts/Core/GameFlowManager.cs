@@ -25,6 +25,8 @@ namespace Core
         private const float HintStartDelay = 5f;
         private const float HintCycleInterval = 20f;
         private const float StartGameDelay = 2f;
+        
+        public bool IsTutorialActive { get; set; } = true;
 
         public GameFlowManager(
             WaveManager waveManager,
@@ -60,7 +62,7 @@ namespace Core
 
         private void Tick()
         {
-            if (gameStarted)
+            if (gameStarted || IsTutorialActive)
                 return;
 
             var deltaTime = TickManager.Instance.tickInterval;
@@ -97,6 +99,9 @@ namespace Core
 
         private void OnFirstObjectPlaced()
         {
+            if (IsTutorialActive) 
+                return;
+            
             if (gameStarted || waitingToStart)
                 return;
 
