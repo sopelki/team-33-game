@@ -4,6 +4,11 @@ namespace MenuScripts
 {
     public class SettingsMenu : MonoBehaviour
     {
+        [Header("References")]
+        [SerializeField]
+        private FadePanel menuBackground;
+
+        [Header("Panels")]
         [SerializeField]
         private FadePanel settingsPanel;
         [SerializeField]
@@ -22,9 +27,10 @@ namespace MenuScripts
             lastPanel = FindActivePanel();
 
             if (lastPanel != null)
-                lastPanel.Hide();
+                lastPanel.Hide(lastPanel.FadeDuration);
 
-            settingsPanel.Show();
+            if (settingsPanel != null)
+                settingsPanel.Show();
         }
 
         public void CloseSettings()
@@ -35,7 +41,17 @@ namespace MenuScripts
                 settingsPanel.Hide();
 
             if (lastPanel != null)
-                lastPanel.Show();
+            {
+                if (menuBackground != null)
+                {
+                    var bgCanvas = menuBackground.GetComponent<CanvasGroup>();
+
+                    if (bgCanvas != null && bgCanvas.alpha <= 0)
+                        menuBackground.Show(lastPanel.FadeDuration);
+                }
+
+                lastPanel.Show(lastPanel.FadeDuration);
+            }
         }
 
         private FadePanel FindActivePanel()

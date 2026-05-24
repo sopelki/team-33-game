@@ -503,7 +503,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -71.6705}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2839580762755439350
@@ -609,7 +609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.13333334, g: 0.23137255, b: 0.29411766, a: 0.7529412}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -638,6 +638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a622fc2fbf514bf0a8d9ff4992b15e2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuScripts.SettingsMenu
+  menuBackground: {fileID: 0}
   settingsPanel: {fileID: 2660619918226905460}
   pausePanel: {fileID: 0}
   gameOverPanel: {fileID: 0}
@@ -685,7 +686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7592d7e2d5542e9a53dbf7cab1050c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuScripts.FadePanel
-  fadeDuration: 0.2
+  fadeDuration: 0.05
 --- !u!1001 &3983402466016422233
 PrefabInstance:
   m_ObjectHideFlags: 0

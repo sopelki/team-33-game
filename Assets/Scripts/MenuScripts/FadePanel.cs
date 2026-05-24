@@ -10,45 +10,53 @@ namespace MenuScripts
         private float fadeDuration = 0.05f;
         private CanvasGroup canvasGroup;
         private Coroutine currentFade;
-        
-        private void Awake()
+
+        private void Awake() => EnsureCanvasGroup();
+
+        private void EnsureCanvasGroup()
         {
-            canvasGroup = GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+                canvasGroup = GetComponent<CanvasGroup>();
         }
-        
-        public void SetFadeDuration(float duration) => fadeDuration = duration;
-        
+
         public float FadeDuration => fadeDuration;
 
-        public void Show()
+        public void Show() => Show(fadeDuration);
+
+        public void Show(float duration)
         {
+            EnsureCanvasGroup();
             canvasGroup.alpha = 0f;
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = true;
 
-            if (currentFade != null)
-                StopCoroutine(currentFade);
-            currentFade = StartCoroutine(FadeRoutine(1f));
+            if (currentFade != null) StopCoroutine(currentFade);
+            currentFade = StartCoroutine(FadeRoutine(1f, duration));
         }
 
-        public void Hide()
+        public void Hide() => Hide(fadeDuration);
+
+        public void Hide(float duration)
         {
+            EnsureCanvasGroup();
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
 
-            if (currentFade != null) StopCoroutine(currentFade);
-            currentFade = StartCoroutine(FadeRoutine(0f));
+            if (currentFade != null)
+                StopCoroutine(currentFade);
+
+            currentFade = StartCoroutine(FadeRoutine(0f, duration));
         }
 
-        private IEnumerator FadeRoutine(float targetAlpha)
+        private IEnumerator FadeRoutine(float targetAlpha, float duration)
         {
             var startAlpha = canvasGroup.alpha;
             var startTime = Time.realtimeSinceStartup;
 
-            while (Time.realtimeSinceStartup - startTime < fadeDuration)
+            while (Time.realtimeSinceStartup - startTime < duration)
             {
                 var elapsed = Time.realtimeSinceStartup - startTime;
-                canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / fadeDuration);
+                canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / duration);
                 yield return null;
             }
 

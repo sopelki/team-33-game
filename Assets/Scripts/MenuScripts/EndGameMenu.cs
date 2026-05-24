@@ -16,6 +16,8 @@ namespace MenuScripts
         [Header("Settings")]
         [SerializeField]
         private float panelDelay = 0.5f;
+        [SerializeField]
+        private float fadeDuration = 0.2f;
 
         [Header("Audio")]
         [SerializeField]
@@ -71,10 +73,7 @@ namespace MenuScripts
             Time.timeScale = 0f;
 
             if (menuBackground)
-            {
-                menuBackground.SetFadeDuration(panel.GetComponent<FadePanel>().FadeDuration); 
-                menuBackground.Show();
-            }
+                menuBackground.Show(fadeDuration);
 
             panel.Show();
         }
