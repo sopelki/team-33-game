@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace MenuScripts
 {
@@ -19,17 +20,7 @@ namespace MenuScripts
 
         public void OpenSettings()
         {
-            if (pausePanel != null && pausePanel.activeSelf)
-                lastPanel = pausePanel;
-
-            else if (gameOverPanel != null && gameOverPanel.activeSelf)
-                lastPanel = gameOverPanel;
-
-            else if (gameWonPanel != null && gameWonPanel.activeSelf)
-                lastPanel = gameWonPanel;
-
-            else if (mainMenuPanel != null && mainMenuPanel.activeSelf)
-                lastPanel = mainMenuPanel;
+            lastPanel = FindActivePanel();
 
             if (lastPanel != null)
                 lastPanel.SetActive(false);
@@ -40,13 +31,29 @@ namespace MenuScripts
         public void CloseSettings()
         {
             PlayerPrefs.Save();
-            Debug.Log("Settings Saved to Disk");
 
             if (settingsPanel != null)
                 settingsPanel.SetActive(false);
 
             if (lastPanel != null)
                 lastPanel.SetActive(true);
+        }
+
+        private GameObject FindActivePanel()
+        {
+            if (pausePanel != null && pausePanel.activeSelf)
+                return pausePanel;
+
+            if (gameOverPanel != null && gameOverPanel.activeSelf)
+                return gameOverPanel;
+
+            if (gameWonPanel != null && gameWonPanel.activeSelf)
+                return gameWonPanel;
+
+            if (mainMenuPanel != null && mainMenuPanel.activeSelf)
+                return mainMenuPanel;
+
+            return null;
         }
     }
 }
