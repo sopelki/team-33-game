@@ -122,9 +122,6 @@ namespace UI
             dragHandler?.ResetPosition();
         }
 
-        private void OnDestroy()
-        {
-            OnDropped?.Invoke();
-        }
+        private void OnDestroy() => OnDropped?.Invoke();
     }
 }
