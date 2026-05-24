@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Logic.Unit;
+using UnityEngine;
 
 namespace Logic.Monster
 {
@@ -14,6 +15,7 @@ namespace Logic.Monster
         [Header("Attack")]
         public float attackRadius = 1f;
         public float attackCooldown = 1f;
+        public AttackType attackType = AttackType.Radius;
 
         [Header("View")]
         public GameObject prefab;

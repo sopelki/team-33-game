@@ -18,6 +18,7 @@ MonoBehaviour:
   goldReward: 20
   attackRadius: 3
   attackCooldown: 1
+  attackType: 0
   prefab: {fileID: 6346340308779131127, guid: 2dd503130d4b19942bd532396cddb0d3, type: 3}
   hitOffsetY: 0
   visualOffsetY: 0.6

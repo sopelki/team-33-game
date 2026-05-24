@@ -20,7 +20,7 @@ namespace Core
         [SerializeField]
         private int startGold = 300;
         [SerializeField]
-        private int startFood = 100;
+        private int startSupply = 10;
         [SerializeField]
         private int startHp = 500;
 
@@ -112,7 +112,7 @@ namespace Core
             if (fieldGenerator != null)
                 fieldGenerator.Initialize(field);
 
-            castleModel = new CastleModel(startHp, startGold, startFood, soundData);
+            castleModel = new CastleModel(startHp, startGold, startSupply, soundData);
             monsterSystem = new MonsterSystem();
             projectileSystem = new ProjectileSystem(monsterSystem, soundData);
             unitSystem = new UnitSystem(monsterSystem, field, tilemap, soundData);
@@ -121,7 +121,7 @@ namespace Core
             castleView = FindAnyObjectByType<CastleView>();
 
             if (castleUI != null)
-                castleUI.Initialize(castleModel);
+                castleUI.Initialize(castleSystem);
 
             if (castleView != null)
                 castleView.Initialize(castleModel, tilemap, field);
@@ -160,11 +160,11 @@ namespace Core
             tickManager.OnTick += waveManager.Tick;
             tickManager.OnTick += trapSystem.Tick;
 
-            unitSystem.OnUnitDied += _ =>
-            {
-                castleModel.CurrentUnits--;
-                castleModel.Changed();
-            };
+            // unitSystem.OnUnitDied += _ =>
+            // {
+            //     castleModel.CurrentUnits--;
+            //     castleModel.Changed();
+            // };
 
             monsterSystem.OnMonsterDied += monster =>
             {
