@@ -8,55 +8,85 @@ namespace MenuScripts
     public class HelpMenu : MonoBehaviour
     {
         [Header("Панель справки")]
-        [SerializeField] private GameObject helpPanel;
+        [SerializeField]
+        private FadePanel helpPanel;
+        [SerializeField]
+        private FadePanel menuBackground;
 
         [Header("Текстовые поля (TextMeshPro)")]
-        [SerializeField] private TextMeshProUGUI titleText;
-        [SerializeField] private TextMeshProUGUI descriptionText;
+        [SerializeField]
+        private TextMeshProUGUI titleText;
+        [SerializeField]
+        private TextMeshProUGUI descriptionText;
 
         [Header("Кнопки вкладок (Ярлычки)")]
-        [SerializeField] private Button tabMechanicsButton;
-        [SerializeField] private Button tabCastleButton;
-        [SerializeField] private Button tabFieldButton;
-
-        [Header("Настройки увеличения")]
-        [SerializeField] private Vector3 activeScale = new Vector3(1.15f, 1.15f, 1f);
-        [SerializeField] private Vector3 normalScale = new Vector3(1f, 1f, 1f);
+        [SerializeField]
+        private Button tabMechanicsButton;
+        [SerializeField]
+        private Button tabCastleButton;
+        [SerializeField]
+        private Button tabFieldButton;
 
         private void Start()
         {
-            if (tabMechanicsButton != null) tabMechanicsButton.onClick.AddListener(ShowMechanics);
-            if (tabCastleButton != null) tabCastleButton.onClick.AddListener(ShowCastle);
-            if (tabFieldButton != null) tabFieldButton.onClick.AddListener(ShowField);
+            if (tabMechanicsButton != null)
+                tabMechanicsButton.onClick.AddListener(ShowMechanics);
+
+            if (tabCastleButton != null)
+                tabCastleButton.onClick.AddListener(ShowCastle);
+
+            if (tabFieldButton != null)
+                tabFieldButton.onClick.AddListener(ShowField);
         }
 
         public void OpenHelp()
         {
             UIBlocker.BlockAll();
-            
+
             if (helpPanel == null)
-                helpPanel = gameObject;
+                helpPanel = GetComponent<FadePanel>();
+
+            if (menuBackground != null)
+                menuBackground.Show();
+
+            titleText.text = "";
+            descriptionText.text = "";
             
-            helpPanel.SetActive(true);
+            helpPanel.Show();
+
             Time.timeScale = 0f;
-            
-            ShowMechanics();
+
+            // ShowMechanics();
         }
 
         public void CloseHelp()
         {
             UIBlocker.UnblockAll();
-            
+
+            if (menuBackground != null)
+                menuBackground.Hide();
+
             if (helpPanel != null)
-                helpPanel.SetActive(false);
-            
+                helpPanel.Hide();
+
             Time.timeScale = 1f;
+        }
+
+        private void UpdateTabs(Button activeButton)
+        {
+            tabMechanicsButton.interactable = true;
+            tabCastleButton.interactable = true;
+            tabFieldButton.interactable = true;
+
+            if (activeButton != null)
+                activeButton.interactable = false;
         }
 
         public void ShowMechanics()
         {
+            UpdateTabs(tabMechanicsButton);
             titleText.text = "<color=#FFD54F>ОСНОВЫ ИГРЫ</color>";
-            descriptionText.text = 
+            descriptionText.text =
                 "<b>Главная цель:</b> Защитить замок от наступающих волн монстров.\n\n" +
                 "• Игра начнётся, как только вы разместите свою <b>первую постройку</b>.\n" +
                 "• Уничтожайте врагов, получайте за них <b>деньги</b> и тратьте их на оборону.\n" +
@@ -65,8 +95,9 @@ namespace MenuScripts
 
         public void ShowCastle()
         {
+            UpdateTabs(tabCastleButton);
             titleText.text = "<color=#66BB6A>ЭКОНОМИКА ЗАМКА (Сетка 3х3)</color>";
-            descriptionText.text = 
+            descriptionText.text =
                 "Здания внутри замка развивают ваше поселение и усиливают армию:\n\n" +
                 "• <b>Ферма:</b> Добавляет +Х к макс. количеству жителей.\n" +
                 "• <b>Бараки:</b> Производят нового жителя автоматически за Х секунд.\n" +
@@ -77,8 +108,9 @@ namespace MenuScripts
 
         public void ShowField()
         {
+            UpdateTabs(tabFieldButton);
             titleText.text = "<color=#EF5350>ОБОРОНА ПОЛЯ (Башни и Ловушки)</color>";
-            descriptionText.text = 
+            descriptionText.text =
                 "<b>БАШНИ</b> (Строятся в специальные слоты):\n" +
                 "• <b>Маг:</b> Медленная АОЕ-атака магическими сферами.\n" +
                 "• <b>Лучник:</b> Быстрый обстрел одиночных целей стрелами.\n\n" +
