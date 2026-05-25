@@ -20,6 +20,8 @@ namespace Logic.Tower
         private readonly SoundData soundData;
 
         private bool firstTowerPlaced;
+        
+        public static TowerSystem Instance { get; private set; }
 
         public TowerSystem(
             CastleSystem castleSystem,
@@ -33,7 +35,11 @@ namespace Logic.Tower
             this.monsterSystem = monsterSystem;
             this.projectileSystem = projectileSystem;
             this.soundData = soundData;
+            
+            Instance = this;
         }
+
+        
 
         public void Tick()
         {
@@ -192,6 +198,17 @@ namespace Logic.Tower
                 .Take(tower.Data.targetsCount)
                 .Select(x => x.Monster)
                 .ToList();
+        }
+        
+        public List<TowerModel> GetTowers() 
+        {
+            return (List<TowerModel>)towersModel.Towers;
+        }
+
+        public void Clear()
+        {
+            towersModel.Clear();
+            firstTowerPlaced = false;
         }
     }
 }

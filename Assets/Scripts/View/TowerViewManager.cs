@@ -1,6 +1,7 @@
 using UnityEngine;
 using Logic.Tower;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace View
 {
@@ -29,6 +30,13 @@ namespace View
             views.Add(towerModel, view);
             
             Debug.Log($"TowerView created for tower at {towerModel.GridPosition}");
+        }
+        
+        public void DestroyAllTowers()
+        {
+            foreach (var view in views.Values)
+                if (view != null) Destroy(view.gameObject);
+            views.Clear();
         }
     }
 }

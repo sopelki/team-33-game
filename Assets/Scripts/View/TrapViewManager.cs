@@ -48,5 +48,12 @@ namespace View
             if (views.Remove(trap, out var view))
                 view.AnimateAndDestroy();
         }
+        
+        public void DestroyAllTraps()
+        {
+            foreach (var view in views.Values)
+                if (view != null) Destroy(view.gameObject);
+            views.Clear();
+        }
     }
 }

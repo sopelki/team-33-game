@@ -7,6 +7,7 @@ using Logic.Projectile;
 using Logic.Tower;
 using Logic.Trap;
 using Logic.Unit;
+using Misc;
 using View;
 using UI;
 using UnityEngine;
@@ -71,6 +72,9 @@ namespace Core
         [Header("Audio")]
         [SerializeField]
         private SoundData soundData;
+        
+        [Header("Tutorial")]
+        [SerializeField] private TutorialManager tutorialManager;
 
         private MonsterSystem monsterSystem;
         private MonsterSpawner monsterSpawner;
@@ -214,7 +218,10 @@ namespace Core
             );
 
             gameFlowManager.Initialize();
-
+            
+            if (tutorialManager != null)
+                tutorialManager.Setup(gameFlowManager);
+            
             if (soundData != null && soundData.backgroundMusic != null)
                 AudioManager.Instance.PlayMusic(soundData.backgroundMusic);
         }

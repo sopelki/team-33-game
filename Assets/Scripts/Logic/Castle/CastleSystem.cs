@@ -4,6 +4,7 @@ using System.Linq;
 using Audio;
 using Interfaces;
 using Logic.Unit;
+using Misc;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -78,6 +79,9 @@ namespace Logic.Castle
 
         public bool TrySpendGold(int price)
         {
+            if (TutorialManager.IsTutorialActive()) 
+                return true;
+            
             if (Model.Gold < price)
                 return false;
 
@@ -166,6 +170,13 @@ namespace Logic.Castle
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+        
+        public void Clear()
+        {
+            Model.Buildings.Clear();
+            firstBuildingPlaced = false;
+            Model.Changed();
         }
     }
 }

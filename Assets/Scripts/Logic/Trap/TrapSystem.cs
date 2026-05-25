@@ -21,6 +21,8 @@ namespace Logic.Trap
         private readonly SoundData soundData;
         
         private bool firstTrapPlaced;
+        
+        public static TrapSystem Instance { get; private set; }
 
         public TrapSystem(MonsterSystem monsterSystem, TrapsModel trapsModel, Field.Field field,
             CastleSystem castleSystem,  SoundData soundData)
@@ -30,7 +32,8 @@ namespace Logic.Trap
             this.trapsModel = trapsModel;
             this.castleSystem = castleSystem;
             this.soundData = soundData;
-            // TickManager.Instance.OnTick += Tick;
+            
+            Instance = this;
         }
 
         public List<Vector2Int> GetTrapOccupiedHexes(Vector2Int centerHex)
@@ -178,6 +181,17 @@ namespace Logic.Trap
                 Debug.Log("Bear trap triggered.");
                 trapsModel.RemoveTrap(trap);
             }
+        }
+        
+        public List<TrapModel> GetTraps() 
+        {
+            return (List<TrapModel>)trapsModel.Traps;
+        }
+
+        public void Clear()
+        {
+            trapsModel.Clear();
+            firstTrapPlaced = false;
         }
     }
 }
