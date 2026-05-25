@@ -38,10 +38,5 @@ namespace UI
             if (uiAudioData != null && uiAudioData.buttonHoverSound != null)
                 audioSource.PlayOneShot(uiAudioData.buttonHoverSound, uiAudioData.buttonHoverVolume);
         }
-
-        public void SetUIAudioData(UIAudioData data)
-        {
-            uiAudioData = data;
-        }
     }
 }
