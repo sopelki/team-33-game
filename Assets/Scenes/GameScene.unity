@@ -20741,7 +20741,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6647511006896912986, guid: 4e5376d26ab9a85498c1605c9d1649b7, type: 3}
-      propertyPath: m_ActiveFontFeatures.Array.data[1]
+      propertyPath: 'm_ActiveFontFeatures.Array.data[1]'
       value: 1818847073
       objectReference: {fileID: 0}
     - target: {fileID: 7771766130602506605, guid: 4e5376d26ab9a85498c1605c9d1649b7, type: 3}
@@ -29002,7 +29002,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1671977986
 RectTransform:
   m_ObjectHideFlags: 0
