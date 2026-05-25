@@ -11,7 +11,7 @@ namespace Core
 
         [Header("Settings")]
         [SerializeField]
-        private float fadeDuration = 1f;
+        private float fadeDuration = 0.1f;
         [SerializeField]
         private Color fadeColor = Color.black;
 
@@ -62,7 +62,7 @@ namespace Core
         {
             if (Instance.isTransitioning)
                 return;
-            
+
             Instance.StartCoroutine(Instance.FadeSequence(sceneName));
         }
 
@@ -74,8 +74,11 @@ namespace Core
             yield return Fade(1f);
 
             var asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+            
             while (asyncLoad is not { isDone: true })
                 yield return null;
+
+            yield return new WaitForSecondsRealtime(0.05f);
 
             yield return Fade(0f);
 
