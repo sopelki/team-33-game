@@ -16,6 +16,6 @@ namespace Logic.Tower
             OnChanged?.Invoke(tower);
         }
         
-        // public void Clear() => towers.Clear();
+        public void Clear() => towers.Clear();
     }
 }

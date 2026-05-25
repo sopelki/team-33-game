@@ -204,5 +204,11 @@ namespace Logic.Tower
         {
             return (List<TowerModel>)towersModel.Towers;
         }
+
+        public void Clear()
+        {
+            towersModel.Clear();
+            firstTowerPlaced = false;
+        }
     }
 }

@@ -58,5 +58,12 @@ namespace View
                 pair.Value.UpdateView();
             }
         }
+        
+        public void DestroyAllUnits()
+        {
+            foreach (var view in views.Values)
+                if (view != null) Destroy(view.gameObject);
+            views.Clear();
+        }
     }
 }

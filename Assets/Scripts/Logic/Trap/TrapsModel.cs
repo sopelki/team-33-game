@@ -26,5 +26,10 @@ namespace Logic.Trap
                 OnTrapRemoved?.Invoke(trap);
             }
         }
+        
+        public void Clear() 
+        {
+            traps.Clear();
+        }
     }
 }

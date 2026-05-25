@@ -29,8 +29,12 @@ namespace Logic.Unit
             this.field = field;
             this.tilemap = tilemap;
             this.soundData = soundData;
+            
+            Instance = this;
         }
-        
+
+        public static UnitSystem Instance { get; private set; }
+
         public void AddBuff(Buff buff) => buffs.Add(buff);
 
         public void SpawnUnit(Vector3 worldPos, Vector2Int hexPos, UnitData stats)

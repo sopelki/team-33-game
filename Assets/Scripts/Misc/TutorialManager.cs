@@ -2,9 +2,11 @@
 using Logic.Castle;
 using Logic.Tower;
 using Logic.Trap;
+using Logic.Unit;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using View;
 
 namespace Misc
 {
@@ -32,8 +34,13 @@ namespace Misc
             if (actionButton != null) actionButton.onClick.AddListener(OnActionButtonClick);
             UpdateTutorialState();
         }
+        public static bool IsTutorialActive()
+        {
+            var tutorial = FindAnyObjectByType<TutorialManager>();
+            return tutorial != null && tutorial.isActiveAndEnabled;
+        }
 
-        private void OnActionButtonClick()
+        public void OnActionButtonClick()
         {
             if (currentStep == TutorialStep.Greeting) { currentStep = TutorialStep.BuildBarrack; UpdateTutorialState(); }
             else if (currentStep == TutorialStep.Finish) { FinishTutorialAndStartRealGame(); }
@@ -94,19 +101,31 @@ namespace Misc
                 case TutorialStep.Greeting:
                     if (actionButton != null) actionButton.gameObject.SetActive(true);
                     if (actionButtonText != null) actionButtonText.text = "Далее";
-                    if (dialogueAnimator != null) dialogueAnimator.PrintPhrase("Лорд, давайте проверим оборонительные системы!");
+                    if (dialogueAnimator != null) dialogueAnimator.PrintPhrase("Лорд, давайте начнём строительство! Перетяните казарму в поле замка");
                     break;
                 case TutorialStep.BuildBarrack:
-                    if (tutorialWindow != null) tutorialWindow.SetActive(false);
-                    if (highlightEffect != null && barrackSlot != null) { highlightEffect.transform.position = barrackSlot.transform.position; highlightEffect.SetActive(true); }
+                    // if (tutorialWindow != null) tutorialWindow.SetActive(false);
+                    if (highlightEffect != null && barrackSlot != null)
+                    {
+                        highlightEffect.transform.position = barrackSlot.transform.position; 
+                        highlightEffect.SetActive(true);
+                    }
                     break;
                 case TutorialStep.BuildTower:
-                    if (tutorialWindow != null) tutorialWindow.SetActive(false);
-                    if (highlightEffect != null && towerSlot != null) { highlightEffect.transform.position = towerSlot.transform.position; highlightEffect.SetActive(true); }
+                    // if (tutorialWindow != null) tutorialWindow.SetActive(false);
+                    if (highlightEffect != null && towerSlot != null)
+                    {
+                        highlightEffect.transform.position = towerSlot.transform.position; 
+                        highlightEffect.SetActive(true);
+                    }
                     break;
                 case TutorialStep.BuildTrap:
-                    if (tutorialWindow != null) tutorialWindow.SetActive(false);
-                    if (highlightEffect != null && trapSlot != null) { highlightEffect.transform.position = trapSlot.transform.position; highlightEffect.SetActive(true); }
+                    // if (tutorialWindow != null) tutorialWindow.SetActive(false);
+                    if (highlightEffect != null && trapSlot != null) 
+                    { 
+                        highlightEffect.transform.position = trapSlot.transform.position; 
+                        highlightEffect.SetActive(true); 
+                    }
                     break;
                 case TutorialStep.Finish:
                     if (actionButton != null) actionButton.gameObject.SetActive(true);
@@ -118,19 +137,41 @@ namespace Misc
 
         private void FinishTutorialAndStartRealGame()
         {
-            // Очистка данных
-            if (CastleSystem.Instance != null) { 
-                CastleSystem.Instance.Model.Buildings.Clear(); 
-                CastleSystem.Instance.Model.Gold = 100; // Стартовое золото
+            if (gameFlowManager != null) 
+                gameFlowManager.IsTutorialActive = false;
+            
+            if (CastleSystem.Instance != null)
+            {
+                CastleSystem.Instance.Clear();
+                foreach (var b in FindObjectsByType<InventoryItem>(FindObjectsInactive.Exclude))
+                    Destroy(b.gameObject);
+
             }
-        
-            foreach (var b in GameObject.FindGameObjectsWithTag("Building")) Destroy(b);
+            if (TowerSystem.Instance != null)
+            {
+                FindAnyObjectByType<TowerViewManager>()?.DestroyAllTowers();
+                TowerSystem.Instance.Clear();
+            }
+            if (TrapSystem.Instance != null)
+            {
+                FindAnyObjectByType<TrapViewManager>()?.DestroyAllTraps();
+                TrapSystem.Instance.Clear();
+            }
+            if (UnitSystem.Instance != null)
+            {
+                FindAnyObjectByType<UnitViewManager>()?.DestroyAllUnits();
+                UnitSystem.Instance.Clear();
+            }
 
-            // Разблокировка основной логики игры
-            if (gameFlowManager != null) gameFlowManager.IsTutorialActive = false;
+            
+            if (gameFlowManager != null) 
+            {
+                gameFlowManager.ResetToStandardMode(); 
+            }
 
-            if (tutorialWindow != null) tutorialWindow.SetActive(false);
-            transform.parent.gameObject.SetActive(false); // Отключаем Canvas туториала
+            if (tutorialWindow != null) 
+                tutorialWindow.SetActive(false);
+            transform.parent.gameObject.SetActive(false);
         }
     }
 }

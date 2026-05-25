@@ -128,5 +128,25 @@ namespace Core
 
             Debug.Log("GameFlowManager: Game started.");
         }
+        
+        public void ResetToStandardMode()
+        {
+            IsTutorialActive = false;
+            
+            towerSystem.OnFirstTowerPlaced -= OnFirstObjectPlaced;
+            trapSystem.OnFirstTrapPlaced -= OnFirstObjectPlaced;
+            castleSystem.OnFirstBuildingPlaced -= OnFirstObjectPlaced;
+            
+            towerSystem.OnFirstTowerPlaced += OnFirstObjectPlaced;
+            trapSystem.OnFirstTrapPlaced += OnFirstObjectPlaced;
+            castleSystem.OnFirstBuildingPlaced += OnFirstObjectPlaced;
+            
+            gameStarted = false;
+            waitingToStart = false;
+            hintCycleStarted = false;
+            timeSinceStart = 0f;
+    
+            Debug.Log("GameFlowManager: Сброшен в режим чистой игры.");
+        }
     }
 }

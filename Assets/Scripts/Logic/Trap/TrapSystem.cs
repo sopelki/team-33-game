@@ -187,5 +187,11 @@ namespace Logic.Trap
         {
             return (List<TrapModel>)trapsModel.Traps;
         }
+
+        public void Clear()
+        {
+            trapsModel.Clear();
+            firstTrapPlaced = false;
+        }
     }
 }
