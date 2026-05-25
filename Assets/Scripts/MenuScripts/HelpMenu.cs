@@ -27,12 +27,6 @@ namespace MenuScripts
         [SerializeField]
         private Button tabFieldButton;
 
-        [Header("Настройки увеличения")]
-        [SerializeField]
-        private Vector3 activeScale = new(1.15f, 1.15f, 1f);
-        [SerializeField]
-        private Vector3 normalScale = new(1f, 1f, 1f);
-
         private void Start()
         {
             if (tabMechanicsButton != null)
@@ -55,11 +49,14 @@ namespace MenuScripts
             if (menuBackground != null)
                 menuBackground.Show();
 
+            titleText.text = "";
+            descriptionText.text = "";
+            
             helpPanel.Show();
 
             Time.timeScale = 0f;
 
-            ShowMechanics();
+            // ShowMechanics();
         }
 
         public void CloseHelp()
@@ -75,8 +72,19 @@ namespace MenuScripts
             Time.timeScale = 1f;
         }
 
+        private void UpdateTabs(Button activeButton)
+        {
+            tabMechanicsButton.interactable = true;
+            tabCastleButton.interactable = true;
+            tabFieldButton.interactable = true;
+
+            if (activeButton != null)
+                activeButton.interactable = false;
+        }
+
         public void ShowMechanics()
         {
+            UpdateTabs(tabMechanicsButton);
             titleText.text = "<color=#FFD54F>ОСНОВЫ ИГРЫ</color>";
             descriptionText.text =
                 "<b>Главная цель:</b> Защитить замок от наступающих волн монстров.\n\n" +
@@ -87,6 +95,7 @@ namespace MenuScripts
 
         public void ShowCastle()
         {
+            UpdateTabs(tabCastleButton);
             titleText.text = "<color=#66BB6A>ЭКОНОМИКА ЗАМКА (Сетка 3х3)</color>";
             descriptionText.text =
                 "Здания внутри замка развивают ваше поселение и усиливают армию:\n\n" +
@@ -99,6 +108,7 @@ namespace MenuScripts
 
         public void ShowField()
         {
+            UpdateTabs(tabFieldButton);
             titleText.text = "<color=#EF5350>ОБОРОНА ПОЛЯ (Башни и Ловушки)</color>";
             descriptionText.text =
                 "<b>БАШНИ</b> (Строятся в специальные слоты):\n" +

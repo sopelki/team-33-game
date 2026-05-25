@@ -24999,9 +24999,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2118764960772319183, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_text
-      value: 'Description
-
-'
+      value: Description
       objectReference: {fileID: 0}
     - target: {fileID: 2118764960772319183, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_fontSize
@@ -27143,8 +27141,6 @@ MonoBehaviour:
   tabMechanicsButton: {fileID: 1738705323}
   tabCastleButton: {fileID: 648599942}
   tabFieldButton: {fileID: 1964708924}
-  activeScale: {x: 1.15, y: 1.15, z: 1}
-  normalScale: {x: 1, y: 1, z: 1}
 --- !u!222 &1340545270
 CanvasRenderer:
   m_ObjectHideFlags: 0
