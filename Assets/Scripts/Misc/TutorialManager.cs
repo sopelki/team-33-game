@@ -26,8 +26,6 @@ namespace Misc
         private GameObject barrackSlot, towerSlot, trapSlot;
         [SerializeField]
         private GameObject highlightEffect;
-        [SerializeField]
-        private float startDelay = 10f;
 
         private enum TutorialStep
         {
