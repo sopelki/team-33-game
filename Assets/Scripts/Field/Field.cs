@@ -9,6 +9,16 @@ namespace Field
     {
         public List<MapObjectData> MapObjects = new();
         public readonly Dictionary<Vector2Int, Hexagon> Hexagons = new();
+        private readonly Dictionary<Vector3Int, Hexagon> hexagonsByOffset = new();
+        private static readonly Vector2Int[] neighborDirections =
+        {
+            new(0, +1),
+            new(+1, 0),
+            new(+1, -1),
+            new(0, -1),
+            new(-1, 0),
+            new(-1, +1)
+        };
 
 
         public void AddHexagon(int x, int y, HexagonType type)
@@ -19,6 +29,7 @@ namespace Field
             var hex = new Hexagon(axialPos.x, axialPos.y, offsetPos, type);
 
             Hexagons[axialPos] = hex;
+            hexagonsByOffset[offsetPos] = hex;
         }
 
         public FieldData ExportToSaveData()
@@ -36,13 +47,20 @@ namespace Field
         {
             Hexagons.Clear();
             foreach (var hexagon in data.savedHexes)
+            {
                 Hexagons.Add(hexagon.coordinates, hexagon);
+                hexagonsByOffset.Add(hexagon.offset, hexagon);
+            }
 
             MapObjects = data.savedObjects != null
                 ? new List<MapObjectData>(data.savedObjects)
                 : new List<MapObjectData>();
         }
-
+        
+        public Hexagon GetHexByOffset(Vector3Int offsetCoords)
+        {
+            return hexagonsByOffset.GetValueOrDefault(offsetCoords);
+        }
 
         public Hexagon GetHex(Vector2Int axialCoords)
         {
@@ -51,16 +69,6 @@ namespace Field
 
         public List<Hexagon> GetNeighbours(Hexagon currentHex)
         {
-            var neighborDirections = new List<Vector2Int>
-            {
-                new(0, +1),
-                new(+1, 0),
-                new(+1, -1),
-                new(0, -1),
-                new(-1, 0),
-                new(-1, +1)
-            };
-
             return neighborDirections
                 .Select(direction => currentHex.coordinates + direction)
                 .Select(GetHex)

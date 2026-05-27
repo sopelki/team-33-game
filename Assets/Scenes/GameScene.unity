@@ -2033,6 +2033,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8050700227806902550, guid: 4fcdc88ea46553148b69eb0e352e703a, type: 3}
   m_PrefabInstance: {fileID: 203002164}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &203002166 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 895813766122179846, guid: 4fcdc88ea46553148b69eb0e352e703a, type: 3}
+  m_PrefabInstance: {fileID: 203002164}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &208000322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31208,7 +31213,7 @@ MonoBehaviour:
   actionButtonText: {fileID: 1260310155}
   barrackSlot: {fileID: 613893416}
   towerSlot: {fileID: 1169036898}
-  trapSlot: {fileID: 0}
+  trapSlot: {fileID: 203002166}
   highlightEffect: {fileID: 1208501083}
 --- !u!4 &1919606403
 Transform:

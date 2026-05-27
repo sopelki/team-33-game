@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Core;
 using Logic.Castle;
 using Logic.Tower;
@@ -31,7 +32,9 @@ namespace Misc
         {
             Greeting,
             BuildBarrack,
+            BarrackSuccess,
             BuildTower,
+            TowerSuccess,
             BuildTrap,
             Finish
         }
@@ -56,148 +59,147 @@ namespace Misc
             var tutorial = FindAnyObjectByType<TutorialManager>();
             return tutorial && tutorial.isActiveAndEnabled;
         }
-
+        
         public void OnActionButtonClick()
         {
             switch (currentStep)
             {
                 case TutorialStep.Greeting:
                     currentStep = TutorialStep.BuildBarrack;
-                    UpdateTutorialState();
+                    break;
+
+                case TutorialStep.BarrackSuccess:
+                    currentStep = TutorialStep.BuildTower;
+                    break;
+
+                case TutorialStep.TowerSuccess:
+                    currentStep = TutorialStep.BuildTrap;
                     break;
 
                 case TutorialStep.Finish:
                     FinishTutorialAndStartRealGame();
-                    break;
-
+                    return;
+                
                 case TutorialStep.BuildBarrack:
                 case TutorialStep.BuildTower:
                 case TutorialStep.BuildTrap:
-                    break;
+                    return;
 
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
 
+            UpdateTutorialState();
+        }
+        
         private void Update()
         {
-            if (currentStep == TutorialStep.BuildBarrack && !barrackTracked)
+            switch (currentStep)
             {
-                if (CastleSystem.Instance != null && CastleSystem.Instance.Model.Buildings.Count > 0)
-                {
-                    barrackTracked = true;
-                    NextStepAfterBuild("Отлично, барак готов! Теперь выберите Башню.", TutorialStep.BuildTower);
-                }
-            }
+                case TutorialStep.BuildBarrack:
+                    if (CastleSystem.Instance != null && 
+                        CastleSystem.Instance.Model.Buildings.Count > 0 && 
+                        CastleSystem.Instance.Model.Buildings.Any(b => b.Data.type == BuildingType.Barracks))
+                    {
+                        currentStep = TutorialStep.BarrackSuccess;
+                        UpdateTutorialState();
+                    }
+                    break;
 
-            if (currentStep == TutorialStep.BuildTower && !towerTracked)
-            {
-                if (TowerSystem.Instance != null && TowerSystem.Instance.GetTowers().Count > 0)
-                {
-                    towerTracked = true;
+                case TutorialStep.BuildTower:
+                    if (TowerSystem.Instance != null &&
+                        TowerSystem.Instance.GetTowers().Count > 0 &&
+                        TowerSystem.Instance.GetTowers().Any(t => t.Data.type == TowerType.Archer))
+                    {
+                        currentStep = TutorialStep.TowerSuccess;
+                        UpdateTutorialState();
+                    }
+                    break;
 
-                    // if (highlightEffect)
-                    //     highlightEffect.SetActive(false);
-
-                    NextStepAfterBuild("Защита установлена! Последний штрих — Ловушка.", TutorialStep.BuildTrap);
-                }
-            }
-
-            if (currentStep == TutorialStep.BuildTrap && !trapTracked)
-            {
-                if (TrapSystem.Instance != null && TrapSystem.Instance.GetTraps().Count > 0)
-                {
-                    trapTracked = true;
-                    currentStep = TutorialStep.Finish;
-                    UpdateTutorialState();
-                }
+                case TutorialStep.BuildTrap:
+                    if (TrapSystem.Instance != null &&
+                        TrapSystem.Instance.GetTraps().Count > 0 &&
+                        TrapSystem.Instance.GetTraps().Any(t => t.Data.trapType == TrapType.SlowZone))
+                    {
+                        currentStep = TutorialStep.Finish;
+                        UpdateTutorialState();
+                    }
+                    break;
             }
         }
-
-        private void NextStepAfterBuild(string text, TutorialStep nextStep)
-        {
-            if (tutorialWindow)
-                tutorialWindow.SetActive(true);
-
-            if (actionButton)
-                actionButton.gameObject.SetActive(false);
-
-            if (dialogueAnimator)
-                dialogueAnimator.PrintPhrase(text);
-
-            Invoke(nameof(ExecuteNextStep), 0f);
-            currentStep = nextStep;
-        }
-
-        private void ExecuteNextStep() => UpdateTutorialState();
 
         private void UpdateTutorialState()
         {
-            if (highlightEffect)
+            if (highlightEffect) 
                 highlightEffect.SetActive(false);
-
-            if (tutorialWindow && currentStep is TutorialStep.Greeting or TutorialStep.Finish)
+            if (tutorialWindow) 
                 tutorialWindow.SetActive(true);
 
             switch (currentStep)
             {
                 case TutorialStep.Greeting:
-                    if (actionButton)
-                        actionButton.gameObject.SetActive(true);
-
-                    if (actionButtonText)
-                        actionButtonText.text = "Далее";
-
-                    if (dialogueAnimator)
-                    {
-                        dialogueAnimator.PrintPhrase(
-                            "Лорд, давайте начнём строительство! Перетяните казарму в поле замка");
-                    }
-
+                    ConfigureButton(true, "Далее");
+                    PrintPhrase("Здравствуйте, властитель Гексагонии! Ваш замок атакуют монстры.");
                     break;
 
                 case TutorialStep.BuildBarrack:
-                    // if (tutorialWindow != null) tutorialWindow.SetActive(false);
-                    if (highlightEffect && barrackSlot != null)
-                    {
-                        highlightEffect.transform.position = barrackSlot.transform.position;
-                        highlightEffect.SetActive(true);
-                    }
+                    ConfigureButton(false);
+                    PrintPhrase("Давайте начнём строительство! Перетяните казарму в поле замка.");
+                    ApplyHighlight(barrackSlot);
+                    break;
+
+                case TutorialStep.BarrackSuccess:
+                    ConfigureButton(true, "Далее");
+                    PrintPhrase("Отлично, барак готов! Теперь у вас есть верные солдаты.");
                     break;
 
                 case TutorialStep.BuildTower:
-                    // if (tutorialWindow != null) tutorialWindow.SetActive(false);
-                    if (highlightEffect && towerSlot != null)
-                    {
-                        highlightEffect.transform.position = towerSlot.transform.position;
-                        highlightEffect.SetActive(true);
-                    }
+                    ConfigureButton(false);
+                    PrintPhrase("Защита периметра превыше всего! Давайте выберем и поставим Башню.");
+                    ApplyHighlight(towerSlot);
+                    break;
+
+                case TutorialStep.TowerSuccess:
+                    ConfigureButton(true, "Далее");
+                    PrintPhrase("Защита установлена! Вы отлично справляетесь, Лорд.");
                     break;
 
                 case TutorialStep.BuildTrap:
-                    // if (tutorialWindow != null) tutorialWindow.SetActive(false);
-                    if (highlightEffect && trapSlot != null)
-                    {
-                        highlightEffect.transform.position = trapSlot.transform.position;
-                        highlightEffect.SetActive(true);
-                    }
+                    ConfigureButton(false);
+                    PrintPhrase("Последний штрих — установите Ловушку, чтобы замедлить врагов.");
+                    ApplyHighlight(trapSlot);
                     break;
 
                 case TutorialStep.Finish:
-                    if (actionButton)
-                        actionButton.gameObject.SetActive(true);
-
-                    if (actionButtonText)
-                        actionButtonText.text = "К игре!";
-
-                    if (dialogueAnimator)
-                        dialogueAnimator.PrintPhrase("Сборка завершена. Нажмите кнопку, чтобы начать настоящий бой!");
-
+                    ConfigureButton(true, "К игре!");
+                    PrintPhrase("Теперь вы знаете как защитить замок. Начнём настоящий бой!");
                     break;
 
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        private void ConfigureButton(bool isVisible, string text = "")
+        {
+            if (actionButton) 
+                actionButton.gameObject.SetActive(isVisible);
+            if (actionButtonText && isVisible) 
+                actionButtonText.text = text;
+        }
+
+        private void PrintPhrase(string text)
+        {
+            if (dialogueAnimator) 
+                dialogueAnimator.PrintPhrase(text);
+        }
+
+        private void ApplyHighlight(GameObject slot)
+        {
+            if (highlightEffect && slot != null)
+            {
+                highlightEffect.transform.position = slot.transform.position;
+                highlightEffect.SetActive(true);
             }
         }
 
