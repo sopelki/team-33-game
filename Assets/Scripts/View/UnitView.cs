@@ -30,13 +30,11 @@ namespace View
 
         public Action<UnitModel> OnDeathAnimationFinished;
 
-        public void Initialize(UnitModel modelToInitialize, UnitBuffsViewManager buffsViewManager, float visualOffset)
+        public void Initialize(UnitModel modelToInitialize, UnitBuffsViewManager buffsViewManager)
         {
             model = modelToInitialize;
             animator = GetComponent<Animator>();
-            GetComponent<SpriteRenderer>();
             transform.position = modelToInitialize.WorldPosition;
-            previousPosition = modelToInitialize.WorldPosition;
             buffsView = buffsViewManager;
             this.visualOffset = new Vector3(0, model.UnitData.visualOffsetY, 0);
 
@@ -63,15 +61,32 @@ namespace View
         }
 
         public void SetPosition(Vector3 worldPos) => transform.position = worldPos;
-
+        
         private void Update()
         {
-            if (model == null || !animator || isDeadAnimationPlaying)
+            if (model == null || !animator || isDeadAnimationPlaying || model.IsDead)
                 return;
+            
+            var targetPos = model.WorldPosition + visualOffset;
+            var positionBeforeMove = transform.position;
+            
+            transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * smoothingSpeed);
+            
+            var visualDelta = transform.position - positionBeforeMove;
+            var moving = visualDelta.sqrMagnitude > 0.00001f;
 
+            animator.SetBool(isMoving, moving);
+
+            if (moving)
+            {
+                targetDirection = SnapTo4Directions(visualDelta);
+                animator.SetFloat(lastMoveX, targetDirection.x);
+                animator.SetFloat(lastMoveY, targetDirection.y);
+            }
+            
             currentSmoothDirection = Vector2.Lerp(
                 currentSmoothDirection,
-                targetDirection,
+                moving ? targetDirection : Vector2.zero,
                 Time.deltaTime * smoothingSpeed
             );
 
@@ -85,38 +100,16 @@ namespace View
 
         public void UpdateView()
         {
-            if (model.IsDead)
-            {
-                if (!isDeadAnimationPlaying)
-                {
-                    isDeadAnimationPlaying = true;
-                    if (animator)
-                    {
-                        animator.SetBool(isMoving, false);
-                        animator.SetTrigger(isDead);
-                    }
-                }
+            if (model == null) 
                 return;
-            }
-
-            var logicalPosition = model.WorldPosition;
-            var direction = logicalPosition - previousPosition;
-            var moving = direction.sqrMagnitude > 0.0001f;
-
-            transform.position = logicalPosition + visualOffset;
-            
-            if (animator)
-                animator.SetBool(isMoving, moving);
-
-            if (moving)
+            if (model.IsDead && !isDeadAnimationPlaying)
             {
-                targetDirection = SnapTo4Directions(direction);
+                isDeadAnimationPlaying = true;
                 if (animator)
                 {
-                    animator.SetFloat(lastMoveX, targetDirection.x);
-                    animator.SetFloat(lastMoveY, targetDirection.y);
+                    animator.SetBool(isMoving, false);
+                    animator.SetTrigger(isDead);
                 }
-                previousPosition = logicalPosition;
             }
         }
 
