@@ -26732,6 +26732,7 @@ MonoBehaviour:
   gameOverPanel: {fileID: 1715936214}
   gameWonPanel: {fileID: 82437799}
   fadeDuration: 0.2
+  startDelay: 1
   gameOverSound: {fileID: 8300000, guid: f7ad4128574548a48985b2a7a15df610, type: 3}
   gameWonSound: {fileID: 8300000, guid: 2352210a849a0204495091212e40c113, type: 3}
   gameInitializer: {fileID: 1242743164}

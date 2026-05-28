@@ -17,6 +17,8 @@ namespace MenuScripts
         [Header("Settings")]
         [SerializeField]
         private float fadeDuration = 0.2f;
+        [SerializeField]
+        private float startDelay = 0.2f;
 
         [Header("Audio")]
         [SerializeField]
@@ -65,6 +67,8 @@ namespace MenuScripts
         {
             if (!panel)
                 yield break;
+
+            yield return new WaitForSeconds(startDelay);
 
             if (clip && audioSource)
             {
