@@ -36,6 +36,7 @@ namespace UI
         private Vector3 originalScale;
         private Color targetColor;
         private Vector3 targetScale;
+        private bool isDragging;
 
         public BuildingData BuildingData => buildingData;
         public Transform OriginalParent { get; private set; }
@@ -68,6 +69,7 @@ namespace UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            isDragging = true;
             GetComponent<TooltipTrigger>()?.StopDisplay();
             canvasGroup.blocksRaycasts = false;
             targetColor = invalidColor;
@@ -78,11 +80,17 @@ namespace UI
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            OnDropped?.Invoke();
+
+            if (!isDragging)
+                return;
+
+            isDragging = false;
+
             targetScale = originalScale;
             targetColor = originalColor;
             canvasGroup.blocksRaycasts = true;
 
-            OnDropped?.Invoke();
 
             if (transform.parent != dragHandler.MainCanvas.transform)
                 return;
@@ -91,6 +99,22 @@ namespace UI
                 Destroy(gameObject);
             else
                 ReturnToStart();
+        }
+
+        private void OnDisable()
+        {
+            if (isDragging)
+            {
+                isDragging = false;
+                targetScale = originalScale;
+                targetColor = originalColor;
+                canvasGroup.blocksRaycasts = true;
+
+                if (IsFromShop)
+                    Destroy(gameObject);
+                else
+                    ReturnToStart();
+            }
         }
 
         public event Action OnDropped;

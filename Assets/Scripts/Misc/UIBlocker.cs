@@ -1,7 +1,6 @@
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Misc
@@ -15,15 +14,6 @@ namespace Misc
 
             var allComponents = Object.FindObjectsByType<MonoBehaviour>();
 
-            var currentMousePosition = Vector2.zero;
-            if (Mouse.current != null)
-                currentMousePosition = Mouse.current.position.ReadValue();
-
-            var pointerData = new PointerEventData(EventSystem.current)
-            {
-                position = currentMousePosition
-            };
-
             foreach (var mb in allComponents)
             {
                 switch (mb)
@@ -32,15 +22,10 @@ namespace Misc
                         trigger.StopDisplay();
                         trigger.enabled = false;
                         break;
-
+                    
                     case IBeginDragHandler or IDragHandler or IEndDragHandler:
                         if (mb is not Slider)
-                        {
-                            if (mb is IEndDragHandler endDragHandler)
-                                endDragHandler.OnEndDrag(pointerData);
-
                             mb.enabled = false;
-                        }
                         break;
                 }
             }
