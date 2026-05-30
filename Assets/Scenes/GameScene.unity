@@ -24022,7 +24022,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4748470915983087717, guid: a9d543173d9814b4b970d017d46dd4f9, type: 3}
       propertyPath: m_Color.a
-      value: 0.4
+      value: 0.4509804
       objectReference: {fileID: 0}
     - target: {fileID: 6092136936332078836, guid: a9d543173d9814b4b970d017d46dd4f9, type: 3}
       propertyPath: m_Pivot.x
@@ -24110,7 +24110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6647511006896912986, guid: a9d543173d9814b4b970d017d46dd4f9, type: 3}
       propertyPath: m_fontColor.a
-      value: 0.2509804
+      value: 0.3764706
       objectReference: {fileID: 0}
     - target: {fileID: 6647511006896912986, guid: a9d543173d9814b4b970d017d46dd4f9, type: 3}
       propertyPath: m_fontColor.b
@@ -24126,7 +24126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6647511006896912986, guid: a9d543173d9814b4b970d017d46dd4f9, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 1084464484
+      value: 1621335396
       objectReference: {fileID: 0}
     - target: {fileID: 7771766130602506605, guid: a9d543173d9814b4b970d017d46dd4f9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -33343,7 +33343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7592d7e2d5542e9a53dbf7cab1050c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuScripts.FadePanel
-  fadeDuration: 0.03
+  fadeDuration: 0.075
 --- !u!225 &1742947270
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -34467,6 +34467,7 @@ MonoBehaviour:
   towerSlot: {fileID: 1169036898}
   trapSlot: {fileID: 203002166}
   highlightEffect: {fileID: 1208501083}
+  startDelay: 1.25
 --- !u!4 &1919606403
 Transform:
   m_ObjectHideFlags: 0
@@ -36149,11 +36150,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 785.7978
+      value: 745.6406
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 128.0871
+      value: 133.0072
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -36185,11 +36186,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -6.9905
+      value: -27.069534
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 42.538628
+      value: 40.07859
       objectReference: {fileID: 0}
     - target: {fileID: 1547800107940688592, guid: 727a86d465113fb4e8336b11b0aec4d5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

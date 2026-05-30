@@ -30,6 +30,10 @@ namespace Misc
         [SerializeField]
         private GameObject highlightEffect;
 
+        [Header("Настройки задержки")]
+        [SerializeField]
+        private float startDelay = 1.5f;
+
         private bool barrackTracked, towerTracked, trapTracked;
         private TutorialStep currentStep = TutorialStep.Greeting;
         private GameFlowManager gameFlowManager;
@@ -132,9 +136,6 @@ namespace Misc
             if (highlightEffect)
                 highlightEffect.SetActive(false);
 
-            if (tutorialFadePanel)
-                tutorialFadePanel.Show();
-
             switch (currentStep)
             {
                 case TutorialStep.Greeting:
@@ -144,35 +145,35 @@ namespace Misc
 
                 case TutorialStep.BuildBarrack:
                     ConfigureButton(false);
-                    PrintPhrase("Давайте начнём строительство! Перетяните казарму в поле замка.");
+                    PrintPhrase("Давайте начнём строить! Перетяните казарму в поле замка.");
                     ApplyHighlight(barrackSlot);
                     break;
 
                 case TutorialStep.BarrackSuccess:
                     ConfigureButton(true, "Далее");
-                    PrintPhrase("Отлично, барак готов! Теперь у вас есть верные солдаты.");
+                    PrintPhrase("Отлично, казарма готова! Теперь у вас есть верные рыцари.");
                     break;
 
                 case TutorialStep.BuildTower:
                     ConfigureButton(false);
-                    PrintPhrase("Защита периметра превыше всего! Давайте выберем и поставим Башню.");
+                    PrintPhrase("Защита периметра превыше всего! Давайте выберем\nи поставим Башню.");
                     ApplyHighlight(towerSlot);
                     break;
 
                 case TutorialStep.TowerSuccess:
                     ConfigureButton(true, "Далее");
-                    PrintPhrase("Защита установлена! Вы отлично справляетесь, Лорд.");
+                    PrintPhrase("Защита установлена!\nМилорд, вы отлично справляетесь.");
                     break;
 
                 case TutorialStep.BuildTrap:
                     ConfigureButton(false);
-                    PrintPhrase("Последний штрих — установите Ловушку, чтобы замедлить врагов.");
+                    PrintPhrase("Остался последний штрих. Установите Ловушку, чтобы замедлить врагов.");
                     ApplyHighlight(trapSlot);
                     break;
 
                 case TutorialStep.Finish:
                     ConfigureButton(true, "К игре!");
-                    PrintPhrase("Теперь вы знаете как защитить замок. Начнём настоящий бой!");
+                    PrintPhrase("Теперь вы знаете как защитить замок.\nНачнём настоящий бой!");
                     break;
 
                 default:
@@ -237,7 +238,7 @@ namespace Misc
 
         public void ForceStopTutorial()
         {
-            if (gameFlowManager != null && gameFlowManager.IsTutorialActive)
+            if (gameFlowManager is { IsTutorialActive: true })
             {
                 ClearAllTutorialBuildings();
                 gameFlowManager.IsTutorialActive = false;
@@ -278,11 +279,17 @@ namespace Misc
 
                 gameObject.SetActive(true);
 
-                if (tutorialFadePanel)
-                    tutorialFadePanel.Show();
-
-                UpdateTutorialState();
+                CancelInvoke(nameof(BeginTutorialDisplay));
+                Invoke(nameof(BeginTutorialDisplay), startDelay);
             }
+        }
+
+        private void BeginTutorialDisplay()
+        {
+            if (tutorialFadePanel)
+                tutorialFadePanel.Show();
+
+            UpdateTutorialState();
         }
 
         private enum TutorialStep
