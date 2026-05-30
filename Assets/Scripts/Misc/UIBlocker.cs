@@ -12,6 +12,7 @@ namespace Misc
             if (TooltipUI.Instance != null)
                 TooltipUI.Instance.Hide();
 
+            // Находим все MonoBehaviour компоненты
             var allComponents = Object.FindObjectsByType<MonoBehaviour>();
 
             foreach (var mb in allComponents)
@@ -23,13 +24,12 @@ namespace Misc
                         trigger.enabled = false;
                         break;
 
+                    // Когда мы выключаем IBeginDragHandler (т.е. InventoryItem), 
+                    // у него сработает OnDisable, который мы написали ранее.
                     case IBeginDragHandler or IDragHandler or IEndDragHandler:
                         if (mb is not Slider)
                         {
-                            var canvas = mb.GetComponent<CanvasGroup>();
-                            if (canvas != null)
-                                canvas.alpha = 0f;
-                            mb.enabled = false;
+                            mb.enabled = false; 
                         }
                         break;
                 }

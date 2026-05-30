@@ -7,9 +7,8 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    [RequireComponent(typeof(CanvasGroup))]
-    [RequireComponent(typeof(Image))]
-    public class InventoryItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler
+    [RequireComponent(typeof(CanvasGroup), typeof(Image))]
+    public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [Header("Data")]
         [SerializeField]
@@ -25,21 +24,23 @@ namespace UI
         [SerializeField]
         [Range(0f, 1f)]
         private float draggingAlpha = 0.8f;
+
         private CanvasGroup canvasGroup;
         private CastleDragHandler dragHandler;
-        private Color invalidColor;
         private Image itemImage;
-        private Color normalDraggingColor;
-
         private Color originalColor;
-
         private Vector3 originalScale;
         private Color targetColor;
         private Vector3 targetScale;
+        private Color invalidColor;
+        private Color normalDraggingColor;
+
+        private bool isDragging;
 
         public BuildingData BuildingData => buildingData;
         public Transform OriginalParent { get; private set; }
         public bool IsFromShop { get; private set; }
+        public event Action OnDropped;
 
         private void Awake()
         {
@@ -61,6 +62,14 @@ namespace UI
             itemImage.color = Color.Lerp(itemImage.color, targetColor, Time.deltaTime * colorLerpSpeed);
         }
 
+        private void OnDisable()
+        {
+            if (isDragging)
+            {
+                OnEndDrag(null);
+            }
+        }
+
         private void OnDestroy()
         {
             OnDropped?.Invoke();
@@ -68,6 +77,7 @@ namespace UI
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            isDragging = true; // Устанавливаем флаг
             GetComponent<TooltipTrigger>()?.StopDisplay();
             canvasGroup.blocksRaycasts = false;
             targetColor = invalidColor;
@@ -76,34 +86,34 @@ namespace UI
                 CaptureState();
         }
 
+        // Нужно для корректной работы OnEndDrag
+        public void OnDrag(PointerEventData eventData)
+        {
+        }
+
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (!isDragging) return;
+            isDragging = false;
+
             targetScale = originalScale;
             targetColor = originalColor;
             canvasGroup.blocksRaycasts = true;
 
             OnDropped?.Invoke();
 
-            if (transform.parent != dragHandler.MainCanvas.transform)
-                return;
-
-            if (IsFromShop)
-                Destroy(gameObject);
-            else
-                ReturnToStart();
+            // Твоя оригинальная логика проверки "брошен в пустоту"
+            if (transform.parent == dragHandler.MainCanvas.transform)
+            {
+                if (IsFromShop)
+                    Destroy(gameObject);
+                else
+                    ReturnToStart();
+            }
         }
 
-        public event Action OnDropped;
-
-        public void SetDraggingScale(float multiplier)
-        {
-            targetScale = originalScale * multiplier;
-        }
-
-        public void SetValidationState(bool isValid)
-        {
-            targetColor = isValid ? normalDraggingColor : invalidColor;
-        }
+        public void SetDraggingScale(float multiplier) => targetScale = originalScale * multiplier;
+        public void SetValidationState(bool isValid) => targetColor = isValid ? normalDraggingColor : invalidColor;
 
         public void SetData(BuildingData data, bool fromShop)
         {
@@ -115,11 +125,17 @@ namespace UI
 
         public void Place(Transform slot)
         {
+            isDragging = false;
             transform.SetParent(slot);
             dragHandler.ResetPosition();
+
+            OnDropped?.Invoke();
+
             IsFromShop = false;
             targetColor = originalColor;
-            AudioManager.Instance.PlaySfx(soundData.buildingPlaceSound, soundData.buildingPlacementVolume);
+
+            if (AudioManager.Instance != null && soundData != null)
+                AudioManager.Instance.PlaySfx(soundData.buildingPlaceSound, soundData.buildingPlacementVolume);
         }
 
         private void CaptureState()

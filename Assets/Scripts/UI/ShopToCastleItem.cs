@@ -8,20 +8,14 @@ namespace UI
 {
     public class ShopToCastleItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        [SerializeField]
-        private Canvas canvas;
-        [SerializeField]
-        private GameObject inventoryItemPrefab;
-        [SerializeField]
-        private BuildingData buildingData;
+        [SerializeField] private Canvas canvas;
+        [SerializeField] private GameObject inventoryItemPrefab;
+        [SerializeField] private BuildingData buildingData;
 
         [Header("Feedback")]
-        [SerializeField]
-        private Image iconImage;
-        [SerializeField]
-        private float fadeDuration = 0.1f;
+        [SerializeField] private Image iconImage;
+        [SerializeField] private float fadeDuration = 0.1f;
         private CanvasGroup iconCanvasGroup;
-
         private Image sourceImage;
 
         private void Awake()
@@ -59,6 +53,8 @@ namespace UI
 
             var item = itemGo.GetComponent<InventoryItem>();
             item.SetData(buildingData, true);
+            
+            // Используем локальную функцию для подписки и мгновенной отписки (чтобы не моргало)
             item.OnDropped += OnDroppedHandler;
 
             var itemImage = itemGo.GetComponent<Image>();
@@ -70,8 +66,10 @@ namespace UI
             }
 
             eventData.pointerDrag = itemGo;
+
+            // КРИТИЧНО: Явно вызываем OnBeginDrag у обоих компонентов
             itemGo.GetComponent<CastleDragHandler>().OnBeginDrag(eventData);
-            return;
+            item.OnBeginDrag(eventData); // Теперь isDragging станет true!
 
             void OnDroppedHandler()
             {
@@ -80,18 +78,16 @@ namespace UI
             }
         }
 
-        public void OnDrag(PointerEventData eventData)
-        {
-        }
-
-        public void OnEndDrag(PointerEventData eventData)
-        {
-        }
+        public void OnDrag(PointerEventData eventData) { }
+        public void OnEndDrag(PointerEventData eventData) { }
 
         private void HandleItemDropped()
         {
             if (!gameObject.activeInHierarchy)
+            {
+                iconCanvasGroup.alpha = 1f;
                 return;
+            }
 
             StartCoroutine(FadeIn());
         }
@@ -99,14 +95,12 @@ namespace UI
         private IEnumerator FadeIn()
         {
             var elapsed = 0f;
-
             while (elapsed < fadeDuration)
             {
                 elapsed += Time.deltaTime;
                 iconCanvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsed / fadeDuration);
                 yield return null;
             }
-
             iconCanvasGroup.alpha = 1f;
         }
     }
