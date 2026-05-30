@@ -21,25 +21,20 @@ namespace UI
         public void OnBeginDrag(PointerEventData eventData)
         {
             canvasGroup.blocksRaycasts = false;
-            canvasGroup.alpha = 0.6f; // Делаем предмет полупрозрачным при таскании
+            canvasGroup.alpha = 0.6f;
             transform.SetParent(MainCanvas.transform, true);
             transform.SetAsLastSibling();
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            // Используем scaleFactor, чтобы скорость мышки не зависела от разрешения экрана
             rectTransform.anchoredPosition += eventData.delta / MainCanvas.scaleFactor;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            // Возвращаем стандартный вид
-            canvasGroup.blocksRaycasts = true;
-            canvasGroup.alpha = 1f;
         }
 
-        // Вызывается из InventoryItem.Place() или ReturnToStart()
         public void ResetPosition()
         {
             rectTransform.anchoredPosition = Vector2.zero;

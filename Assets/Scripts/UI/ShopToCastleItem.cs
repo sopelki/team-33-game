@@ -8,13 +8,18 @@ namespace UI
 {
     public class ShopToCastleItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        [SerializeField] private Canvas canvas;
-        [SerializeField] private GameObject inventoryItemPrefab;
-        [SerializeField] private BuildingData buildingData;
+        [SerializeField]
+        private Canvas canvas;
+        [SerializeField]
+        private GameObject inventoryItemPrefab;
+        [SerializeField]
+        private BuildingData buildingData;
 
         [Header("Feedback")]
-        [SerializeField] private Image iconImage;
-        [SerializeField] private float fadeDuration = 0.1f;
+        [SerializeField]
+        private Image iconImage;
+        [SerializeField]
+        private float fadeDuration = 0.1f;
         private CanvasGroup iconCanvasGroup;
         private Image sourceImage;
 
@@ -53,8 +58,6 @@ namespace UI
 
             var item = itemGo.GetComponent<InventoryItem>();
             item.SetData(buildingData, true);
-            
-            // Используем локальную функцию для подписки и мгновенной отписки (чтобы не моргало)
             item.OnDropped += OnDroppedHandler;
 
             var itemImage = itemGo.GetComponent<Image>();
@@ -67,9 +70,9 @@ namespace UI
 
             eventData.pointerDrag = itemGo;
 
-            // КРИТИЧНО: Явно вызываем OnBeginDrag у обоих компонентов
             itemGo.GetComponent<CastleDragHandler>().OnBeginDrag(eventData);
-            item.OnBeginDrag(eventData); // Теперь isDragging станет true!
+            item.OnBeginDrag(eventData);
+            return;
 
             void OnDroppedHandler()
             {
@@ -78,8 +81,13 @@ namespace UI
             }
         }
 
-        public void OnDrag(PointerEventData eventData) { }
-        public void OnEndDrag(PointerEventData eventData) { }
+        public void OnDrag(PointerEventData eventData)
+        {
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+        }
 
         private void HandleItemDropped()
         {

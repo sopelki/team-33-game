@@ -65,19 +65,12 @@ namespace UI
         private void OnDisable()
         {
             if (isDragging)
-            {
                 OnEndDrag(null);
-            }
-        }
-
-        private void OnDestroy()
-        {
-            OnDropped?.Invoke();
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            isDragging = true; // Устанавливаем флаг
+            isDragging = true;
             GetComponent<TooltipTrigger>()?.StopDisplay();
             canvasGroup.blocksRaycasts = false;
             targetColor = invalidColor;
@@ -86,7 +79,6 @@ namespace UI
                 CaptureState();
         }
 
-        // Нужно для корректной работы OnEndDrag
         public void OnDrag(PointerEventData eventData)
         {
         }
@@ -102,7 +94,6 @@ namespace UI
 
             OnDropped?.Invoke();
 
-            // Твоя оригинальная логика проверки "брошен в пустоту"
             if (transform.parent == dragHandler.MainCanvas.transform)
             {
                 if (IsFromShop)
