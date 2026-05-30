@@ -20,11 +20,9 @@ namespace UI
         private Image iconImage;
         [SerializeField]
         private float fadeDuration = 0.1f;
-
         private CanvasGroup iconCanvasGroup;
+
         private Image sourceImage;
-        private GameObject spawnedItem;
-        private bool isDragging;
 
         private void Awake()
         {
@@ -49,11 +47,7 @@ namespace UI
 
             iconCanvasGroup.alpha = 0f;
 
-            if (inventoryItemPrefab == null || canvas == null) return;
-            isDragging = true;
-
-            iconCanvasGroup.alpha = 0f;
-            spawnedItem = Instantiate(inventoryItemPrefab, canvas.transform);
+            var itemGo = Instantiate(inventoryItemPrefab, canvas.transform);
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 canvas.transform as RectTransform,
@@ -61,13 +55,13 @@ namespace UI
                 eventData.pressEventCamera,
                 out var localPoint);
 
-            spawnedItem.GetComponent<RectTransform>().localPosition = localPoint;
+            itemGo.GetComponent<RectTransform>().localPosition = localPoint;
 
-            var item = spawnedItem.GetComponent<InventoryItem>();
+            var item = itemGo.GetComponent<InventoryItem>();
             item.SetData(buildingData, true);
             item.OnDropped += OnDroppedHandler;
 
-            var itemImage = spawnedItem.GetComponent<Image>();
+            var itemImage = itemGo.GetComponent<Image>();
             if (sourceImage != null && itemImage != null)
             {
                 itemImage.sprite = sourceImage.sprite;
@@ -75,8 +69,8 @@ namespace UI
                 itemImage.preserveAspect = true;
             }
 
-            eventData.pointerDrag = spawnedItem;
-            spawnedItem.GetComponent<CastleDragHandler>().OnBeginDrag(eventData);
+            eventData.pointerDrag = itemGo;
+            itemGo.GetComponent<CastleDragHandler>().OnBeginDrag(eventData);
             return;
 
             void OnDroppedHandler()
@@ -90,16 +84,8 @@ namespace UI
         {
         }
 
-        public void OnEndDrag(PointerEventData eventData) => isDragging = false;
-
-        private void OnDisable()
+        public void OnEndDrag(PointerEventData eventData)
         {
-            if (isDragging)
-            {
-                isDragging = false;
-                if (spawnedItem != null) Destroy(spawnedItem);
-                iconCanvasGroup.alpha = 1f;
-            }
         }
 
         private void HandleItemDropped()
