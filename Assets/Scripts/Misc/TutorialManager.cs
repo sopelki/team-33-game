@@ -5,6 +5,7 @@ using Logic.Castle;
 using Logic.Tower;
 using Logic.Trap;
 using Logic.Unit;
+using MenuScripts;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace Misc
     {
         [Header("Ссылки на элементы")]
         [SerializeField]
-        private GameObject tutorialWindow;
+        private FadePanel tutorialFadePanel;
         [SerializeField]
         private DialogueAnimator dialogueAnimator;
         [SerializeField]
@@ -28,17 +29,16 @@ namespace Misc
         private GameObject barrackSlot, towerSlot, trapSlot;
         [SerializeField]
         private GameObject highlightEffect;
+
         private bool barrackTracked, towerTracked, trapTracked;
-
         private TutorialStep currentStep = TutorialStep.Greeting;
-
         private GameFlowManager gameFlowManager;
 
         private void Start()
         {
             if (actionButton)
                 actionButton.onClick.AddListener(OnActionButtonClick);
-            
+
             if (PlayerPrefs.GetInt("ShowTutorial", 1) == 1)
                 TryStartTutorialFromScratch();
             else
@@ -47,9 +47,9 @@ namespace Misc
 
         private void Update()
         {
-            if (PlayerPrefs.GetInt("ShowTutorial", 1) == 0) 
+            if (PlayerPrefs.GetInt("ShowTutorial", 1) == 0)
                 return;
-            
+
             switch (currentStep)
             {
                 case TutorialStep.BuildBarrack:
@@ -131,8 +131,9 @@ namespace Misc
         {
             if (highlightEffect)
                 highlightEffect.SetActive(false);
-            if (tutorialWindow)
-                tutorialWindow.SetActive(true);
+
+            if (tutorialFadePanel)
+                tutorialFadePanel.Show();
 
             switch (currentStep)
             {
@@ -201,8 +202,8 @@ namespace Misc
                 highlightEffect.SetActive(true);
             }
         }
-        
-        private void ClearAllTutorialBuildings()
+
+        private static void ClearAllTutorialBuildings()
         {
             if (TowerSystem.Instance != null)
             {
@@ -233,7 +234,7 @@ namespace Misc
             gameFlowManager?.ResetToStandardMode();
             ForceStopTutorial();
         }
-        
+
         public void ForceStopTutorial()
         {
             if (gameFlowManager != null && gameFlowManager.IsTutorialActive)
@@ -242,25 +243,22 @@ namespace Misc
                 gameFlowManager.IsTutorialActive = false;
                 gameFlowManager?.ResetToStandardMode();
             }
-            
-            if (tutorialWindow)
-                tutorialWindow.SetActive(false);
-            if (highlightEffect) 
+
+            if (tutorialFadePanel)
+                tutorialFadePanel.Hide();
+
+            if (highlightEffect)
                 highlightEffect.SetActive(false);
         }
-        
+
         public void TryStartTutorialFromScratch()
         {
-            if (CastleSystem.Instance == null) 
+            if (CastleSystem.Instance == null)
                 return;
-            
-            var hasBuildings = false;
-            if (CastleSystem.Instance != null && CastleSystem.Instance.Model.Buildings.Count > 0) 
-                hasBuildings = true;
-            if (TowerSystem.Instance != null && TowerSystem.Instance.GetTowers().Count > 0) 
-                hasBuildings = true;
-            if (TrapSystem.Instance != null && TrapSystem.Instance.GetTraps().Count > 0) 
-                hasBuildings = true;
+
+            var hasBuildings = CastleSystem.Instance != null && CastleSystem.Instance.Model.Buildings.Count > 0 ||
+                               TowerSystem.Instance != null && TowerSystem.Instance.GetTowers().Count > 0 ||
+                               TrapSystem.Instance != null && TrapSystem.Instance.GetTraps().Count > 0;
 
             if (hasBuildings)
             {
@@ -279,9 +277,9 @@ namespace Misc
                     transform.parent.gameObject.SetActive(true);
 
                 gameObject.SetActive(true);
-                
-                if (tutorialWindow)
-                    tutorialWindow.SetActive(true);
+
+                if (tutorialFadePanel)
+                    tutorialFadePanel.Show();
 
                 UpdateTutorialState();
             }
