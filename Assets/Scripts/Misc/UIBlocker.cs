@@ -22,10 +22,15 @@ namespace Misc
                         trigger.StopDisplay();
                         trigger.enabled = false;
                         break;
-                    
+
                     case IBeginDragHandler or IDragHandler or IEndDragHandler:
                         if (mb is not Slider)
+                        {
+                            var canvas = mb.GetComponent<CanvasGroup>();
+                            if (canvas != null)
+                                canvas.alpha = 0f;
                             mb.enabled = false;
+                        }
                         break;
                 }
             }
