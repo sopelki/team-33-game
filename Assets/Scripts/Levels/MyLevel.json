@@ -11890,7 +11890,7 @@
                 "y": 3,
                 "z": 0
             },
-            "type": 3
+            "type": 1
         },
         {
             "coordinates": {
@@ -12322,7 +12322,7 @@
                 "y": 4,
                 "z": 0
             },
-            "type": 3
+            "type": 1
         },
         {
             "coordinates": {
@@ -13210,7 +13210,7 @@
                 "y": 6,
                 "z": 0
             },
-            "type": 3
+            "type": 0
         },
         {
             "coordinates": {
@@ -20552,8 +20552,40 @@
         },
         {
             "position": {
+                "x": -2,
+                "y": 7,
+                "z": 0
+            },
+            "objectId": "Rocks 1"
+        },
+        {
+            "position": {
+                "x": -8,
+                "y": 0,
+                "z": 0
+            },
+            "objectId": "Rocks 1"
+        },
+        {
+            "position": {
                 "x": 12,
                 "y": 4,
+                "z": 0
+            },
+            "objectId": "Rocks 1"
+        },
+        {
+            "position": {
+                "x": 12,
+                "y": -8,
+                "z": 0
+            },
+            "objectId": "Rocks 1"
+        },
+        {
+            "position": {
+                "x": -2,
+                "y": 6,
                 "z": 0
             },
             "objectId": "Rocks 1"
@@ -20674,6 +20706,14 @@
             "position": {
                 "x": 16,
                 "y": 8,
+                "z": 0
+            },
+            "objectId": "Rocks 2"
+        },
+        {
+            "position": {
+                "x": 1,
+                "y": 5,
                 "z": 0
             },
             "objectId": "Rocks 2"
