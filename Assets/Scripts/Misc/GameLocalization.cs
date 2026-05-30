@@ -33,7 +33,7 @@ namespace Misc
             return type switch
             {
                 TrapType.DamageZone => "Колья",
-                TrapType.SlowZone => "Смола",
+                TrapType.SlowZone => "Лоза",
                 TrapType.BearTrap => "Капкан",
                 _ => "Ловушка"
             };

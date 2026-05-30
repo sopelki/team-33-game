@@ -145,35 +145,35 @@ namespace Misc
 
                 case TutorialStep.BuildBarrack:
                     ConfigureButton(false);
-                    PrintPhrase("Давайте начнём строить! Перетяните казарму в поле замка.");
+                    PrintPhrase("Давайте начнём строить! Перетяните казарму в\u00A0замок <size=65%>(сетка 3x3)</size>.");
                     ApplyHighlight(barrackSlot);
                     break;
 
                 case TutorialStep.BarrackSuccess:
                     ConfigureButton(true, "Далее");
-                    PrintPhrase("Отлично, казарма готова! Теперь у вас есть верные рыцари.");
+                    PrintPhrase("Отлично, казарма готова! Теперь у\u00A0вас есть верные рыцари.");
                     break;
 
                 case TutorialStep.BuildTower:
                     ConfigureButton(false);
-                    PrintPhrase("Защита периметра превыше всего! Давайте выберем\nи поставим Башню.");
+                    PrintPhrase("Защита периметра превыше всего! Перетяние Башню в\u00A0слот на\u00A0поле боя.");
                     ApplyHighlight(towerSlot);
                     break;
 
                 case TutorialStep.TowerSuccess:
                     ConfigureButton(true, "Далее");
-                    PrintPhrase("Защита установлена!\nМилорд, вы отлично справляетесь.");
+                    PrintPhrase("Защита установлена! Милорд,\u00A0вы отлично справляетесь.");
                     break;
 
                 case TutorialStep.BuildTrap:
                     ConfigureButton(false);
-                    PrintPhrase("Остался последний штрих. Установите Ловушку, чтобы замедлить врагов.");
+                    PrintPhrase("Остался последний штрих. Перетяните Ловушку на\u00A0дорогу.");
                     ApplyHighlight(trapSlot);
                     break;
 
                 case TutorialStep.Finish:
                     ConfigureButton(true, "К игре!");
-                    PrintPhrase("Теперь вы знаете как защитить замок.\nНачнём настоящий бой!");
+                    PrintPhrase("Теперь вы знаете как защитить замок. Начнём\u00A0настоящий бой!");
                     break;
 
                 default:
