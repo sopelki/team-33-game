@@ -176,6 +176,7 @@ namespace Core
                 castleSystem.AddGold(monster.GoldReward);
                 Debug.Log($"Monster is killed. Gold received: {monster.GoldReward}. Balance: {castleModel.Gold}");
             };
+            monsterSystem.SubscribeToCastle(castleModel);
         }
 
         private void Start()

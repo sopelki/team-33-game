@@ -9,6 +9,7 @@ namespace HexagonScripts
         HighGrass,
         Path,
         Slot,
-        SlotNeighbour
+        SlotNeighbour,
+        Castle
     }
 }

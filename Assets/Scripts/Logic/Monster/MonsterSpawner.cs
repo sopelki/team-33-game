@@ -118,7 +118,7 @@ namespace Logic.Monster
                 soundData
             );
 
-            var movement = new HexMoveToTargetStrategy(monster, field, tilemap, trapSystem);
+            var movement = new HexMoveToTargetStrategy(monster, field, tilemap, trapSystem, monsterSystem);
             var attack = new MonsterAttackStrategy(monster, unitSystem, soundData);
             monster.SetStrategies(movement, attack);
 

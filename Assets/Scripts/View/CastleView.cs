@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HexagonScripts;
 using Logic.Castle;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -56,6 +57,7 @@ namespace View
                 var hexObj = Field.GetHex(logicalHex);
                 if (hexObj != null)
                 {
+                    hexObj.type = HexagonType.Castle;
                     var worldPos = tilemap.GetCellCenterWorld(hexObj.offset);
                     worldPos.z = -0.1f;
                     WallWorldPositions.Add(worldPos);

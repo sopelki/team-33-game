@@ -134,5 +134,17 @@ namespace Logic.Monster
             movementStrategy = movement;
             attackStrategy = attack;
         }
+        
+        public void SetPosition(Vector3 newPosition)
+        {
+            WorldPosition = newPosition;
+        }
+        
+        public void StopAndIdle()
+        {
+            movementStrategy = null;
+            attackStrategy = null;
+            CurrentVelocity = Vector3.zero;
+        }
     }
 }

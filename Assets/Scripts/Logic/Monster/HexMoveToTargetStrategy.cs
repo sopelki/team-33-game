@@ -17,8 +17,8 @@ namespace Logic.Monster
 
         private readonly Vector3 formationOffset;
         private readonly MonsterModel monster;
+        private readonly MonsterSystem monsterSystem;
         private readonly HexAStarPathfinder pathfinder;
-        // private readonly List<Vector2Int> targetHexes;
         private readonly Tilemap tilemap;
         private readonly TrapSystem trapSystem;
 
@@ -27,16 +27,21 @@ namespace Logic.Monster
 
         private float repathTimer;
 
+        private const float MinDistanceBetweenMonsters = 2.0f;
+        private const float SeparationStrength = 2.5f;
+
         public HexMoveToTargetStrategy(
             MonsterModel monster,
             Field.Field field,
             Tilemap tilemap,
-            TrapSystem trapSystem)
+            TrapSystem trapSystem,
+            MonsterSystem monsterSystem)
         {
             this.monster = monster;
             this.field = field;
             this.tilemap = tilemap;
             this.trapSystem = trapSystem;
+            this.monsterSystem = monsterSystem;
 
             pathfinder = new HexAStarPathfinder(field);
 
@@ -49,11 +54,16 @@ namespace Logic.Monster
         public void Tick()
         {
             var castle = CastleSystem.Instance;
+            var dt = TickManager.Instance.tickInterval;
             if (castle == null || castle.Model.WallHexes.Count == 0)
                 return;
 
-            if (castle.Model.WallHexes.Contains(monster.CurrentHex))
+            if (castle.Model.WallHexes.Contains(monster.CurrentHex) || IsAdjacentToWall(monster.CurrentHex))
+            {
+                currentPath = null;
+                ApplySeparation(dt);
                 return;
+            }
 
             repathTimer -= TickManager.Instance.tickInterval;
 
@@ -63,52 +73,37 @@ namespace Logic.Monster
                 repathTimer = RepathDelay;
             }
 
-            if (currentPath == null || pathIndex >= currentPath.Count)
-                return;
+            if (currentPath != null && pathIndex < currentPath.Count)
+            {
+                MoveAlongPath();
+            }
 
-            MoveAlongPath();
+            ApplySeparation(dt);
         }
 
         private void BuildPath()
         {
             var castle = CastleSystem.Instance;
 
-            if (castle == null || castle.Model.WallHexes.Count == 0)
+            if (IsAdjacentToWall(monster.CurrentHex))
             {
                 currentPath = null;
                 return;
             }
 
-            var closestWallHex = GetClosestWallHex();
-            var goal = GetRandomizedGoal(closestWallHex);
+            var goal = GetBestSiegePosition();
 
-            currentPath = pathfinder.FindPath(monster.CurrentHex, goal);
+            if (goal == monster.CurrentHex)
+            {
+                currentPath = null;
+                return;
+            }
+
+            currentPath = pathfinder.FindPath(monster.CurrentHex, goal.Value);
             pathIndex = 1;
 
             if (currentPath is not { Count: > 1 })
                 currentPath = null;
-        }
-
-        private Vector2Int GetClosestWallHex()
-        {
-            var castle = CastleSystem.Instance;
-            if (castle == null || castle.Model.WallHexes.Count == 0)
-                return monster.CurrentHex;
-
-            var targetHexes = castle.Model.WallHexes;
-            var closest = targetHexes[0];
-            var minDist = Vector2Int.Distance(monster.CurrentHex, closest);
-
-            foreach (var hex in targetHexes)
-            {
-                var d = Vector2Int.Distance(monster.CurrentHex, hex);
-                if (d < minDist)
-                {
-                    minDist = d;
-                    closest = hex;
-                }
-            }
-            return closest;
         }
 
         private void MoveAlongPath()
@@ -139,17 +134,101 @@ namespace Logic.Monster
                 monster.Move(directionVector.normalized);
         }
 
-        private Vector2Int GetRandomizedGoal(Vector2Int center)
+        private Vector2Int? GetBestSiegePosition()
         {
-            var centerHex = field.GetHex(center);
-            if (centerHex == null)
-                return center;
+            var castle = CastleSystem.Instance;
+            if (castle == null || castle.Model.WallHexes.Count == 0) return null;
 
-            var neighbours = field.GetNeighbours(centerHex);
+            var validSiegePositions = new HashSet<Vector2Int>();
 
-            var walkable = (from n in neighbours where field.IsWalkable(n) select n.coordinates).ToList();
+            foreach (var wallCoord in castle.Model.WallHexes)
+            {
+                var wallHex = field.GetHex(wallCoord);
+                if (wallHex == null) continue;
 
-            return walkable.Count == 0 ? center : walkable[Random.Range(0, walkable.Count)];
+                var walkableNeighbours = field.GetNeighbours(wallHex)
+                    .Where(n => field.IsWalkable(n))
+                    .Select(n => n.coordinates);
+
+                foreach (var pos in walkableNeighbours)
+                {
+                    validSiegePositions.Add(pos);
+                }
+            }
+
+            if (validSiegePositions.Count == 0)
+                return null;
+
+            var topPositions = validSiegePositions
+                .OrderBy(p => Vector2Int.Distance(monster.CurrentHex, p))
+                .Take(4)
+                .ToList();
+            return topPositions[Random.Range(0, topPositions.Count)];
+        }
+
+        private bool IsAdjacentToWall(Vector2Int hexCoord)
+        {
+            var hex = field.GetHex(hexCoord);
+            if (hex == null) return false;
+
+            var castle = CastleSystem.Instance;
+            if (castle == null) return false;
+
+            var neighbours = field.GetNeighbours(hex);
+            return neighbours.Any(n => castle.Model.WallHexes.Contains(n.coordinates));
+        }
+
+        private void ApplySeparation(float dt)
+        {
+            var separationForce = Vector3.zero;
+            var allMonsters = monsterSystem.GetAllMonsters();
+            var overlapCount = 0;
+
+            foreach (var otherMonster in allMonsters)
+            {
+                if (otherMonster == monster || otherMonster.IsDead)
+                    continue;
+
+                var distance = Vector3.Distance(monster.WorldPosition, otherMonster.WorldPosition);
+
+                if (distance < MinDistanceBetweenMonsters)
+                {
+                    overlapCount++;
+                    var pushDirection = monster.WorldPosition - otherMonster.WorldPosition;
+
+                    if (pushDirection.sqrMagnitude < 0.001f)
+                        pushDirection = new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), 0f);
+
+                    pushDirection.Normalize();
+                    separationForce += pushDirection * (1f - distance / MinDistanceBetweenMonsters);
+                }
+            }
+
+            if (overlapCount > 0)
+            {
+                var newPosition = monster.WorldPosition + separationForce * SeparationStrength * dt;
+                var cellPos = tilemap.WorldToCell(newPosition);
+                var hexAtPos = field.GetHexByOffset(cellPos);
+
+                if (hexAtPos != null && field.IsWalkable(hexAtPos))
+                {
+                    monster.SetPosition(newPosition);
+
+                    var previousHex = monster.CurrentHex;
+                    if (previousHex != hexAtPos.coordinates)
+                    {
+                        monster.SetHex(hexAtPos.coordinates);
+                        trapSystem.OnMonsterExitedCell(previousHex, monster);
+                        trapSystem.OnMonsterEnteredCell(hexAtPos.coordinates, monster);
+                    }
+                }
+                else
+                {
+                    var currentCell = tilemap.WorldToCell(monster.WorldPosition);
+                    if (cellPos == currentCell)
+                        monster.SetPosition(newPosition);
+                }
+            }
         }
     }
 }

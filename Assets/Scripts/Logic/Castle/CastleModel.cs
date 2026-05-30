@@ -9,6 +9,7 @@ namespace Logic.Castle
     public class CastleModel : IDamageable
     {
         private readonly SoundData soundData;
+        public event Action OnCastleDestroyed;
 
         public CastleModel(int initialHp, int initialGold, int startSupply, SoundData soundData)
         {
@@ -20,8 +21,6 @@ namespace Logic.Castle
 
         public int Hp { get; set; }
         public int Gold { get; set; }
-        // public int Food { get; set; }
-        // public int CurrentUnits { get; set; }
         public int MaxSupply { get; set; }
 
         public List<Vector2Int> WallHexes { get; set; } = new();
@@ -33,6 +32,8 @@ namespace Logic.Castle
 
         public void TakeDamage(int damage)
         {
+            if (IsDead) 
+                return;
             Debug.Log("Castle Damage took " + damage);
             Hp -= damage;
             Changed();
@@ -40,9 +41,15 @@ namespace Logic.Castle
             if (soundData != null &&
                 soundData.castleDamageSounds is { Length: > 0 })
                 AudioManager.Instance.PlayRandomSfx(soundData.castleDamageSounds, soundData.castleDamageVolume);
+            
+            if (Hp <= 0)
+            {
+                OnCastleDestroyed?.Invoke();
+            }
         }
 
         public event Action OnChanged;
+        
 
         public void Changed()
         {

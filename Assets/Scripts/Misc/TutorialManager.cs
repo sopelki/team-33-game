@@ -92,7 +92,7 @@ namespace Misc
         public static bool IsTutorialActive()
         {
             var tutorial = FindAnyObjectByType<TutorialManager>();
-            return tutorial && tutorial.isActiveAndEnabled;
+            return tutorial != null && tutorial.tutorialWindow != null && tutorial.tutorialWindow.activeSelf;
         }
 
         public void OnActionButtonClick()

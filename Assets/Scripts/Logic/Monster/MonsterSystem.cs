@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Logic.Castle;
 
 namespace Logic.Monster
 {
@@ -16,6 +17,24 @@ namespace Logic.Monster
             OnMonsterCreated?.Invoke(monster);
         }
 
+        public void SubscribeToCastle(CastleModel castle)
+        {
+            if (castle != null)
+            {
+                castle.OnCastleDestroyed += HandleCastleDestroyed;
+            }
+        }
+
+        private void HandleCastleDestroyed()
+        {
+            foreach (var monster in monsters)
+            {
+                if (!monster.IsDead)
+                {
+                    monster.StopAndIdle();
+                }
+            }
+        }
 
         public void Tick()
         {
