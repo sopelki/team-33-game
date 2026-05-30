@@ -73,7 +73,7 @@ namespace Core
                 timeSinceObjectPlaced += deltaTime;
 
                 if (timeSinceObjectPlaced >= StartGameDelay)
-                    StartTheGame();
+                    StartGame();
 
                 return;
             }
@@ -113,7 +113,7 @@ namespace Core
             Debug.Log($"First object placed. Starting game in {StartGameDelay}s...");
         }
 
-        private void StartTheGame()
+        private void StartGame()
         {
             gameStarted = true;
 

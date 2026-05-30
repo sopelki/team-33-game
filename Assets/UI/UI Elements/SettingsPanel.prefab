@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 156.99, y: -351.04}
+  m_AnchoredPosition: {x: 156.99, y: -431.04}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5037373334403827263
@@ -87,10 +87,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 408238297825060925}
         m_TargetAssemblyTypeName: MenuScripts.SettingsController, Assembly-CSharp
         m_MethodName: SetFullscreen
-        m_Mode: 6
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -586,8 +586,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 852117200831787291}
-  - {fileID: 6420599954820593645}
   - {fileID: 2815966177647832504}
+  - {fileID: 6420599954820593645}
   m_Father: {fileID: 2719705930245095749}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -751,7 +751,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 153, y: -431.04}
+  m_AnchoredPosition: {x: 153, y: -351.04}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5577471162026127954
@@ -804,7 +804,7 @@ MonoBehaviour:
       - m_Target: {fileID: 408238297825060925}
         m_TargetAssemblyTypeName: MenuScripts.SettingsController, Assembly-CSharp
         m_MethodName: SetTutorial
-        m_Mode: 6
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -940,7 +940,6 @@ MonoBehaviour:
   uiSlider: {fileID: 4061018301026071980}
   fullscreenToggle: {fileID: 5037373334403827263}
   tutorialToggle: {fileID: 5577471162026127954}
-  tutorialManager: {fileID: 0}
 --- !u!225 &6912037688862982721
 CanvasGroup:
   m_ObjectHideFlags: 0
