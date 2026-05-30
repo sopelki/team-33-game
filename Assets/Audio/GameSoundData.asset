@@ -68,3 +68,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9404784c32614ae4da63877a68ffb18e, type: 3}
   castleDamageVolume: 0.6
   backgroundMusic: {fileID: 8300000, guid: f69401d9337f8f74ebbdd23951da8994, type: 3}
+  typingSounds:
+  - {fileID: 8300000, guid: 5e1adba6bbd6a374681e141a739df2a3, type: 3}
+  - {fileID: 8300000, guid: 910d2db6e2397a94792691e2cce57f61, type: 3}
+  - {fileID: 8300000, guid: 780e1351bd4e11d4c9ba19bc1a1b9cd7, type: 3}
+  - {fileID: 8300000, guid: 81120c0f643196c4bb2298762b10c38d, type: 3}
+  typingVolume: 0.5

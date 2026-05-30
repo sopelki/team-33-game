@@ -5,6 +5,7 @@ using Logic.Castle;
 using Logic.Tower;
 using Logic.Trap;
 using Logic.Unit;
+using MenuScripts;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace Misc
     {
         [Header("Ссылки на элементы")]
         [SerializeField]
-        private GameObject tutorialWindow;
+        private FadePanel tutorialFadePanel;
         [SerializeField]
         private DialogueAnimator dialogueAnimator;
         [SerializeField]
@@ -28,17 +29,20 @@ namespace Misc
         private GameObject barrackSlot, towerSlot, trapSlot;
         [SerializeField]
         private GameObject highlightEffect;
+
+        [Header("Настройки задержки")]
+        [SerializeField]
+        private float startDelay = 1.5f;
+
         private bool barrackTracked, towerTracked, trapTracked;
-
         private TutorialStep currentStep = TutorialStep.Greeting;
-
         private GameFlowManager gameFlowManager;
 
         private void Start()
         {
             if (actionButton)
                 actionButton.onClick.AddListener(OnActionButtonClick);
-            
+
             if (PlayerPrefs.GetInt("ShowTutorial", 1) == 1)
                 TryStartTutorialFromScratch();
             else
@@ -47,9 +51,9 @@ namespace Misc
 
         private void Update()
         {
-            if (PlayerPrefs.GetInt("ShowTutorial", 1) == 0) 
+            if (PlayerPrefs.GetInt("ShowTutorial", 1) == 0)
                 return;
-            
+
             switch (currentStep)
             {
                 case TutorialStep.BuildBarrack:
@@ -131,8 +135,6 @@ namespace Misc
         {
             if (highlightEffect)
                 highlightEffect.SetActive(false);
-            if (tutorialWindow)
-                tutorialWindow.SetActive(true);
 
             switch (currentStep)
             {
@@ -143,35 +145,35 @@ namespace Misc
 
                 case TutorialStep.BuildBarrack:
                     ConfigureButton(false);
-                    PrintPhrase("Давайте начнём строительство! Перетяните казарму в поле замка.");
+                    PrintPhrase("Давайте начнём строить! Перетяните казарму в\u00A0замок <size=65%>(сетка 3x3)</size>.");
                     ApplyHighlight(barrackSlot);
                     break;
 
                 case TutorialStep.BarrackSuccess:
                     ConfigureButton(true, "Далее");
-                    PrintPhrase("Отлично, барак готов! Теперь у вас есть верные солдаты.");
+                    PrintPhrase("Отлично, казарма готова! Теперь у\u00A0вас есть верные рыцари.");
                     break;
 
                 case TutorialStep.BuildTower:
                     ConfigureButton(false);
-                    PrintPhrase("Защита периметра превыше всего! Давайте выберем и поставим Башню.");
+                    PrintPhrase("Защита периметра превыше всего! Перетяние Башню в\u00A0слот на\u00A0поле боя.");
                     ApplyHighlight(towerSlot);
                     break;
 
                 case TutorialStep.TowerSuccess:
                     ConfigureButton(true, "Далее");
-                    PrintPhrase("Защита установлена! Вы отлично справляетесь, Лорд.");
+                    PrintPhrase("Защита установлена! Милорд,\u00A0вы отлично справляетесь.");
                     break;
 
                 case TutorialStep.BuildTrap:
                     ConfigureButton(false);
-                    PrintPhrase("Последний штрих — установите Ловушку, чтобы замедлить врагов.");
+                    PrintPhrase("Остался последний штрих. Перетяните Ловушку на\u00A0дорогу.");
                     ApplyHighlight(trapSlot);
                     break;
 
                 case TutorialStep.Finish:
                     ConfigureButton(true, "К игре!");
-                    PrintPhrase("Теперь вы знаете как защитить замок. Начнём настоящий бой!");
+                    PrintPhrase("Теперь вы знаете как защитить замок. Начнём\u00A0настоящий бой!");
                     break;
 
                 default:
@@ -201,8 +203,8 @@ namespace Misc
                 highlightEffect.SetActive(true);
             }
         }
-        
-        private void ClearAllTutorialBuildings()
+
+        private static void ClearAllTutorialBuildings()
         {
             if (TowerSystem.Instance != null)
             {
@@ -233,34 +235,36 @@ namespace Misc
             gameFlowManager?.ResetToStandardMode();
             ForceStopTutorial();
         }
-        
+
         public void ForceStopTutorial()
         {
-            if (gameFlowManager != null && gameFlowManager.IsTutorialActive)
+            CancelInvoke(nameof(BeginTutorialDisplay));
+
+            if (gameFlowManager is { IsTutorialActive: true })
             {
                 ClearAllTutorialBuildings();
                 gameFlowManager.IsTutorialActive = false;
                 gameFlowManager?.ResetToStandardMode();
             }
-            
-            if (tutorialWindow)
-                tutorialWindow.SetActive(false);
-            if (highlightEffect) 
+
+            if (dialogueAnimator)
+                dialogueAnimator.StopDialogue();
+
+            if (tutorialFadePanel)
+                tutorialFadePanel.Hide();
+
+            if (highlightEffect)
                 highlightEffect.SetActive(false);
         }
-        
+
         public void TryStartTutorialFromScratch()
         {
-            if (CastleSystem.Instance == null) 
+            if (CastleSystem.Instance == null)
                 return;
-            
-            var hasBuildings = false;
-            if (CastleSystem.Instance != null && CastleSystem.Instance.Model.Buildings.Count > 0) 
-                hasBuildings = true;
-            if (TowerSystem.Instance != null && TowerSystem.Instance.GetTowers().Count > 0) 
-                hasBuildings = true;
-            if (TrapSystem.Instance != null && TrapSystem.Instance.GetTraps().Count > 0) 
-                hasBuildings = true;
+
+            var hasBuildings = CastleSystem.Instance != null && CastleSystem.Instance.Model.Buildings.Count > 0 ||
+                               TowerSystem.Instance != null && TowerSystem.Instance.GetTowers().Count > 0 ||
+                               TrapSystem.Instance != null && TrapSystem.Instance.GetTraps().Count > 0;
 
             if (hasBuildings)
             {
@@ -279,12 +283,18 @@ namespace Misc
                     transform.parent.gameObject.SetActive(true);
 
                 gameObject.SetActive(true);
-                
-                if (tutorialWindow)
-                    tutorialWindow.SetActive(true);
 
-                UpdateTutorialState();
+                CancelInvoke(nameof(BeginTutorialDisplay));
+                Invoke(nameof(BeginTutorialDisplay), startDelay);
             }
+        }
+
+        private void BeginTutorialDisplay()
+        {
+            if (tutorialFadePanel)
+                tutorialFadePanel.Show();
+
+            UpdateTutorialState();
         }
 
         private enum TutorialStep
