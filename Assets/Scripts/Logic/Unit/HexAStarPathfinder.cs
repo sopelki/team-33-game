@@ -106,9 +106,9 @@ namespace Logic.Unit
     {
         // --- ИЗМЕНЕНИЯ ДЛЯ ВАРИАТИВНОСТИ ---
         // Базовая стоимость перехода на соседнюю клетку
-        private const int BASE_MOVE_COST = 10;
+        private const int BaseMoveCost = 10;
         // Величина случайного "шума". Путь может стать "дороже" на это значение.
-        private const int RANDOM_COST_RANGE = 5;
+        private const int RandomCostRange = 5;
         private readonly Field.Field field;
         private readonly Random randomGenerator;
 
@@ -152,7 +152,7 @@ namespace Logic.Unit
 
                     // --- СБАЛАНСИРОВАННАЯ СТОИМОСТЬ ---
                     // Стоимость = База + Случайный шум
-                    var moveCost = BASE_MOVE_COST + randomGenerator.Next(0, RANDOM_COST_RANGE + 1);
+                    var moveCost = BaseMoveCost + randomGenerator.Next(0, RandomCostRange + 1);
                     var tentativeGScore = gScore[current] + moveCost;
 
                     if (tentativeGScore < gScore.GetValueOrDefault(nCoord, int.MaxValue))
@@ -161,7 +161,7 @@ namespace Logic.Unit
                         gScore[nCoord] = tentativeGScore;
 
                         // Эвристику тоже умножаем на базу, чтобы она была сопоставима с G-score
-                        var heuristic = HexagonMath.Distance(nCoord, goal) * BASE_MOVE_COST;
+                        var heuristic = HexagonMath.Distance(nCoord, goal) * BaseMoveCost;
                         float fScore = tentativeGScore + heuristic;
 
                         openSet.Enqueue(nCoord, fScore);
