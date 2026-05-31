@@ -26,7 +26,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
         private void AddToChatOutput(string newText)
         {
-            // Clear Input Field
             ChatInputField.text = string.Empty;
 
             var timeNow = DateTime.Now;
@@ -36,18 +35,14 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
             if (ChatDisplayOutput != null)
             {
-                // No special formatting for first entry
-                // Add line feed before each subsequent entries
                 if (ChatDisplayOutput.text == string.Empty)
                     ChatDisplayOutput.text = formattedInput;
                 else
                     ChatDisplayOutput.text += "\n" + formattedInput;
             }
 
-            // Keep Chat input field active
             ChatInputField.ActivateInputField();
 
-            // Set the scrollbar to the bottom when next text is submitted.
             ChatScrollbar.value = 0;
         }
     }

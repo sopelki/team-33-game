@@ -100,7 +100,6 @@ namespace Retro.PSXEffects
 
     public class CRTRenderPass : ScriptableRenderPass
     {
-        // Shader property IDs
         private static readonly int PixelSizeID = Shader.PropertyToID("_PixelSize");
         private static readonly int ScanlineIntensityID = Shader.PropertyToID("_ScanlineIntensity");
         private static readonly int ScanlineCountID = Shader.PropertyToID("_ScanlineCount");
@@ -151,7 +150,6 @@ namespace Retro.PSXEffects
 
             var destination = renderGraph.CreateTexture(destinationDesc);
 
-            // Set all shader properties
             material.SetFloat(PixelSizeID, settings.pixelSize);
             material.SetFloat(ScanlineIntensityID, settings.scanlineIntensity);
             material.SetFloat(ScanlineCountID, settings.scanlineCount);

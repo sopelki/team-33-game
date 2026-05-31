@@ -28,7 +28,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
         private void OnEnable()
         {
-            // Subscribe to event fired when text object has been regenerated.
             TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
         }
 
@@ -50,8 +49,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
         /// <returns></returns>
         private IEnumerator AnimateVertexColors()
         {
-            // We force an update of the text object since it would only be updated at the end of the frame. Ie. before this code is executed on the first frame.
-            // Alternatively, we could yield and wait until the end of the frame when the text object will be generated.
             m_TextComponent.ForceMeshUpdate();
 
             var textInfo = m_TextComponent.textInfo;
@@ -63,7 +60,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
             while (true)
             {
-                // Allocate new vertices 
                 if (hasTextChanged)
                 {
                     if (copyOfVertices.Length < textInfo.meshInfo.Length)
@@ -80,7 +76,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
                 var characterCount = textInfo.characterCount;
 
-                // If No Characters then just yield and wait for some text to be added
                 if (characterCount == 0)
                 {
                     yield return new WaitForSeconds(0.25f);
@@ -89,48 +84,36 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
                 var lineCount = textInfo.lineCount;
 
-                // Iterate through each line of the text.
                 for (var i = 0; i < lineCount; i++)
                 {
                     var first = textInfo.lineInfo[i].firstCharacterIndex;
                     var last = textInfo.lineInfo[i].lastCharacterIndex;
 
-                    // Determine the center of each line
                     var centerOfLine =
                         (textInfo.characterInfo[first].bottomLeft + textInfo.characterInfo[last].topRight) / 2;
                     var rotation = Quaternion.Euler(0, 0, Random.Range(-0.25f, 0.25f) * RotationMultiplier);
 
-                    // Iterate through each character of the line.
                     for (var j = first; j <= last; j++)
                     {
-                        // Skip characters that are not visible and thus have no geometry to manipulate.
                         if (!textInfo.characterInfo[j].isVisible)
                             continue;
 
-                        // Get the index of the material used by the current character.
                         var materialIndex = textInfo.characterInfo[j].materialReferenceIndex;
 
-                        // Get the index of the first vertex used by this text element.
                         var vertexIndex = textInfo.characterInfo[j].vertexIndex;
 
-                        // Get the vertices of the mesh used by this text element (character or sprite).
                         var sourceVertices = textInfo.meshInfo[materialIndex].vertices;
 
-                        // Need to translate all 4 vertices of each quad to aligned with center of character.
-                        // This is needed so the matrix TRS is applied at the origin for each character.
                         copyOfVertices[materialIndex][vertexIndex + 0] = sourceVertices[vertexIndex + 0] - centerOfLine;
                         copyOfVertices[materialIndex][vertexIndex + 1] = sourceVertices[vertexIndex + 1] - centerOfLine;
                         copyOfVertices[materialIndex][vertexIndex + 2] = sourceVertices[vertexIndex + 2] - centerOfLine;
                         copyOfVertices[materialIndex][vertexIndex + 3] = sourceVertices[vertexIndex + 3] - centerOfLine;
 
-                        // Determine the random scale change for each character.
                         var randomScale = Random.Range(0.995f - 0.001f * ScaleMultiplier,
                             1.005f + 0.001f * ScaleMultiplier);
 
-                        // Setup the matrix rotation.
                         matrix = Matrix4x4.TRS(Vector3.one, rotation, Vector3.one * randomScale);
 
-                        // Apply the matrix TRS to the individual characters relative to the center of the current line.
                         copyOfVertices[materialIndex][vertexIndex + 0] =
                             matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 0]);
                         copyOfVertices[materialIndex][vertexIndex + 1] =
@@ -140,7 +123,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                         copyOfVertices[materialIndex][vertexIndex + 3] =
                             matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 3]);
 
-                        // Revert the translation change.
                         copyOfVertices[materialIndex][vertexIndex + 0] += centerOfLine;
                         copyOfVertices[materialIndex][vertexIndex + 1] += centerOfLine;
                         copyOfVertices[materialIndex][vertexIndex + 2] += centerOfLine;
@@ -148,7 +130,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                     }
                 }
 
-                // Push changes into meshes
                 for (var i = 0; i < textInfo.meshInfo.Length; i++)
                 {
                     textInfo.meshInfo[i].mesh.vertices = copyOfVertices[i];

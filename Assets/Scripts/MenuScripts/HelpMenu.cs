@@ -29,6 +29,8 @@ namespace MenuScripts
         [SerializeField]
         private Button tabFieldButton;
 
+        public bool IsOpen => helpPanel != null && helpPanel.GetComponent<CanvasGroup>().alpha > 0.5f;
+
         private void Start()
         {
             if (tabMechanicsButton != null)
@@ -91,13 +93,13 @@ namespace MenuScripts
             UpdateTabs(tabMechanicsButton);
             textBackground.Show();
             titleText.text = "<color=#FFD54F>ОСНОВЫ ИГРЫ</color>";
-            descriptionText.text = 
+            descriptionText.text =
                 "<b>Ваша миссия:</b> Не дать монстрам прорваться к воротам замка.\n" +
                 "▪ <color=#dfe88b><b>Подготовка:</b></color> Время застыло, пока вы не разместите свою первую постройку.\n" +
                 "▪ <color=#dfe88b><b>Ресурсы:</b></color> <b>Золото</b> добывается <nobr>за уничтожение</nobr> врагов.\n" +
                 "▪ <color=#dfe88b><b>Информация:</b></color> Наведите курсор на объект, чтобы увидеть его <nobr><color=#EF5350>урон</color></nobr>и <color=#FF7733>скорость</color>.";
         }
-        
+
         public void ShowCastle()
         {
             UpdateTabs(tabCastleButton);

@@ -49,7 +49,6 @@ namespace Logic.Monster
         }
 
         public bool IsLastWave => currentWaveIndex == waves.Count - 1;
-        // Может понадобиться потом
         public bool IsWaveFullySpawned =>
             CurrentWave != null && spawnedInCurrentWave >= CurrentWave.totalMonsters;
 

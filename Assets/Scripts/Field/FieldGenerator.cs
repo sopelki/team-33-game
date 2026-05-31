@@ -176,8 +176,6 @@ namespace Field
         [ContextMenu("Load Field From File")]
         public void LoadAndDraw()
         {
-            // ClearField();
-
             var loadedField = SaveLoadManager.LoadMapFromFile();
 
             if (loadedField != null)
@@ -187,10 +185,7 @@ namespace Field
                     $"Field Loaded: {currentField.Hexagons.Count} tiles, {currentField.MapObjects.Count} objects.");
             }
             else
-            {
                 Debug.LogWarning("Load Field From File: File not found. Generating default grid.");
-                // GenerateAndDraw();
-            }
         }
 
         [ContextMenu("Save Field To File")]
@@ -219,14 +214,6 @@ namespace Field
             Debug.Log("Field cleared (Editor mode).");
         }
 
-        // [ContextMenu("Generate Random Grid")]
-        // public void GenerateAndDraw()
-        // {
-        //     ClearField();
-        //     CurrentField = new Field();
-        //     CurrentField.GenerateFieldData(FieldWidth, FieldHeight);
-        //     DrawHexagons(CurrentField);
-        // }
 #endif
     }
 }

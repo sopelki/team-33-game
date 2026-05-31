@@ -47,8 +47,6 @@ namespace MenuScripts
             sfxSlider.value = PlayerPrefs.GetFloat("SfxVol", 0.75f);
             uiSlider.value = PlayerPrefs.GetFloat("UiVol", 0.75f);
             fullscreenToggle.isOn = PlayerPrefs.GetInt("Fullscreen", 1) == 1;
-            // tutorialToggle.isOn = PlayerPrefs.GetInt("ShowTutorial", 1) == 1;
-            // tutorialToggle.SetIsOnWithoutNotify(PlayerPrefs.GetInt("ShowTutorial", 1) == 1);
         }
 
         public void SetMasterVolume(float volume) => ApplyVolume("MasterVol", volume);

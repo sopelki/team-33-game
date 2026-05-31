@@ -11,6 +11,8 @@ namespace MenuScripts
         [SerializeField]
         private FadePanel pausePanel;
 
+        public bool IsOpen => pausePanel != null && pausePanel.GetComponent<CanvasGroup>().alpha > 0.5f;
+
         public void OpenPause()
         {
             UIBlocker.BlockAll();

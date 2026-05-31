@@ -175,7 +175,6 @@ namespace Retro.PSXEffects
 
             var destination = renderGraph.CreateTexture(destinationDesc);
 
-            // Set properties
             material.SetFloat(PSXColorDepthID, settings.psxColorDepth);
             material.SetFloat(PSXDitherIntensityID, settings.psxDitherIntensity);
             material.SetFloat(PSXPosterizationID, settings.psxPosterization);

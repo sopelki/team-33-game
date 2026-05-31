@@ -11,7 +11,6 @@
         public BuildingData Data { get; }
         public int Level { get; private set; }
 
-        // TODO: поменять Production на что-то сложнее
         public int Production => Data.baseProduction * Level;
 
         public int GetUpgradeCost()

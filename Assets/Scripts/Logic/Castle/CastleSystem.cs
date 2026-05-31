@@ -13,10 +13,9 @@ namespace Logic.Castle
 {
     public class CastleSystem : ITickable
     {
-        // private const float ResourceInterval = 1f;
         private const float SpawnInterval = 3f;
 
-        private static readonly Vector2Int spawnHex = new(-20, 15); // Поменять, если нужна другая точка спавна
+        private static readonly Vector2Int spawnHex = new(-20, 15);
         private readonly Field.Field field;
         private readonly SoundData soundData;
         private readonly Tilemap tilemap;
@@ -24,7 +23,6 @@ namespace Logic.Castle
         private readonly UnitSystem unitSystem;
 
         private bool firstBuildingPlaced;
-        // private float resourceTimer;
         private float spawnTimer;
 
 

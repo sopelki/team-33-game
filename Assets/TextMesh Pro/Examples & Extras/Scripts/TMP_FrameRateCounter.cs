@@ -50,15 +50,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
             m_TextMeshPro.textWrappingMode = TextWrappingModes.NoWrap;
             m_TextMeshPro.fontSize = 24;
-            //m_TextMeshPro.FontColor = new Color32(255, 255, 255, 128);
-            //m_TextMeshPro.edgeWidth = .15f;
-            //m_TextMeshPro.isOverlay = true;
-
-            //m_TextMeshPro.FaceColor = new Color32(255, 128, 0, 0);
-            //m_TextMeshPro.EdgeColor = new Color32(0, 255, 0, 255);
-            //m_TextMeshPro.FontMaterial.renderQueue = 4000;
-
-            //m_TextMeshPro.CreateSoftShadowClone(new Vector2(1f, -1f));
 
             Set_FrameCounter_Position(AnchorPosition);
             last_AnchorPosition = AnchorPosition;
@@ -82,7 +73,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
             if (timeNow > m_LastInterval + UpdateInterval)
             {
-                // display two fractional digits (f2 format)
                 var fps = m_Frames / (timeNow - m_LastInterval);
                 var ms = 1000.0f / Mathf.Max(fps, 0.00001f);
 
@@ -92,9 +82,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                     htmlColorTag = "<color=red>";
                 else
                     htmlColorTag = "<color=green>";
-
-                //string format = System.String.Format(htmlColorTag + "{0:F2} </color>FPS \n{1:F2} <#8080ff>MS",fps, ms);
-                //m_TextMeshPro.text = format;
 
                 m_TextMeshPro.SetText(htmlColorTag + fpsLabel, fps, ms);
 
@@ -106,7 +93,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
         private void Set_FrameCounter_Position(FpsCounterAnchorPositions anchor_position)
         {
-            //Debug.Log("Changing frame counter anchor position.");
             m_TextMeshPro.margin = new Vector4(1f, 1f, 1f, 1f);
 
             switch (anchor_position)

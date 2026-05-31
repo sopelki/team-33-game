@@ -13,7 +13,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
         {
             if (TextEventHandler != null)
             {
-                // Get a reference to the text component
                 m_TextComponent = TextEventHandler.GetComponent<TMP_Text>();
 
                 TextEventHandler.onCharacterSelection.AddListener(OnCharacterSelection);

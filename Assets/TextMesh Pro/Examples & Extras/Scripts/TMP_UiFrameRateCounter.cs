@@ -73,7 +73,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
             if (timeNow > m_LastInterval + UpdateInterval)
             {
-                // display two fractional digits (f2 format)
                 var fps = m_Frames / (timeNow - m_LastInterval);
                 var ms = 1000.0f / Mathf.Max(fps, 0.00001f);
 

@@ -1,6 +1,4 @@
-﻿// ReSharper disable UnusedMember.Global
-
-namespace Logic.Castle
+﻿namespace Logic.Castle
 {
     public enum BuildingType
     {

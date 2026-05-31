@@ -20,9 +20,7 @@ namespace Logic.Monster
         public void SubscribeToCastle(CastleModel castle)
         {
             if (castle != null)
-            {
                 castle.OnCastleDestroyed += HandleCastleDestroyed;
-            }
         }
 
         private void HandleCastleDestroyed()
@@ -30,9 +28,7 @@ namespace Logic.Monster
             foreach (var monster in monsters)
             {
                 if (!monster.IsDead)
-                {
                     monster.StopAndIdle();
-                }
             }
         }
 

@@ -11,9 +11,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
             Free
         }
 
-        // Controls for Touches on Mobile devices
-        //private float prev_ZoomDelta;
-
 
         private const string event_SmoothingValue = "Slider - Smoothing Value";
         private const string event_FollowDistance = "Slider - Camera Zoom";
@@ -67,50 +64,46 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
         }
 
 
-        // Use this for initialization
         private void Start()
         {
             if (CameraTarget == null)
             {
-                // If we don't have a target (assigned by the player, create a dummy in the center of the scene).
                 dummyTarget = new GameObject("Camera Target").transform;
                 CameraTarget = dummyTarget;
             }
         }
 
-        // Update is called once per frame
         private void LateUpdate()
         {
             GetPlayerInput();
 
 
-            // Check if we still have a valid target
             if (CameraTarget != null)
             {
                 if (CameraMode == CameraModes.Isometric)
+                {
                     desiredPosition = CameraTarget.position + Quaternion.Euler(ElevationAngle, OrbitalAngle, 0f) *
                         new Vector3(0, 0, -FollowDistance);
+                }
                 else if (CameraMode == CameraModes.Follow)
+                {
                     desiredPosition = CameraTarget.position + CameraTarget.TransformDirection(
                         Quaternion.Euler(ElevationAngle, OrbitalAngle, 0f) * new Vector3(0, 0, -FollowDistance));
-                // Free Camera implementation
+                }
                 if (MovementSmoothing)
                 {
-                    // Using Smoothing
                     cameraTransform.position = Vector3.SmoothDamp(cameraTransform.position, desiredPosition,
                         ref currentVelocity, MovementSmoothingValue * Time.fixedDeltaTime);
-                    //cameraTransform.position = Vector3.Lerp(cameraTransform.position, desiredPosition, Time.deltaTime * 5.0f);
                 }
                 else
-                {
-                    // Not using Smoothing
                     cameraTransform.position = desiredPosition;
-                }
 
                 if (RotationSmoothing)
+                {
                     cameraTransform.rotation = Quaternion.Lerp(cameraTransform.rotation,
                         Quaternion.LookRotation(CameraTarget.position - cameraTransform.position),
                         RotationSmoothingValue * Time.deltaTime);
+                }
                 else
                     cameraTransform.LookAt(CameraTarget);
             }
@@ -121,7 +114,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
         {
             moveVector = Vector3.zero;
 
-            // Check Mouse Wheel Input prior to Shift Key so we can apply multiplier on Shift for Scrolling
             mouseWheel = Input.GetAxis("Mouse ScrollWheel");
 
             float touchCount = Input.touchCount;
@@ -140,7 +132,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                     MovementSmoothing = !MovementSmoothing;
 
 
-                // Check for right mouse button to change camera follow and elevation angle
                 if (Input.GetMouseButton(1))
                 {
                     mouseY = Input.GetAxis("Mouse Y");
@@ -149,7 +140,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                     if (mouseY > 0.01f || mouseY < -0.01f)
                     {
                         ElevationAngle -= mouseY * MoveSensitivity;
-                        // Limit Elevation angle between min & max values.
                         ElevationAngle = Mathf.Clamp(ElevationAngle, MinElevationAngle, MaxElevationAngle);
                     }
 
@@ -163,21 +153,17 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                     }
                 }
 
-                // Get Input from Mobile Device
                 if (touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
                     var deltaPosition = Input.GetTouch(0).deltaPosition;
 
-                    // Handle elevation changes
                     if (deltaPosition.y > 0.01f || deltaPosition.y < -0.01f)
                     {
                         ElevationAngle -= deltaPosition.y * 0.1f;
-                        // Limit Elevation angle between min & max values.
                         ElevationAngle = Mathf.Clamp(ElevationAngle, MinElevationAngle, MaxElevationAngle);
                     }
 
 
-                    // Handle left & right 
                     if (deltaPosition.x > 0.01f || deltaPosition.x < -0.01f)
                     {
                         OrbitalAngle += deltaPosition.x * 0.1f;
@@ -188,7 +174,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                     }
                 }
 
-                // Check for left mouse button to select a new CameraTarget or to reset Follow position
                 if (Input.GetMouseButton(0))
                 {
                     var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -197,10 +182,7 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                     if (Physics.Raycast(ray, out hit, 300, 1 << 10 | 1 << 11 | 1 << 12 | 1 << 14))
                     {
                         if (hit.transform == CameraTarget)
-                        {
-                            // Reset Follow Position
                             OrbitalAngle = 0;
-                        }
                         else
                         {
                             CameraTarget = hit.transform;
@@ -215,7 +197,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                 {
                     if (dummyTarget == null)
                     {
-                        // We need a Dummy Target to anchor the Camera
                         dummyTarget = new GameObject("Camera Target").transform;
                         dummyTarget.position = CameraTarget.position;
                         dummyTarget.rotation = CameraTarget.rotation;
@@ -225,7 +206,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                     }
                     else if (dummyTarget != CameraTarget)
                     {
-                        // Move DummyTarget to CameraTarget
                         dummyTarget.position = CameraTarget.position;
                         dummyTarget.rotation = CameraTarget.rotation;
                         CameraTarget = dummyTarget;
@@ -243,7 +223,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                 }
             }
 
-            // Check Pinching to Zoom in - out on Mobile device
             if (touchCount == 2)
             {
                 var touch0 = Input.GetTouch(0);
@@ -260,16 +239,13 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                 if (zoomDelta > 0.01f || zoomDelta < -0.01f)
                 {
                     FollowDistance += zoomDelta * 0.25f;
-                    // Limit FollowDistance between min & max values.
                     FollowDistance = Mathf.Clamp(FollowDistance, MinFollowDistance, MaxFollowDistance);
                 }
             }
 
-            // Check MouseWheel to Zoom in-out
             if (mouseWheel < -0.01f || mouseWheel > 0.01f)
             {
                 FollowDistance -= mouseWheel * 5.0f;
-                // Limit FollowDistance between min & max values.
                 FollowDistance = Mathf.Clamp(FollowDistance, MinFollowDistance, MaxFollowDistance);
             }
         }

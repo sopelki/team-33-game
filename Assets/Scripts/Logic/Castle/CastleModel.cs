@@ -43,9 +43,7 @@ namespace Logic.Castle
                 AudioManager.Instance.PlayRandomSfx(soundData.castleDamageSounds, soundData.castleDamageVolume);
             
             if (Hp <= 0)
-            {
                 OnCastleDestroyed?.Invoke();
-            }
         }
 
         public event Action OnChanged;

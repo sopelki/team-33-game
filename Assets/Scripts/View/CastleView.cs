@@ -13,26 +13,8 @@ namespace View
         private List<Vector2Int> castleHexes = new();
 
         public List<Vector3> WallWorldPositions { get; } = new();
-        // public List<Vector2Int> WallHexes => castleHexes;
         public CastleModel Model { get; private set; }
         public Field.Field Field { get; private set; }
-
-        // public Vector3 GetClosestWallPoint(Vector3 monsterPos)
-        // {
-        //     var closest = WallWorldPositions[0];
-        //     var minDist = Vector3.Distance(monsterPos, closest);
-        //
-        //     foreach (var pos in WallWorldPositions)
-        //     {
-        //         var d = Vector3.Distance(monsterPos, pos);
-        //         if (d < minDist)
-        //         {
-        //             minDist = d;
-        //             closest = pos;
-        //         }
-        //     }
-        //     return closest;
-        // }
 
 
         private void OnDrawGizmos()

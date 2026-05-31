@@ -38,7 +38,7 @@ namespace Logic.Monster
 
         public SlowDebuff(float slowPercent)
         {
-            Duration = float.MaxValue; // бесконечный
+            Duration = float.MaxValue;
             this.slowPercent = Mathf.Clamp01(slowPercent);
         }
 

@@ -7,11 +7,6 @@ namespace View
         [SerializeField]
         private SpriteRenderer spriteRenderer;
 
-        // public void PlayShootEffect() 
-        // {
-        //     // Эффекты выстрела
-        // }
-
         public float debugRange;
 
         private void OnDrawGizmosSelected()

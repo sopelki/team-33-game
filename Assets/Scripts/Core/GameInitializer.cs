@@ -165,12 +165,6 @@ namespace Core
             tickManager.OnTick += waveManager.Tick;
             tickManager.OnTick += trapSystem.Tick;
 
-            // unitSystem.OnUnitDied += _ =>
-            // {
-            //     castleModel.CurrentUnits--;
-            //     castleModel.Changed();
-            // };
-
             monsterSystem.OnMonsterDied += monster =>
             {
                 castleSystem.AddGold(monster.GoldReward);

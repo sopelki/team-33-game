@@ -23,8 +23,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
 
         private TextMeshPro m_TextMeshPro;
 
-        //private FpsCounterAnchorPositions last_AnchorPosition;
-
         private void Awake()
         {
             if (!enabled)
@@ -49,7 +47,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
             m_textContainer = frameCounter.GetComponent<TextContainer>();
 
             Set_FrameCounter_Position(AnchorPosition);
-            //last_AnchorPosition = AnchorPosition;
 
             m_TextMeshPro.text = instructions;
         }
@@ -60,22 +57,18 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
             switch (anchor_position)
             {
                 case FpsCounterAnchorPositions.TopLeft:
-                    //m_TextMeshPro.anchor = AnchorPositions.TopLeft;
                     m_textContainer.anchorPosition = TextContainerAnchors.TopLeft;
                     m_frameCounter_transform.position = m_camera.ViewportToWorldPoint(new Vector3(0, 1, 100.0f));
                     break;
                 case FpsCounterAnchorPositions.BottomLeft:
-                    //m_TextMeshPro.anchor = AnchorPositions.BottomLeft;
                     m_textContainer.anchorPosition = TextContainerAnchors.BottomLeft;
                     m_frameCounter_transform.position = m_camera.ViewportToWorldPoint(new Vector3(0, 0, 100.0f));
                     break;
                 case FpsCounterAnchorPositions.TopRight:
-                    //m_TextMeshPro.anchor = AnchorPositions.TopRight;
                     m_textContainer.anchorPosition = TextContainerAnchors.TopRight;
                     m_frameCounter_transform.position = m_camera.ViewportToWorldPoint(new Vector3(1, 1, 100.0f));
                     break;
                 case FpsCounterAnchorPositions.BottomRight:
-                    //m_TextMeshPro.anchor = AnchorPositions.BottomRight;
                     m_textContainer.anchorPosition = TextContainerAnchors.BottomRight;
                     m_frameCounter_transform.position = m_camera.ViewportToWorldPoint(new Vector3(1, 0, 100.0f));
                     break;

@@ -81,13 +81,6 @@ namespace Logic.Monster
             Debug.Log("Game started! First wave incoming...");
         }
 
-        // public void StartFirstWave()
-        // {
-        //     currentWaveNumber = 1;
-        //     OnWaveStarting?.Invoke(currentWaveNumber);
-        //     spawner.StartNextWave();
-        // }
-
         private void OnWaveFinishedSpawning()
         {
             waitingForNextWave = true;

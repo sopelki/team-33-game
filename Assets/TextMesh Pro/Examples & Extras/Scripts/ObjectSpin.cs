@@ -37,7 +37,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
         }
 
 
-        // Update is called once per frame
         private void Update()
         {
             switch (Motion)
@@ -58,10 +57,6 @@ namespace TextMesh_Pro.Examples___Extras.Scripts
                     var z = TranslationDistance.z * Mathf.Sin(m_time);
 
                     m_transform.position = m_initial_Position + new Vector3(x, z, y);
-
-                    // Drawing light patterns because they can be cool looking.
-                    //if (Time.frameCount > 1)
-                    //    Debug.DrawLine(m_transform.position, m_prevPOS, m_lightColor, 100f);
 
                     m_prevPOS = m_transform.position;
                     break;

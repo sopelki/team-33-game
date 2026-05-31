@@ -74,9 +74,7 @@ namespace Logic.Monster
             }
 
             if (currentPath != null && pathIndex < currentPath.Count)
-            {
                 MoveAlongPath();
-            }
 
             ApplySeparation(dt);
         }
@@ -151,9 +149,7 @@ namespace Logic.Monster
                     .Select(n => n.coordinates);
 
                 foreach (var pos in walkableNeighbours)
-                {
                     validSiegePositions.Add(pos);
-                }
             }
 
             if (validSiegePositions.Count == 0)

@@ -20,6 +20,8 @@ namespace MenuScripts
         [SerializeField]
         private FadePanel mainMenuPanel;
 
+        public bool IsOpen => settingsPanel != null && settingsPanel.GetComponent<CanvasGroup>().alpha > 0.5f;
+
         private FadePanel lastPanel;
 
         public void OpenSettings()
