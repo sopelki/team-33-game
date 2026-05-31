@@ -46,13 +46,15 @@ namespace Misc
 
         public void SetDefault()
         {
-            if (holdLock) return;
+            if (holdLock)
+                return;
             Cursor.SetCursor(defaultCursor, defaultHotspot, CursorMode.Auto);
         }
 
         public void SetInteract()
         {
-            if (holdLock) return;
+            if (holdLock)
+                return;
             Cursor.SetCursor(interactCursor, interactHotspot, CursorMode.Auto);
         }
 
@@ -61,10 +63,11 @@ namespace Misc
             holdLock = true;
             Cursor.SetCursor(holdCursor, holdHotspot, CursorMode.Auto);
         }
-        
+
         public void SetAttack()
         {
-            holdLock = true;
+            if (holdLock)
+                return;
             Cursor.SetCursor(attackCursor, attackHotspot, CursorMode.Auto);
         }
 
