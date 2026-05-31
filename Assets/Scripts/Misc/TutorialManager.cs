@@ -26,13 +26,15 @@ namespace Misc
         [SerializeField]
         private TextMeshProUGUI actionButtonText;
         [SerializeField]
-        private GameObject barrackSlot, towerSlot, trapSlot;
+        private GameObject barrackSlot, towerSlot, trapSlot, helpButton, pauseButton;
         [SerializeField]
         private GameObject highlightEffect;
 
         [Header("Настройки задержки")]
         [SerializeField]
         private float startDelay = 1.5f;
+        private float lastClickTime;
+        [SerializeField] private float clickCooldown = 0.3f;
 
         private bool barrackTracked, towerTracked, trapTracked;
         private TutorialStep currentStep = TutorialStep.Greeting;
@@ -82,7 +84,7 @@ namespace Misc
                         TrapSystem.Instance.GetTraps().Count > 0 &&
                         TrapSystem.Instance.GetTraps().Any(t => t.Data.trapType == TrapType.SlowZone))
                     {
-                        currentStep = TutorialStep.SpeedExplanation;
+                        currentStep = TutorialStep.HelpExplanation;
                         UpdateTutorialState();
                     }
                     break;
@@ -99,6 +101,11 @@ namespace Misc
 
         public void OnActionButtonClick()
         {
+            if (Time.time - lastClickTime < clickCooldown)
+                return;
+            
+            lastClickTime = Time.time;
+            
             switch (currentStep)
             {
                 case TutorialStep.Greeting:
@@ -111,6 +118,14 @@ namespace Misc
 
                 case TutorialStep.TowerSuccess:
                     currentStep = TutorialStep.BuildTrap;
+                    break;
+                
+                case TutorialStep.HelpExplanation:
+                    currentStep = TutorialStep.PauseExplanation;
+                    break;
+                
+                case TutorialStep.PauseExplanation:
+                    currentStep = TutorialStep.SpeedExplanation;
                     break;
 
                 case TutorialStep.SpeedExplanation:
@@ -172,6 +187,20 @@ namespace Misc
                     ConfigureButton(false);
                     PrintPhrase("Остался последний штрих. Перетяните <color=#FFEE58>Ловушку</color> на\u00A0дорогу.");
                     ApplyHighlight(trapSlot);
+                    break;
+                
+                case TutorialStep.HelpExplanation:
+                    ConfigureButton(true, "Далее");
+                    ApplyHighlight(helpButton);
+                    PrintPhrase(
+                        "Изучите другие \u00A0постройки, наведясь на них в\u00A0магазине. Или прочтите <color=#FFEE58>Справка</color>.");
+                    break;
+                
+                case TutorialStep.PauseExplanation:
+                    ConfigureButton(true, "Далее");
+                    ApplyHighlight(pauseButton);
+                    PrintPhrase(
+                        "Чтобы открыть \u00A0настройки или выйти из \u00A0игры, нажмите <color=#FFEE58>Пауза</color>.");
                     break;
 
                 case TutorialStep.SpeedExplanation:
@@ -320,6 +349,8 @@ namespace Misc
             BuildTower,
             TowerSuccess,
             BuildTrap,
+            HelpExplanation,
+            PauseExplanation,
             SpeedExplanation,
             Finish
         }
