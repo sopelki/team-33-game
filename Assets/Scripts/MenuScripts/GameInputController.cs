@@ -18,7 +18,16 @@ namespace MenuScripts
         [Header("Настройки скорости")]
         [SerializeField]
         private float speedUpMultiplier = 3.0f;
+        [SerializeField]
+        private FadePanel speedUpIcon;
+
         private bool isSpedUp;
+
+        private void Start()
+        {
+            if (speedUpIcon)
+                speedUpIcon.Hide(0);
+        }
 
         private void Update()
         {
@@ -28,54 +37,64 @@ namespace MenuScripts
             if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
                 HandleSpeedToggle();
 
-            if (isSpedUp && Mathf.Approximately(Time.timeScale, 1f) && !IsAnyMenuOpen())
+            if (isSpedUp && !IsAnyMenuOpen() && Mathf.Approximately(Time.timeScale, 1f))
+            {
                 Time.timeScale = speedUpMultiplier;
+
+                if (speedUpIcon && speedUpIcon.CurrentAlpha < 0.1f)
+                    speedUpIcon.Show();
+            }
         }
 
         private void HandleEscape()
         {
-            if (helpMenu != null && helpMenu.IsOpen)
+            if (helpMenu && helpMenu.IsOpen)
             {
                 helpMenu.CloseHelp();
                 return;
             }
-
-            if (settingsMenu != null && settingsMenu.IsOpen)
+            
+            if (settingsMenu && settingsMenu.IsOpen)
             {
                 settingsMenu.CloseSettings();
                 return;
             }
-
-            if (pauseMenu != null && pauseMenu.IsOpen)
+            
+            if (pauseMenu && pauseMenu.IsOpen)
             {
                 pauseMenu.ResumeGame();
                 return;
             }
-
-            if (endGameMenu != null && endGameMenu.IsAnyEndGameOpen)
+            
+            if (endGameMenu && endGameMenu.IsAnyEndGameOpen)
                 return;
 
-            if (pauseMenu != null)
+            if (pauseMenu)
                 pauseMenu.OpenPause();
         }
 
         private void HandleSpeedToggle()
         {
-            if (IsAnyMenuOpen())
-                return;
+            if (IsAnyMenuOpen()) return;
 
             isSpedUp = !isSpedUp;
             Time.timeScale = isSpedUp ? speedUpMultiplier : 1f;
 
-            Debug.Log(isSpedUp ? "Game is sped up to: " + speedUpMultiplier : "Game is slowed down to regular speed");
+            if (speedUpIcon != null)
+            {
+                if (isSpedUp) speedUpIcon.Show();
+                else speedUpIcon.Hide();
+            }
         }
 
         private bool IsAnyMenuOpen()
         {
-            return helpMenu && helpMenu.IsOpen ||
-                   settingsMenu && settingsMenu.IsOpen ||
-                   pauseMenu && pauseMenu.IsOpen ||
-                   endGameMenu && endGameMenu.IsAnyEndGameOpen;
+            var help = helpMenu && helpMenu.IsOpen;
+            var settings = settingsMenu && settingsMenu.IsOpen;
+            var pause = pauseMenu && pauseMenu.IsOpen;
+            var end = endGameMenu && endGameMenu.IsAnyEndGameOpen;
+
+            return help || settings || pause || end;
         }
     }
 }
