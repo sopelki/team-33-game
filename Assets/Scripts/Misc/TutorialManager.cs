@@ -37,6 +37,7 @@ namespace Misc
         private bool barrackTracked, towerTracked, trapTracked;
         private TutorialStep currentStep = TutorialStep.Greeting;
         private GameFlowManager gameFlowManager;
+        public bool IsRunning { get; private set; }
 
         private void Start()
         {
@@ -96,7 +97,7 @@ namespace Misc
         public static bool IsTutorialActive()
         {
             var tutorial = FindAnyObjectByType<TutorialManager>();
-            return tutorial != null && tutorial.tutorialWindow != null && tutorial.tutorialWindow.activeSelf;
+            return tutorial != null && tutorial.IsRunning;
         }
 
         public void OnActionButtonClick()
@@ -238,6 +239,9 @@ namespace Misc
 
         public void ForceStopTutorial()
         {
+            
+            IsRunning = false;
+            
             CancelInvoke(nameof(BeginTutorialDisplay));
 
             if (gameFlowManager is { IsTutorialActive: true })
@@ -271,6 +275,8 @@ namespace Misc
                 Debug.Log("Нельзя запустить туториал: на поле уже есть постройки!");
                 return;
             }
+            
+            IsRunning = true;
 
             if (gameFlowManager != null)
             {
