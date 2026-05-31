@@ -106,22 +106,22 @@ namespace UI
             if (isSnapping)
             {
                 currentGhostPosition =
-                    Vector2.Lerp(currentGhostPosition, targetGhostPosition, Time.deltaTime * snapSpeed);
+                    Vector2.Lerp(currentGhostPosition, targetGhostPosition, Time.unscaledDeltaTime * snapSpeed);
                 wasSnapping = true;
             }
             else if (wasSnapping)
             {
                 currentGhostPosition =
-                    Vector2.Lerp(currentGhostPosition, targetGhostPosition, Time.deltaTime * unSnapSpeed);
+                    Vector2.Lerp(currentGhostPosition, targetGhostPosition, Time.unscaledDeltaTime * unSnapSpeed);
                 if (Vector2.Distance(currentGhostPosition, targetGhostPosition) < 1f)
                     wasSnapping = false;
             }
             else
                 currentGhostPosition = targetGhostPosition;
             ghostRect.localPosition = currentGhostPosition;
-            currentScale = Mathf.Lerp(currentScale, targetScale, Time.deltaTime * scaleSpeed);
+            currentScale = Mathf.Lerp(currentScale, targetScale, Time.unscaledDeltaTime * scaleSpeed);
             ghostRect.localScale = Vector3.one * currentScale;
-            ghostImage.color = Color.Lerp(ghostImage.color, targetColor, Time.deltaTime * colorLerpSpeed);
+            ghostImage.color = Color.Lerp(ghostImage.color, targetColor, Time.unscaledDeltaTime * colorLerpSpeed);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -363,7 +363,7 @@ namespace UI
 
             while (elapsed < fadeDuration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Time.unscaledDeltaTime;
                 iconCanvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsed / fadeDuration);
                 yield return null;
             }
