@@ -104,7 +104,7 @@ namespace UI
                 currentGhostPosition = Vector2.Lerp(
                     currentGhostPosition,
                     targetGhostPosition,
-                    Time.deltaTime * snapSpeed
+                    Time.unscaledDeltaTime * snapSpeed
                 );
                 wasSnapping = true;
             }
@@ -113,7 +113,7 @@ namespace UI
                 currentGhostPosition = Vector2.Lerp(
                     currentGhostPosition,
                     targetGhostPosition,
-                    Time.deltaTime * unSnapSpeed
+                    Time.unscaledDeltaTime * unSnapSpeed
                 );
 
                 if (Vector2.Distance(currentGhostPosition, targetGhostPosition) < 1f)
@@ -124,13 +124,13 @@ namespace UI
 
             ghostRect.localPosition = currentGhostPosition;
 
-            currentScale = Mathf.Lerp(currentScale, targetScale, Time.deltaTime * scaleSpeed);
+            currentScale = Mathf.Lerp(currentScale, targetScale, Time.unscaledDeltaTime * scaleSpeed);
             ghostRect.localScale = Vector3.one * currentScale;
 
             ghostImage.color = Color.Lerp(
                 ghostImage.color,
                 targetColor,
-                Time.deltaTime * colorLerpSpeed
+                Time.unscaledDeltaTime * colorLerpSpeed
             );
         }
 
@@ -253,7 +253,7 @@ namespace UI
 
             while (elapsed < fadeDuration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Time.unscaledDeltaTime;
                 iconCanvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsed / fadeDuration);
                 yield return null;
             }

@@ -27337,7 +27337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7592d7e2d5542e9a53dbf7cab1050c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuScripts.FadePanel
-  fadeDuration: 0.1
+  fadeDuration: 0.08
 --- !u!225 &1205295818
 CanvasGroup:
   m_ObjectHideFlags: 0

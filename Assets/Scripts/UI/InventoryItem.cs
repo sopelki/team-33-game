@@ -59,8 +59,8 @@ namespace UI
 
         private void Update()
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * scaleSpeed);
-            itemImage.color = Color.Lerp(itemImage.color, targetColor, Time.deltaTime * colorLerpSpeed);
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.unscaledDeltaTime * scaleSpeed);
+            itemImage.color = Color.Lerp(itemImage.color, targetColor, Time.unscaledDeltaTime * colorLerpSpeed);
         }
 
         private void OnDisable()
