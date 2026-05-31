@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Logic.Castle;
 
 namespace Logic.Monster
@@ -25,11 +26,8 @@ namespace Logic.Monster
 
         private void HandleCastleDestroyed()
         {
-            foreach (var monster in monsters)
-            {
-                if (!monster.IsDead)
-                    monster.StopAndIdle();
-            }
+            foreach (var monster in monsters.Where(monster => !monster.IsDead))
+                monster.StopAndIdle();
         }
 
         public void Tick()

@@ -17,6 +17,8 @@ namespace Misc
         private Texture2D interactCursor;
         [SerializeField]
         private Texture2D holdCursor;
+        [SerializeField]
+        private Texture2D attackCursor;
 
         [Header("Hotspots")]
         [SerializeField]
@@ -25,6 +27,8 @@ namespace Misc
         private Vector2 interactHotspot = new(10, 0);
         [SerializeField]
         private Vector2 holdHotspot = new(16, 16);
+        [SerializeField]
+        private Vector2 attackHotspot = new(16, 16);
 
         private bool holdLock;
 
@@ -56,6 +60,12 @@ namespace Misc
         {
             holdLock = true;
             Cursor.SetCursor(holdCursor, holdHotspot, CursorMode.Auto);
+        }
+        
+        public void SetAttack()
+        {
+            holdLock = true;
+            Cursor.SetCursor(attackCursor, attackHotspot, CursorMode.Auto);
         }
 
         public void ReleaseHold(PointerEventData eventData)

@@ -1402,9 +1402,11 @@ MonoBehaviour:
   defaultCursor: {fileID: 2800000, guid: b0b4eb592193c21469dd0ac5d8b17ae9, type: 3}
   interactCursor: {fileID: 2800000, guid: 2efd8714055adf74aba0aac4d7b813dc, type: 3}
   holdCursor: {fileID: 2800000, guid: aa8ecb6370248db4c964bf4ce7b467c9, type: 3}
+  attackCursor: {fileID: 2800000, guid: 4a8c57c18d484de40bf01129d53d851f, type: 3}
   defaultHotspot: {x: 0, y: 0}
   interactHotspot: {x: 9, y: 3}
   holdHotspot: {x: 7, y: -1}
+  attackHotspot: {x: 14, y: 14}
 --- !u!4 &1540335003
 Transform:
   m_ObjectHideFlags: 0

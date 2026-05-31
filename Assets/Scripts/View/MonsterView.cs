@@ -63,6 +63,9 @@ namespace View
             model.OnAttack += HandleAttack;
             model.OnDied += HandleDeath;
             model.OnDamaged += HandleDamaged;
+
+            if (TryGetComponent<MonsterInteractionHandler>(out var handler))
+                handler.Setup(model);
         }
 
         public void UpdateView()
@@ -95,7 +98,7 @@ namespace View
             }
         }
 
-        private Vector2 SnapTo4Directions(Vector3 direction)
+        private static Vector2 SnapTo4Directions(Vector3 direction)
         {
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
@@ -108,20 +111,11 @@ namespace View
             };
         }
 
-        private void HandleAttack()
-        {
-            animator.SetTrigger(isAttacking);
-        }
+        private void HandleAttack() => animator.SetTrigger(isAttacking);
 
-        private void HandleDamaged()
-        {
-            animator.SetBool(isDamaged, true);
-        }
+        private void HandleDamaged() => animator.SetBool(isDamaged, true);
 
-        private void HandleDeath()
-        {
-            animator.SetBool(isDead, true);
-        }
+        private void HandleDeath() => animator.SetBool(isDead, true);
 
 
         public void OnDeathAnimationEnd()
