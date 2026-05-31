@@ -82,7 +82,7 @@ namespace Misc
                         TrapSystem.Instance.GetTraps().Count > 0 &&
                         TrapSystem.Instance.GetTraps().Any(t => t.Data.trapType == TrapType.SlowZone))
                     {
-                        currentStep = TutorialStep.Finish;
+                        currentStep = TutorialStep.SpeedExplanation;
                         UpdateTutorialState();
                     }
                     break;
@@ -111,6 +111,10 @@ namespace Misc
 
                 case TutorialStep.TowerSuccess:
                     currentStep = TutorialStep.BuildTrap;
+                    break;
+
+                case TutorialStep.SpeedExplanation:
+                    currentStep = TutorialStep.Finish;
                     break;
 
                 case TutorialStep.Finish:
@@ -168,6 +172,12 @@ namespace Misc
                     ConfigureButton(false);
                     PrintPhrase("Остался последний штрих. Перетяните Ловушку на\u00A0дорогу.");
                     ApplyHighlight(trapSlot);
+                    break;
+
+                case TutorialStep.SpeedExplanation:
+                    ConfigureButton(true, "Далее");
+                    PrintPhrase(
+                        "Кстати, вы можете ускорить время,\u00A0нажав клавишу <color=#FFEE58>Пробел</color>.");
                     break;
 
                 case TutorialStep.Finish:
@@ -310,6 +320,7 @@ namespace Misc
             BuildTower,
             TowerSuccess,
             BuildTrap,
+            SpeedExplanation,
             Finish
         }
     }
