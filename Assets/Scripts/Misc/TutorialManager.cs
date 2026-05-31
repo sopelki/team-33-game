@@ -210,7 +210,7 @@ namespace Misc
                     ConfigureButton(true, "Далее");
                     ApplyHighlight(pauseButton);
                     PrintPhrase(
-                        "Чтобы открыть \u00A0настройки или выйти из \u00A0игры, нажмите <color=#FFEE58>Паузу</color>.");
+                        "Чтобы открыть \u00A0настройки или выйти из\u00A0игры, нажмите <color=#FFEE58>Паузу</color> или <color=#FFEE58>Esc</color>.");
                     break;
 
                 case TutorialStep.SpeedExplanation:
@@ -221,7 +221,7 @@ namespace Misc
 
                 case TutorialStep.Finish:
                     ConfigureButton(true, "К игре!");
-                    PrintPhrase("Теперь вы знаете как защитить замок. Начнём\u00A0настоящий бой!");
+                    PrintPhrase("Теперь вы знаете, как защитить замок. Начнём\u00A0настоящий бой!");
                     break;
 
                 default:
