@@ -158,8 +158,7 @@ namespace Misc
                 highlightEffect.SetActive(false);
             if (highlightEffectCastle)
                 highlightEffectCastle.SetActive(false);    
-            if (highlightEffectHex)
-                highlightEffectHex.SetActive(false);
+            ClearHexHighlights();
             
             switch (currentStep)
             {
@@ -185,7 +184,7 @@ namespace Misc
                     ConfigureButton(false);
                     PrintPhrase("Защита периметра превыше всего! Перетяние <color=#FFEE58>Башню</color> в\u00A0слот на\u00A0поле боя.");
                     ApplyHighlight(towerSlot);
-                    // ApplyHexHighlight(towerSlots);
+                    ApplyHexHighlight(towerSlots);
                     break;
 
                 case TutorialStep.TowerSuccess:
@@ -268,27 +267,51 @@ namespace Misc
             }
         }
         
-        // private void ApplyHexHighlight(List<GameObject> slots)
-        // {
-        //     if (highlightEffectHex)
-        //     {
-        //         foreach (var slot in slots)
-        //         {
-        //             if (slot == null) continue;
-        //             GameObject instance = Instantiate(highlightEffectHex, slot.transform.position, Quaternion.identity);
-        //             
-        //             instance.transform.SetParent(slot.transform, true);
-        //             Vector3 localPos = instance.transform.localPosition;
-        //             localPos.z = -1f;
-        //             instance.transform.localPosition = localPos;
-        //
-        //             // Принудительно сбрасываем масштаб в 1, чтобы подсветка не сжалась в 0 из-за масштаба родителя
-        //             instance.transform.localScale = Vector3.one;
-        //
-        //             instance.SetActive(true);
-        //         }
-        //     }
-        // }
+        private void ApplyHexHighlight(List<GameObject> slots)
+        {
+            if (slots == null || slots.Count == 0)
+            {
+                Debug.LogError("🚨 СПИСОК towerSlots ПУСТОЙ! Ты не перетащила гексы в инспектор TutorialManager!");
+                return;
+            }
+
+            foreach (var slot in slots)
+            {
+                if (slot == null) 
+                {
+                    Debug.LogWarning("🚨 В списке towerSlots есть пустой слот (None).");
+                    continue;
+                }
+
+                // Ищем объект
+                Transform highlight = slot.transform.Find("Highlight");
+
+                if (highlight != null)
+                {
+                    highlight.gameObject.SetActive(true);
+                    Debug.Log($"✅ Успешно включили подсветку для: {slot.name}");
+                }
+                else
+                {
+                    Debug.LogError($"❌ У объекта {slot.name} нет ПРЯМОГО дочернего объекта с точным именем 'Highlight'!");
+                }
+            }
+        }
+        
+        private void ClearHexHighlights()
+        {
+            if (towerSlots == null) return;
+    
+            foreach (var slot in towerSlots)
+            {
+                if (slot == null) continue;
+                Transform highlight = slot.transform.Find("Highlight");
+                if (highlight != null) 
+                {
+                    highlight.gameObject.SetActive(false);
+                }
+            }
+        }
 
         private static void ClearAllTutorialBuildings()
         {
