@@ -1402,9 +1402,11 @@ MonoBehaviour:
   defaultCursor: {fileID: 2800000, guid: b0b4eb592193c21469dd0ac5d8b17ae9, type: 3}
   interactCursor: {fileID: 2800000, guid: 2efd8714055adf74aba0aac4d7b813dc, type: 3}
   holdCursor: {fileID: 2800000, guid: aa8ecb6370248db4c964bf4ce7b467c9, type: 3}
+  attackCursor: {fileID: 2800000, guid: 4a8c57c18d484de40bf01129d53d851f, type: 3}
   defaultHotspot: {x: 0, y: 0}
   interactHotspot: {x: 9, y: 3}
   holdHotspot: {x: 7, y: -1}
+  attackHotspot: {x: 14, y: 14}
 --- !u!4 &1540335003
 Transform:
   m_ObjectHideFlags: 0
@@ -1944,11 +1946,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 56130621145992925, guid: 4df89bfd73608b64a9e7bb91bc60f7b1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 188.99
+      value: 204.99
       objectReference: {fileID: 0}
     - target: {fileID: 56130621145992925, guid: 4df89bfd73608b64a9e7bb91bc60f7b1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -232.52
+      value: -248.52002
       objectReference: {fileID: 0}
     - target: {fileID: 99755904840079005, guid: 4df89bfd73608b64a9e7bb91bc60f7b1, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2000,11 +2002,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 852117200831787291, guid: 4df89bfd73608b64a9e7bb91bc60f7b1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 188.25
+      value: 204.25
       objectReference: {fileID: 0}
     - target: {fileID: 852117200831787291, guid: 4df89bfd73608b64a9e7bb91bc60f7b1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -169.52
+      value: -185.52
       objectReference: {fileID: 0}
     - target: {fileID: 1001650877722311305, guid: 4df89bfd73608b64a9e7bb91bc60f7b1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2260,11 +2262,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5105607994207865557, guid: 4df89bfd73608b64a9e7bb91bc60f7b1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 188.99
+      value: 204.99
       objectReference: {fileID: 0}
     - target: {fileID: 5105607994207865557, guid: 4df89bfd73608b64a9e7bb91bc60f7b1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -389.04
+      value: -405.04
       objectReference: {fileID: 0}
     - target: {fileID: 5108430222559955550, guid: 4df89bfd73608b64a9e7bb91bc60f7b1, type: 3}
       propertyPath: m_AnchorMax.x

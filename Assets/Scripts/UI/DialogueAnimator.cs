@@ -61,7 +61,14 @@ namespace UI
                     TryPlayTypingSound(character);
                 }
 
-                yield return new WaitForSeconds(textSpeed);
+                float timer = 0;
+                while (timer < textSpeed)
+                {
+                    if (Time.timeScale > 0)
+                        timer += Time.unscaledDeltaTime;
+
+                    yield return null;
+                }
             }
         }
 
@@ -70,7 +77,7 @@ namespace UI
             if (char.IsWhiteSpace(currentLetter) || currentLetter == '\0')
                 return;
 
-            if (Time.time - lastSoundTime >= minTimeBetweenSounds)
+            if (Time.unscaledTime - lastSoundTime >= minTimeBetweenSounds)
             {
                 if (soundData != null && soundData.typingSounds is { Length: > 0 })
                 {
@@ -80,7 +87,7 @@ namespace UI
                     if (clip != null)
                     {
                         audioSource.PlayOneShot(clip, soundData.typingVolume);
-                        lastSoundTime = Time.time;
+                        lastSoundTime = Time.unscaledTime;
                     }
                 }
             }
