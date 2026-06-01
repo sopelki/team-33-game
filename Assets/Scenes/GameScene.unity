@@ -34726,6 +34726,7 @@ MonoBehaviour:
   highlightEffectHex: {fileID: 1064770179}
   startDelay: 1
   clickCooldown: 0.3
+  highlightPulseSpeed: 1.8
 --- !u!4 &1919606403
 Transform:
   m_ObjectHideFlags: 0

@@ -36,18 +36,25 @@ namespace Misc
         [SerializeField]
         private float startDelay = 1.5f;
         private float lastClickTime;
+
         [SerializeField]
         private float clickCooldown = 0.3f;
+
+        [Header("Highlight Animation")]
+        [SerializeField]
+        private float highlightPulseSpeed = 1.8f;
 
         private bool barrackTracked, towerTracked, trapTracked;
         private TutorialStep currentStep = TutorialStep.Greeting;
         private GameFlowManager gameFlowManager;
-        public bool IsRunning { get; private set; }
+        private bool IsRunning { get; set; }
+        private Image highlightImage;
 
         private void Start()
         {
             var foundSlots = GameObject.FindGameObjectsWithTag("hexHighlight");
             towerSlots = foundSlots.ToList();
+            highlightImage = highlightEffect.GetComponent<Image>();
 
             if (actionButton)
                 actionButton.onClick.AddListener(OnActionButtonClick);
@@ -62,6 +69,8 @@ namespace Misc
         {
             if (PlayerPrefs.GetInt("ShowTutorial", 1) == 0)
                 return;
+
+            AnimateHighlight();
 
             switch (currentStep)
             {
@@ -255,6 +264,21 @@ namespace Misc
             }
         }
 
+        private void AnimateHighlight()
+        {
+            if (highlightEffect == null || !highlightEffect.activeSelf || highlightImage == null)
+                return;
+
+            var color = highlightImage.color;
+            var t = Mathf.PingPong(Time.time * highlightPulseSpeed, 1f);
+
+            var smoothT = Mathf.SmoothStep(0f, 1f, t);
+            smoothT = Mathf.SmoothStep(0f, 1f, smoothT);
+
+            color.a = smoothT * (96f / 255f);
+            highlightImage.color = color;
+        }
+
         private void ApplyCastleHighlight(GameObject slot)
         {
             if (highlightEffectCastle && slot != null)
@@ -271,34 +295,35 @@ namespace Misc
             }
         }
 
-        private static void ApplyHexHighlight(List<GameObject> slots)
+        private void ApplyHexHighlight(List<GameObject> slots)
         {
             if (slots == null || slots.Count == 0)
                 return;
 
             foreach (var slot in slots)
             {
-                if (slot == null)
+                if (slot == null) 
                     continue;
-
+                
                 var highlight = slot.transform.Find("Highlight");
 
                 if (highlight != null)
                     highlight.gameObject.SetActive(true);
             }
         }
-
+        
         private void ClearHexHighlights()
         {
             if (towerSlots == null) return;
-
+    
             foreach (var slot in towerSlots)
             {
-                if (slot == null)
-                    continue;
+                if (slot == null) continue;
                 var highlight = slot.transform.Find("Highlight");
-                if (highlight != null)
+                if (highlight != null) 
+                {
                     highlight.gameObject.SetActive(false);
+                }
             }
         }
 
