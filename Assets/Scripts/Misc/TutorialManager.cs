@@ -295,35 +295,33 @@ namespace Misc
             }
         }
 
-        private void ApplyHexHighlight(List<GameObject> slots)
+        private static void ApplyHexHighlight(List<GameObject> slots)
         {
             if (slots == null || slots.Count == 0)
                 return;
 
             foreach (var slot in slots)
             {
-                if (slot == null) 
+                if (slot == null)
                     continue;
-                
+
                 var highlight = slot.transform.Find("Highlight");
 
                 if (highlight != null)
                     highlight.gameObject.SetActive(true);
             }
         }
-        
+
         private void ClearHexHighlights()
         {
             if (towerSlots == null) return;
-    
+
             foreach (var slot in towerSlots)
             {
                 if (slot == null) continue;
                 var highlight = slot.transform.Find("Highlight");
-                if (highlight != null) 
-                {
+                if (highlight != null)
                     highlight.gameObject.SetActive(false);
-                }
             }
         }
 
