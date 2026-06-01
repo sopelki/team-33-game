@@ -32,10 +32,10 @@ namespace MenuScripts
             sfxSlider.SetValueWithoutNotify(LoadAndApply("SfxVol", 0.75f));
             uiSlider.SetValueWithoutNotify(LoadAndApply("UiVol", 0.75f));
 
-            if (tutorialToggle != null)
+            if (tutorialToggle)
                 tutorialToggle.SetIsOnWithoutNotify(PlayerPrefs.GetInt("ShowTutorial", 1) == 1);
 
-            if (fullscreenToggle != null)
+            if (fullscreenToggle)
                 fullscreenToggle.SetIsOnWithoutNotify(PlayerPrefs.GetInt("Fullscreen", 1) == 1);
         }
 
@@ -56,7 +56,8 @@ namespace MenuScripts
 
         private static void UpdateVolume(string key, float val)
         {
-            if (AudioManager.Instance == null) return;
+            if (!AudioManager.Instance)
+                return;
 
             AudioManager.Instance.SetMixerVolume(key, val);
             PlayerPrefs.SetFloat(key, val);
@@ -74,7 +75,8 @@ namespace MenuScripts
             PlayerPrefs.Save();
 
             var tutorial = FindAnyObjectByType<TutorialManager>(FindObjectsInactive.Include);
-            if (tutorial == null) return;
+            if (tutorial == null)
+                return;
 
             if (value) tutorial.TryStartTutorialFromScratch();
             else tutorial.ForceStopTutorial();

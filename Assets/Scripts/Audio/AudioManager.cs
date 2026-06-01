@@ -16,10 +16,10 @@ namespace Audio
         [Header("Master Scales (Твои внутренние ограничения)")]
         [Range(0f, 1f)]
         [SerializeField]
-        private float musicMasterScale = 0.005f;
+        private float musicMasterScale = 0.5f;
         [Range(0f, 1f)]
         [SerializeField]
-        private float sfxMasterScale = 0.3f;
+        private float sfxMasterScale = 0.5f;
 
         public static AudioManager Instance { get; private set; }
 
@@ -49,9 +49,9 @@ namespace Audio
 
         private void InitializeSources()
         {
-            if (musicSource == null)
+            if (!musicSource)
                 musicSource = gameObject.AddComponent<AudioSource>();
-            if (sfxSource == null)
+            if (!sfxSource)
                 sfxSource = gameObject.AddComponent<AudioSource>();
 
             musicSource.volume = musicMasterScale;
@@ -60,7 +60,7 @@ namespace Audio
 
         public void SetMixerVolume(string parameterName, float sliderValue)
         {
-            if (audioMixer == null)
+            if (!audioMixer)
                 return;
 
             var dB = Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20;

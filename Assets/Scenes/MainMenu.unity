@@ -673,8 +673,8 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 30f046635e274584eba55c1ae094c200, type: 2}
   musicSource: {fileID: 669032553}
   sfxSource: {fileID: 669032552}
-  musicMasterScale: 0.5
-  sfxMasterScale: 0.8
+  musicMasterScale: 0.35
+  sfxMasterScale: 0.35
 --- !u!4 &669032555
 Transform:
   m_ObjectHideFlags: 0
