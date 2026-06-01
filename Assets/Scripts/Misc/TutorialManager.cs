@@ -7,7 +7,6 @@ using Logic.Tower;
 using Logic.Trap;
 using Logic.Unit;
 using MenuScripts;
-using NUnit.Framework;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -29,7 +28,6 @@ namespace Misc
         private TextMeshProUGUI actionButtonText;
         [SerializeField]
         private GameObject barrackSlot, towerSlot, trapSlot, helpButton, pauseButton, castleGrid;
-        // [SerializeField]
         private List<GameObject> towerSlots;
         [SerializeField]
         private GameObject highlightEffect, highlightEffectCastle, highlightEffectHex;
@@ -38,7 +36,8 @@ namespace Misc
         [SerializeField]
         private float startDelay = 1.5f;
         private float lastClickTime;
-        [SerializeField] private float clickCooldown = 0.3f;
+        [SerializeField]
+        private float clickCooldown = 0.3f;
 
         private bool barrackTracked, towerTracked, trapTracked;
         private TutorialStep currentStep = TutorialStep.Greeting;
@@ -49,7 +48,7 @@ namespace Misc
         {
             var foundSlots = GameObject.FindGameObjectsWithTag("hexHighlight");
             towerSlots = foundSlots.ToList();
-            
+
             if (actionButton)
                 actionButton.onClick.AddListener(OnActionButtonClick);
 
@@ -110,9 +109,9 @@ namespace Misc
         {
             if (Time.time - lastClickTime < clickCooldown)
                 return;
-            
+
             lastClickTime = Time.time;
-            
+
             switch (currentStep)
             {
                 case TutorialStep.Greeting:
@@ -126,11 +125,11 @@ namespace Misc
                 case TutorialStep.TowerSuccess:
                     currentStep = TutorialStep.BuildTrap;
                     break;
-                
+
                 case TutorialStep.HelpExplanation:
                     currentStep = TutorialStep.PauseExplanation;
                     break;
-                
+
                 case TutorialStep.PauseExplanation:
                     currentStep = TutorialStep.SpeedExplanation;
                     break;
@@ -160,9 +159,9 @@ namespace Misc
             if (highlightEffect)
                 highlightEffect.SetActive(false);
             if (highlightEffectCastle)
-                highlightEffectCastle.SetActive(false);    
+                highlightEffectCastle.SetActive(false);
             ClearHexHighlights();
-            
+
             switch (currentStep)
             {
                 case TutorialStep.Greeting:
@@ -180,12 +179,14 @@ namespace Misc
 
                 case TutorialStep.BarrackSuccess:
                     ConfigureButton(true, "Далее");
-                    PrintPhrase("Отлично, <color=#FFEE58>Казарма</color> готова! Теперь у\u00A0вас есть верные рыцари.");
+                    PrintPhrase(
+                        "Отлично, <color=#FFEE58>Казарма</color> готова! Теперь у\u00A0вас есть верные рыцари.");
                     break;
 
                 case TutorialStep.BuildTower:
                     ConfigureButton(false);
-                    PrintPhrase("Защита периметра превыше всего! Перетяние <color=#FFEE58>Башню</color> в\u00A0слот на\u00A0поле боя.");
+                    PrintPhrase(
+                        "Защита периметра превыше всего! Перетяние <color=#FFEE58>Башню</color> в\u00A0слот на\u00A0поле боя.");
                     ApplyHighlight(towerSlot);
                     ApplyHexHighlight(towerSlots);
                     break;
@@ -200,14 +201,14 @@ namespace Misc
                     PrintPhrase("Остался последний штрих. Перетяните <color=#FFEE58>Ловушку</color> на\u00A0дорогу.");
                     ApplyHighlight(trapSlot);
                     break;
-                
+
                 case TutorialStep.HelpExplanation:
                     ConfigureButton(true, "Далее");
                     ApplyHighlight(helpButton);
                     PrintPhrase(
                         "Изучите другие \u00A0постройки, наведясь на них в\u00A0магазине. Или прочтите <color=#FFEE58>Справку</color>.");
                     break;
-                
+
                 case TutorialStep.PauseExplanation:
                     ConfigureButton(true, "Далее");
                     ApplyHighlight(pauseButton);
@@ -253,66 +254,51 @@ namespace Misc
                 highlightEffect.SetActive(true);
             }
         }
-        
+
         private void ApplyCastleHighlight(GameObject slot)
         {
             if (highlightEffectCastle && slot != null)
             {
                 var slotRect = slot.GetComponent<RectTransform>();
                 var highlightRect = highlightEffectCastle.GetComponent<RectTransform>();
-                
+
                 if (slotRect != null && highlightRect != null)
                 {
                     highlightEffectCastle.transform.position = slot.transform.position;
-                    highlightRect.sizeDelta = slotRect.sizeDelta; 
+                    highlightRect.sizeDelta = slotRect.sizeDelta;
                     highlightEffectCastle.SetActive(true);
                 }
             }
         }
-        
-        private void ApplyHexHighlight(List<GameObject> slots)
+
+        private static void ApplyHexHighlight(List<GameObject> slots)
         {
             if (slots == null || slots.Count == 0)
-            {
-                Debug.LogError("🚨 СПИСОК towerSlots ПУСТОЙ! Ты не перетащила гексы в инспектор TutorialManager!");
                 return;
-            }
 
             foreach (var slot in slots)
             {
-                if (slot == null) 
-                {
-                    Debug.LogWarning("🚨 В списке towerSlots есть пустой слот (None).");
+                if (slot == null)
                     continue;
-                }
 
-                // Ищем объект
-                Transform highlight = slot.transform.Find("Highlight");
+                var highlight = slot.transform.Find("Highlight");
 
                 if (highlight != null)
-                {
                     highlight.gameObject.SetActive(true);
-                    Debug.Log($"✅ Успешно включили подсветку для: {slot.name}");
-                }
-                else
-                {
-                    Debug.LogError($"❌ У объекта {slot.name} нет ПРЯМОГО дочернего объекта с точным именем 'Highlight'!");
-                }
             }
         }
-        
+
         private void ClearHexHighlights()
         {
             if (towerSlots == null) return;
-    
+
             foreach (var slot in towerSlots)
             {
-                if (slot == null) continue;
-                Transform highlight = slot.transform.Find("Highlight");
-                if (highlight != null) 
-                {
+                if (slot == null)
+                    continue;
+                var highlight = slot.transform.Find("Highlight");
+                if (highlight != null)
                     highlight.gameObject.SetActive(false);
-                }
             }
         }
 

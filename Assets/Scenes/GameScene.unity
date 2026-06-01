@@ -25825,7 +25825,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3775926294943505921, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
       propertyPath: m_text
-      value: HP
+      value: "\u0417\u0430\u043C\u043E\u043A"
       objectReference: {fileID: 0}
     - target: {fileID: 3775926294943505921, guid: ba87db2eca9e5c04682631c89a098449, type: 3}
       propertyPath: m_fontColor.b
@@ -34721,16 +34721,6 @@ MonoBehaviour:
   helpButton: {fileID: 925691606}
   pauseButton: {fileID: 543817033}
   castleGrid: {fileID: 1212635080}
-  towerSlots:
-  - {fileID: 1466407673}
-  - {fileID: 1180327186}
-  - {fileID: 1319257108}
-  - {fileID: 1958275893}
-  - {fileID: 116587459}
-  - {fileID: 594895010}
-  - {fileID: 1466808759}
-  - {fileID: 326908048}
-  - {fileID: 1548692914}
   highlightEffect: {fileID: 1208501083}
   highlightEffectCastle: {fileID: 2053685817}
   highlightEffectHex: {fileID: 1064770179}

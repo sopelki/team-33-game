@@ -670,10 +670,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fcbb358a6c40ef9473be3b2bfaa3a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Audio.AudioManager
+  audioMixer: {fileID: 24100000, guid: 30f046635e274584eba55c1ae094c200, type: 2}
   musicSource: {fileID: 669032553}
   sfxSource: {fileID: 669032552}
-  musicVolume: 1
-  sfxVolume: 1
+  musicMasterScale: 0.5
+  sfxMasterScale: 0.8
 --- !u!4 &669032555
 Transform:
   m_ObjectHideFlags: 0
