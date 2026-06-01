@@ -7,7 +7,6 @@ using Logic.Tower;
 using Logic.Trap;
 using Logic.Unit;
 using MenuScripts;
-using NUnit.Framework;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -29,7 +28,6 @@ namespace Misc
         private TextMeshProUGUI actionButtonText;
         [SerializeField]
         private GameObject barrackSlot, towerSlot, trapSlot, helpButton, pauseButton, castleGrid;
-        // [SerializeField]
         private List<GameObject> towerSlots;
         [SerializeField]
         private GameObject highlightEffect, highlightEffectCastle, highlightEffectHex;
@@ -39,16 +37,21 @@ namespace Misc
         private float startDelay = 1.5f;
         private float lastClickTime;
         [SerializeField] private float clickCooldown = 0.3f;
+        
+        [Header("Highlight Animation")]
+        [SerializeField] private float highlightPulseSpeed = 1.8f;
 
         private bool barrackTracked, towerTracked, trapTracked;
         private TutorialStep currentStep = TutorialStep.Greeting;
         private GameFlowManager gameFlowManager;
-        public bool IsRunning { get; private set; }
+        private bool IsRunning { get; set; }
+        private Image highlightImage;
 
         private void Start()
         {
             var foundSlots = GameObject.FindGameObjectsWithTag("hexHighlight");
             towerSlots = foundSlots.ToList();
+            highlightImage = highlightEffect.GetComponent<Image>();
             
             if (actionButton)
                 actionButton.onClick.AddListener(OnActionButtonClick);
@@ -63,6 +66,8 @@ namespace Misc
         {
             if (PlayerPrefs.GetInt("ShowTutorial", 1) == 0)
                 return;
+            
+            AnimateHighlight();
 
             switch (currentStep)
             {
@@ -254,6 +259,21 @@ namespace Misc
             }
         }
         
+        private void AnimateHighlight()
+        {
+            if (highlightEffect == null || !highlightEffect.activeSelf || highlightImage == null)
+                return;
+
+            var color = highlightImage.color;
+            var t = Mathf.PingPong(Time.time * highlightPulseSpeed, 1f);
+            
+            var smoothT = Mathf.SmoothStep(0f, 1f, t);
+            smoothT = Mathf.SmoothStep(0f, 1f, smoothT);
+    
+            color.a = smoothT * (96f / 255f);
+            highlightImage.color = color;
+        }
+        
         private void ApplyCastleHighlight(GameObject slot)
         {
             if (highlightEffectCastle && slot != null)
@@ -273,31 +293,17 @@ namespace Misc
         private void ApplyHexHighlight(List<GameObject> slots)
         {
             if (slots == null || slots.Count == 0)
-            {
-                Debug.LogError("🚨 СПИСОК towerSlots ПУСТОЙ! Ты не перетащила гексы в инспектор TutorialManager!");
                 return;
-            }
 
             foreach (var slot in slots)
             {
                 if (slot == null) 
-                {
-                    Debug.LogWarning("🚨 В списке towerSlots есть пустой слот (None).");
                     continue;
-                }
-
-                // Ищем объект
-                Transform highlight = slot.transform.Find("Highlight");
+                
+                var highlight = slot.transform.Find("Highlight");
 
                 if (highlight != null)
-                {
                     highlight.gameObject.SetActive(true);
-                    Debug.Log($"✅ Успешно включили подсветку для: {slot.name}");
-                }
-                else
-                {
-                    Debug.LogError($"❌ У объекта {slot.name} нет ПРЯМОГО дочернего объекта с точным именем 'Highlight'!");
-                }
             }
         }
         
@@ -308,7 +314,7 @@ namespace Misc
             foreach (var slot in towerSlots)
             {
                 if (slot == null) continue;
-                Transform highlight = slot.transform.Find("Highlight");
+                var highlight = slot.transform.Find("Highlight");
                 if (highlight != null) 
                 {
                     highlight.gameObject.SetActive(false);

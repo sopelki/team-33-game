@@ -34721,21 +34721,12 @@ MonoBehaviour:
   helpButton: {fileID: 925691606}
   pauseButton: {fileID: 543817033}
   castleGrid: {fileID: 1212635080}
-  towerSlots:
-  - {fileID: 1466407673}
-  - {fileID: 1180327186}
-  - {fileID: 1319257108}
-  - {fileID: 1958275893}
-  - {fileID: 116587459}
-  - {fileID: 594895010}
-  - {fileID: 1466808759}
-  - {fileID: 326908048}
-  - {fileID: 1548692914}
   highlightEffect: {fileID: 1208501083}
   highlightEffectCastle: {fileID: 2053685817}
   highlightEffectHex: {fileID: 1064770179}
   startDelay: 1
   clickCooldown: 0.3
+  highlightPulseSpeed: 1.8
 --- !u!4 &1919606403
 Transform:
   m_ObjectHideFlags: 0
