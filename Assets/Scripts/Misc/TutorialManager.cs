@@ -202,6 +202,7 @@ namespace Misc
                     ApplyHighlight(towerSlot);
                     ApplyHexHighlight(towerSlots);
                     break;
+                    break;
 
                 case TutorialStep.TowerSuccess:
                     ConfigureButton(true, "Далее");
@@ -218,14 +219,14 @@ namespace Misc
                     ConfigureButton(true, "Далее");
                     ApplyHighlight(helpButton);
                     PrintPhrase(
-                        "Изучите другие \u00A0постройки, наведясь на них в\u00A0магазине. Или прочитайте <color=#FFEE58>Справку</color>.");
+                        "Изучите другие \u00A0постройки в магазине или прочтите <color=#FFEE58>Справку</color>.");
                     break;
 
                 case TutorialStep.PauseExplanation:
                     ConfigureButton(true, "Далее");
                     ApplyHighlight(pauseButton);
                     PrintPhrase(
-                        "Чтобы открыть \u00A0настройки или выйти из\u00A0игры, нажмите <color=#FFEE58>Паузу</color> или <color=#FFEE58>Esc</color>.");
+                        "Для настройки или выхода из игры нажмите <nobr><color=#FFEE58>Паузу</color> или <color=#FFEE58>Esc</color>.</nobr>");
                     break;
 
                 case TutorialStep.SpeedExplanation:
@@ -236,7 +237,7 @@ namespace Misc
 
                 case TutorialStep.Finish:
                     ConfigureButton(true, "К игре!");
-                    PrintPhrase("Теперь вы знаете, как защитить замок. Начнём\u00A0настоящий бой!");
+                    PrintPhrase("Теперь вы готовы защищать замок. Начнём\u00A0настоящий бой!");
                     break;
 
                 default:
