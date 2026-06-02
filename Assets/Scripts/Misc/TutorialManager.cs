@@ -393,6 +393,11 @@ namespace Misc
 
             if (highlightEffect)
                 highlightEffect.SetActive(false);
+            
+            if (highlightEffectCastle)
+                highlightEffectCastle.SetActive(false);
+            
+            ClearHexHighlights();
         }
 
         public void TryStartTutorialFromScratch()
