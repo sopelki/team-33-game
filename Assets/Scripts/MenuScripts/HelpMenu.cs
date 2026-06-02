@@ -28,6 +28,8 @@ namespace MenuScripts
         private Button tabCastleButton;
         [SerializeField]
         private Button tabFieldButton;
+        [SerializeField]
+        private Button tabMonsterButton;
 
         public bool IsOpen => helpPanel != null && helpPanel.GetComponent<CanvasGroup>().alpha > 0.5f;
 
@@ -41,6 +43,9 @@ namespace MenuScripts
 
             if (tabFieldButton != null)
                 tabFieldButton.onClick.AddListener(ShowField);
+            
+            if (tabMonsterButton != null)
+                tabMonsterButton.onClick.AddListener(ShowMonsters);
         }
 
         public void OpenHelp()
@@ -65,13 +70,13 @@ namespace MenuScripts
         {
             UIBlocker.UnblockAll();
 
-            if (menuBackground != null)
+            if (menuBackground)
                 menuBackground.Hide();
 
-            if (helpPanel != null)
+            if (helpPanel)
                 helpPanel.Hide();
 
-            if (textBackground != null)
+            if (textBackground)
                 textBackground.Hide();
 
             UpdateTabs();
@@ -83,8 +88,9 @@ namespace MenuScripts
             tabMechanicsButton.interactable = true;
             tabCastleButton.interactable = true;
             tabFieldButton.interactable = true;
+            tabMonsterButton.interactable = true;
 
-            if (activeButton != null)
+            if (activeButton)
                 activeButton.interactable = false;
         }
 
@@ -127,6 +133,37 @@ namespace MenuScripts
                 "▪ <color=#dfe88b><b>Лоза:</b></color> Оплетает монстров, значительно замедляя их ход.\n" +
                 "▪ <color=#dfe88b><b>Колья:</b></color> Наносят стабильный <b>урон </b><nobr>всем, кто</nobr> стоит на них.\n" +
                 "▪ <color=#dfe88b><b>Капкан:</b></color> Наносит <b>критический удар </b><nobr>и исчезает.</nobr>\n";
+        }
+        
+        public void ShowMonsters()
+        {
+            UpdateTabs(tabMonsterButton);
+            textBackground.Show();
+            titleText.text = "<color=#EF5350>МОНСТРЫ</color>";
+            descriptionText.text =
+                "<color=#90CAF9><b>ГОБЛИН</b></color>: Базовый враг и основная ударная сила нечисти." +
+                "<line-height=20px>\n</line-height>" +
+                "<line-height=60%>" +
+                "▪ <color=#dfe88b><b>Здоровье:</b></color> 55\n" +
+                "▪ <color=#dfe88b><b>Урон:</b></color> 20\n" +
+                "▪ <color=#dfe88b><b>Награда:</b></color> 8\n" +
+                "</line-height>" +
+                "<line-height=-15px>\n</line-height>" +
+                "<color=#90CAF9><b>ГОБЛИН С РОГАТКОЙ</b></color>: Прыткий монстр, который будет отвлекать ваших рыцарей." +
+                "<line-height=20px>\n</line-height>" +
+                "<line-height=60%>" +
+                "▪ <color=#dfe88b><b>Здоровье:</b></color> 45\n" +
+                "▪ <color=#dfe88b><b>Урон:</b></color> 10\n" +
+                "▪ <color=#dfe88b><b>Награда:</b></color> 12\n" +
+                "</line-height>" +
+                "<line-height=-15px>\n</line-height>" +
+                "<color=#90CAF9><b>СКЕЛЕТ</b></color>: Тяжеловес и самый опасный <nobr>из врагов.</nobr>" +
+                "<line-height=20px>\n</line-height>" +
+                "<line-height=60%>" +
+                "▪ <color=#dfe88b><b>Здоровье:</b></color> 65\n" +
+                "▪ <color=#dfe88b><b>Урон:</b></color> 35\n" +
+                "▪ <color=#dfe88b><b>Награда:</b></color> 16\n" +
+                "</line-height>";
         }
     }
 }
