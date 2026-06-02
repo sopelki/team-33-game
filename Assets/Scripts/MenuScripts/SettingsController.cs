@@ -1,5 +1,5 @@
-using Misc;
 using Audio;
+using Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +23,10 @@ namespace MenuScripts
         [SerializeField]
         private Toggle tutorialToggle;
 
-        private void OnEnable() => LoadUIValues();
+        private void OnEnable()
+        {
+            LoadUIValues();
+        }
 
         private void LoadUIValues()
         {
@@ -49,10 +52,25 @@ namespace MenuScripts
             return val;
         }
 
-        public void SetMasterVolume(float val) => UpdateVolume("MasterVol", val);
-        public void SetMusicVolume(float val) => UpdateVolume("MusicVol", val);
-        public void SetSfxVolume(float val) => UpdateVolume("SfxVol", val);
-        public void SetUiVolume(float val) => UpdateVolume("UiVol", val);
+        public void SetMasterVolume(float val)
+        {
+            UpdateVolume("MasterVol", val);
+        }
+
+        public void SetMusicVolume(float val)
+        {
+            UpdateVolume("MusicVol", val);
+        }
+
+        public void SetSfxVolume(float val)
+        {
+            UpdateVolume("SfxVol", val);
+        }
+
+        public void SetUiVolume(float val)
+        {
+            UpdateVolume("UiVol", val);
+        }
 
         private static void UpdateVolume(string key, float val)
         {

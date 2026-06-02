@@ -58,8 +58,6 @@ namespace UI
         private Image iconImage;
         [SerializeField]
         private float fadeDuration = 0.1f;
-
-        private TowerSystem towerSystem;
         private Vector2 currentGhostPosition;
         private float currentScale;
         private Coroutine fadeCoroutine;
@@ -69,14 +67,16 @@ namespace UI
 
         private CanvasGroup iconCanvasGroup;
 
+        private bool isDragging;
+
         private bool isSnapping;
-        private bool wasSnapping;
+        private Color targetColor;
 
         private Vector2 targetGhostPosition;
-        private Color targetColor;
         private float targetScale;
 
-        private bool isDragging;
+        private TowerSystem towerSystem;
+        private bool wasSnapping;
 
         private void Awake()
         {
@@ -132,6 +132,19 @@ namespace UI
                 targetColor,
                 Time.unscaledDeltaTime * colorLerpSpeed
             );
+        }
+
+        private void OnDisable()
+        {
+            if (isDragging)
+            {
+                isDragging = false;
+                CleanupGhost();
+                GlobalCursorManager.Instance.ReleaseHold(null);
+
+                if (iconCanvasGroup != null)
+                    iconCanvasGroup.alpha = 1f;
+            }
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -198,26 +211,16 @@ namespace UI
             }
         }
 
-        private void OnDisable()
-        {
-            if (isDragging)
-            {
-                isDragging = false;
-                CleanupGhost();
-                GlobalCursorManager.Instance.ReleaseHold(null);
-                
-                if (iconCanvasGroup != null)
-                    iconCanvasGroup.alpha = 1f;
-            }
-        }
-        
         private void CleanupGhost()
         {
             if (ghost != null)
                 Destroy(ghost);
         }
 
-        public void Construct(TowerSystem system) => towerSystem = system;
+        public void Construct(TowerSystem system)
+        {
+            towerSystem = system;
+        }
 
         private void TryPlaceTower(PointerEventData eventData)
         {

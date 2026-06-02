@@ -33,12 +33,12 @@ namespace MenuScripts
         private FadePanel menuBackground;
         private AudioSource audioSource;
 
+        private CastleModel model;
+
         public bool IsGameOverOpen => gameOverPanel != null && gameOverPanel.GetComponent<CanvasGroup>().alpha > 0.5f;
         public bool IsGameWonOpen => gameWonPanel != null && gameWonPanel.GetComponent<CanvasGroup>().alpha > 0.5f;
 
         public bool IsAnyEndGameOpen => IsGameOverOpen || IsGameWonOpen;
-
-        private CastleModel model;
 
         private void Awake()
         {
@@ -58,9 +58,15 @@ namespace MenuScripts
                 OpenGameOver();
         }
 
-        public void OpenGameOver() => StartCoroutine(EndGameSequence(gameOverPanel, gameOverSound));
+        public void OpenGameOver()
+        {
+            StartCoroutine(EndGameSequence(gameOverPanel, gameOverSound));
+        }
 
-        public void OpenWinMenu() => StartCoroutine(EndGameSequence(gameWonPanel, gameWonSound));
+        public void OpenWinMenu()
+        {
+            StartCoroutine(EndGameSequence(gameWonPanel, gameWonSound));
+        }
 
         private IEnumerator EndGameSequence(FadePanel panel, AudioClip clip)
         {
@@ -84,8 +90,14 @@ namespace MenuScripts
             panel.Show();
         }
 
-        public void RestartGame() => SceneTransitions.LoadScene(SceneManager.GetActiveScene().name);
+        public void RestartGame()
+        {
+            SceneTransitions.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
-        public void LoadMainMenu() => SceneTransitions.LoadScene("MainMenu");
+        public void LoadMainMenu()
+        {
+            SceneTransitions.LoadScene("MainMenu");
+        }
     }
 }

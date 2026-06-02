@@ -74,7 +74,7 @@
 ## Скриншоты
 
 <p align="center">
-  <img src="ReadmeContent/MainMenuScreenshot.png" alt="Main Menu"/>
+  <img src="ReadmeContent/MainMenuScreenshot.png" alt="Main Menu"/><br><br>
   <img src="ReadmeContent/GameScreenshot.png" alt="Gameplay"/><br><br>
   <img src="ReadmeContent/HelpMenuScreenshot.png" alt="Help Menu"/><br><br>
   <img src="ReadmeContent/SettingsScreenshot.png" alt="Settings Menu"/><br><br>

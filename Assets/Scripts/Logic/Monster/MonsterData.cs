@@ -1,5 +1,4 @@
-﻿using Logic.Unit;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Logic.Monster
 {

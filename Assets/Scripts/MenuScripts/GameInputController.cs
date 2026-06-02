@@ -1,8 +1,8 @@
+using System.Linq;
+using Retro.PSXEffects.Retro_Shaders.Runtime.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
-using System.Linq;
-using Retro.PSXEffects.Retro_Shaders.Runtime.Scripts;
 
 namespace MenuScripts
 {
@@ -67,6 +67,11 @@ namespace MenuScripts
                 UpdateVfx(0f);
         }
 
+        private void OnDisable()
+        {
+            UpdateVfx(0);
+        }
+
         private void HandleSpeedToggle()
         {
             if (IsAnyMenuOpen()) return;
@@ -92,8 +97,6 @@ namespace MenuScripts
                 rendererData.SetDirty();
             }
         }
-
-        private void OnDisable() => UpdateVfx(0);
 
         private void HandleEscape()
         {

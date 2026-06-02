@@ -28,14 +28,12 @@ namespace Misc
         private TextMeshProUGUI actionButtonText;
         [SerializeField]
         private GameObject barrackSlot, towerSlot, trapSlot, helpButton, pauseButton, castleGrid;
-        private List<GameObject> towerSlots;
         [SerializeField]
         private GameObject highlightEffect, highlightEffectCastle, highlightEffectHex;
 
         [Header("Настройки задержки")]
         [SerializeField]
         private float startDelay = 1.5f;
-        private float lastClickTime;
 
         [SerializeField]
         private float clickCooldown = 0.3f;
@@ -47,8 +45,10 @@ namespace Misc
         private bool barrackTracked, towerTracked, trapTracked;
         private TutorialStep currentStep = TutorialStep.Greeting;
         private GameFlowManager gameFlowManager;
-        private bool IsRunning { get; set; }
         private Image highlightImage;
+        private float lastClickTime;
+        private List<GameObject> towerSlots;
+        private bool IsRunning { get; set; }
 
         private void Start()
         {
@@ -106,7 +106,10 @@ namespace Misc
             }
         }
 
-        public void Setup(GameFlowManager flowManager) => gameFlowManager = flowManager;
+        public void Setup(GameFlowManager flowManager)
+        {
+            gameFlowManager = flowManager;
+        }
 
         public static bool IsTutorialActive()
         {
@@ -215,7 +218,7 @@ namespace Misc
                     ConfigureButton(true, "Далее");
                     ApplyHighlight(helpButton);
                     PrintPhrase(
-                        "Изучите другие \u00A0постройки, наведясь на них в\u00A0магазине. Или прочтите <color=#FFEE58>Справку</color>.");
+                        "Изучите другие \u00A0постройки, наведясь на них в\u00A0магазине. Или прочитайте <color=#FFEE58>Справку</color>.");
                     break;
 
                 case TutorialStep.PauseExplanation:

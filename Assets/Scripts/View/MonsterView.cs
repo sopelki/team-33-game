@@ -111,11 +111,20 @@ namespace View
             };
         }
 
-        private void HandleAttack() => animator.SetTrigger(isAttacking);
+        private void HandleAttack()
+        {
+            animator.SetTrigger(isAttacking);
+        }
 
-        private void HandleDamaged() => animator.SetBool(isDamaged, true);
+        private void HandleDamaged()
+        {
+            animator.SetBool(isDamaged, true);
+        }
 
-        private void HandleDeath() => animator.SetBool(isDead, true);
+        private void HandleDeath()
+        {
+            animator.SetBool(isDead, true);
+        }
 
 
         public void OnDeathAnimationEnd()

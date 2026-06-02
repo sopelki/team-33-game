@@ -23,16 +23,6 @@ namespace Audio
 
         public static AudioManager Instance { get; private set; }
 
-        private void Start() => SyncVolumesWithPrefs();
-
-        private void SyncVolumesWithPrefs()
-        {
-            SetMixerVolume("MasterVol", PlayerPrefs.GetFloat("MasterVol", 0.75f));
-            SetMixerVolume("MusicVol", PlayerPrefs.GetFloat("MusicVol", 0.75f));
-            SetMixerVolume("SfxVol", PlayerPrefs.GetFloat("SfxVol", 0.75f));
-            SetMixerVolume("UiVol", PlayerPrefs.GetFloat("UiVol", 0.75f));
-        }
-
         private void Awake()
         {
             if (Instance && Instance != this)
@@ -45,6 +35,19 @@ namespace Audio
             DontDestroyOnLoad(gameObject);
 
             InitializeSources();
+        }
+
+        private void Start()
+        {
+            SyncVolumesWithPrefs();
+        }
+
+        private void SyncVolumesWithPrefs()
+        {
+            SetMixerVolume("MasterVol", PlayerPrefs.GetFloat("MasterVol", 0.75f));
+            SetMixerVolume("MusicVol", PlayerPrefs.GetFloat("MusicVol", 0.75f));
+            SetMixerVolume("SfxVol", PlayerPrefs.GetFloat("SfxVol", 0.75f));
+            SetMixerVolume("UiVol", PlayerPrefs.GetFloat("UiVol", 0.75f));
         }
 
         private void InitializeSources()
@@ -76,7 +79,10 @@ namespace Audio
             musicSource.Play();
         }
 
-        public void StopMusic() => musicSource.Stop();
+        public void StopMusic()
+        {
+            musicSource.Stop();
+        }
 
         public void PlaySfx(AudioClip clip, float volumeMultiplier = 1f)
         {

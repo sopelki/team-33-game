@@ -9,7 +9,6 @@ namespace Logic.Castle
     public class CastleModel : IDamageable
     {
         private readonly SoundData soundData;
-        public event Action OnCastleDestroyed;
 
         public CastleModel(int initialHp, int initialGold, int startSupply, SoundData soundData)
         {
@@ -47,6 +46,8 @@ namespace Logic.Castle
             if (Hp <= 0)
                 OnCastleDestroyed?.Invoke();
         }
+
+        public event Action OnCastleDestroyed;
 
         public event Action OnChanged;
 

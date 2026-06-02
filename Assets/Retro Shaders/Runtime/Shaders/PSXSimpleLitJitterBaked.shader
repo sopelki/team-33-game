@@ -210,7 +210,7 @@ Shader "Retro/PSXSimpleLitJitter (Baked)"
                 OUT.fogFactor = ComputeFogFactor(positionCS.z);
 
                 OUTPUT_LIGHTMAP_UV(IN.lightmapUV, unity_LightmapST, OUT.lightmapUV);
-                    OUTPUT_SH(OUT.normalWS, OUT.vertexSH);
+                OUTPUT_SH(OUT.normalWS, OUT.vertexSH);
                 return OUT;
             }
 

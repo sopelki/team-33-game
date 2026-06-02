@@ -18,9 +18,9 @@ namespace UI
         private float fadeDuration = 0.5f;
         [SerializeField]
         private float targetOpacity = 0.75f;
+        private Coroutine displayCoroutine;
 
         private int wavesCount;
-        private Coroutine displayCoroutine;
 
         public void Initialize(int wavesCount)
         {

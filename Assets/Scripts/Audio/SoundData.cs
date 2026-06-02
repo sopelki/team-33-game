@@ -58,7 +58,7 @@ namespace Audio
 
         [Header("Background Music")]
         public AudioClip backgroundMusic;
-        
+
         [Header("UI Sounds")]
         public AudioClip[] typingSounds;
         [Range(0f, 1f)]

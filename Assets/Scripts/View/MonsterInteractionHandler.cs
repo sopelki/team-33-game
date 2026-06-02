@@ -1,4 +1,5 @@
 using Logic.Monster;
+using Misc;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,9 +16,15 @@ namespace View
         private MonsterModel model;
         private float nextAllowedClickTime;
 
-        public void Setup(MonsterModel monsterModel) => model = monsterModel;
+        public void Setup(MonsterModel monsterModel)
+        {
+            model = monsterModel;
+        }
 
-        public bool IsModelDead() => model == null || model.IsDead;
+        public bool IsModelDead()
+        {
+            return model == null || model.IsDead;
+        }
 
         public void OnPointerClick(PointerEventData eventData)
         {
@@ -33,14 +40,14 @@ namespace View
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (model is { IsDead: false } && Misc.GlobalCursorManager.Instance)
-                Misc.GlobalCursorManager.Instance.SetAttack();
+            if (model is { IsDead: false } && GlobalCursorManager.Instance)
+                GlobalCursorManager.Instance.SetAttack();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (Misc.GlobalCursorManager.Instance != null)
-                Misc.GlobalCursorManager.Instance.SetDefault();
+            if (GlobalCursorManager.Instance != null)
+                GlobalCursorManager.Instance.SetDefault();
         }
     }
 }

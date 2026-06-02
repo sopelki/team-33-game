@@ -1,8 +1,8 @@
 ﻿using System.Collections;
+using Audio;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Audio;
 
 namespace UI
 {

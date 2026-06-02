@@ -1,8 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using View;
-using System.Collections.Generic;
 
 namespace Misc
 {
@@ -39,6 +39,13 @@ namespace Misc
             UpdateMonsterHover(mousePos);
         }
 
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            var monster = RaycastAtPosition(eventData.position);
+            if (monster)
+                monster.OnPointerClick(eventData);
+        }
+
         private bool IsPointerBlockedByUI()
         {
             if (EventSystem.current == null) return false;
@@ -55,13 +62,6 @@ namespace Misc
                 return results[0].gameObject != gameObject;
 
             return false;
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            var monster = RaycastAtPosition(eventData.position);
-            if (monster)
-                monster.OnPointerClick(eventData);
         }
 
         private void UpdateMonsterHover(Vector2 screenPosition)

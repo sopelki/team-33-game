@@ -66,9 +66,9 @@ namespace Core
 
             if (Time.timeScale <= 0)
                 return;
-            
+
             var deltaTime = Time.unscaledDeltaTime;
-            
+
             timeSinceStart += deltaTime;
             timeSinceLastHint += deltaTime;
 

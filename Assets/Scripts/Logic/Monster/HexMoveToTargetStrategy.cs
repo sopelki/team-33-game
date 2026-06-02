@@ -13,6 +13,9 @@ namespace Logic.Monster
     public class HexMoveToTargetStrategy : IMovementStrategy
     {
         private const float RepathDelay = 0.7f;
+
+        private const float MinDistanceBetweenMonsters = 2.0f;
+        private const float SeparationStrength = 2.5f;
         private readonly Field.Field field;
 
         private readonly Vector3 formationOffset;
@@ -26,9 +29,6 @@ namespace Logic.Monster
         private int pathIndex;
 
         private float repathTimer;
-
-        private const float MinDistanceBetweenMonsters = 2.0f;
-        private const float SeparationStrength = 2.5f;
 
         public HexMoveToTargetStrategy(
             MonsterModel monster,

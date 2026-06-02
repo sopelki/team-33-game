@@ -78,11 +78,20 @@ namespace Logic.Unit
             movementStrategy?.Tick();
         }
 
-        public float GetMoveSpeed() => buffs.Aggregate(UnitData.moveSpeed, (current, buff) => buff.ModifyMoveSpeed(current));
+        public float GetMoveSpeed()
+        {
+            return buffs.Aggregate(UnitData.moveSpeed, (current, buff) => buff.ModifyMoveSpeed(current));
+        }
 
-        public int GetMaxHealth() => buffs.Aggregate(UnitData.maxHealth, (current, buff) => buff.ModifyMaxHealth(current));
+        public int GetMaxHealth()
+        {
+            return buffs.Aggregate(UnitData.maxHealth, (current, buff) => buff.ModifyMaxHealth(current));
+        }
 
-        public void ResetHealth() => CurrentHealth = GetMaxHealth();
+        public void ResetHealth()
+        {
+            CurrentHealth = GetMaxHealth();
+        }
 
         public int GetAttack()
         {
@@ -91,9 +100,15 @@ namespace Logic.Unit
             return result;
         }
 
-        public void AddBuff(Buff buff) => buffs.Add(buff);
+        public void AddBuff(Buff buff)
+        {
+            buffs.Add(buff);
+        }
 
-        public void Attack() => OnAttack?.Invoke();
+        public void Attack()
+        {
+            OnAttack?.Invoke();
+        }
 
         public void Die()
         {
@@ -102,8 +117,14 @@ namespace Logic.Unit
             OnDied?.Invoke();
         }
 
-        public void SetHex(Vector2Int hex) => CurrentHex = hex;
+        public void SetHex(Vector2Int hex)
+        {
+            CurrentHex = hex;
+        }
 
-        public void SetPosition(Vector3 newPosition) => WorldPosition = newPosition;
+        public void SetPosition(Vector3 newPosition)
+        {
+            WorldPosition = newPosition;
+        }
     }
 }

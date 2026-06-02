@@ -76,12 +76,12 @@ namespace UI
         private RectTransform ghostRect;
 
         private CanvasGroup iconCanvasGroup;
+        private bool isDragging;
         private bool isSnapping;
-        private bool wasSnapping;
         private Color targetColor;
         private Vector2 targetGhostPosition;
         private TrapSystem trapSystem;
-        private bool isDragging;
+        private bool wasSnapping;
 
         private void Awake()
         {
@@ -122,6 +122,18 @@ namespace UI
             currentScale = Mathf.Lerp(currentScale, targetScale, Time.unscaledDeltaTime * scaleSpeed);
             ghostRect.localScale = Vector3.one * currentScale;
             ghostImage.color = Color.Lerp(ghostImage.color, targetColor, Time.unscaledDeltaTime * colorLerpSpeed);
+        }
+
+        private void OnDisable()
+        {
+            if (isDragging)
+            {
+                GlobalCursorManager.Instance.ReleaseHold(null);
+                isDragging = false;
+                CleanupDraggingUI();
+                if (iconCanvasGroup != null)
+                    iconCanvasGroup.alpha = 1f;
+            }
         }
 
         public void OnBeginDrag(PointerEventData eventData)
@@ -231,18 +243,6 @@ namespace UI
                     StopCoroutine(fadeCoroutine);
 
                 fadeCoroutine = StartCoroutine(FadeInIcon());
-            }
-        }
-
-        private void OnDisable()
-        {
-            if (isDragging)
-            {
-                GlobalCursorManager.Instance.ReleaseHold(null);
-                isDragging = false;
-                CleanupDraggingUI();
-                if (iconCanvasGroup != null)
-                    iconCanvasGroup.alpha = 1f;
             }
         }
 

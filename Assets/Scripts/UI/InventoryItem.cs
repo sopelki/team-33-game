@@ -28,20 +28,19 @@ namespace UI
 
         private CanvasGroup canvasGroup;
         private CastleDragHandler dragHandler;
+        private Color invalidColor;
+
+        private bool isDragging;
         private Image itemImage;
+        private Color normalDraggingColor;
         private Color originalColor;
         private Vector3 originalScale;
         private Color targetColor;
         private Vector3 targetScale;
-        private Color invalidColor;
-        private Color normalDraggingColor;
-
-        private bool isDragging;
 
         public BuildingData BuildingData => buildingData;
         public Transform OriginalParent { get; private set; }
         public bool IsFromShop { get; private set; }
-        public event Action OnDropped;
 
         private void Awake()
         {
@@ -90,7 +89,7 @@ namespace UI
             if (!isDragging)
                 return;
 
-            GlobalCursorManager.Instance.ReleaseHold(eventData); 
+            GlobalCursorManager.Instance.ReleaseHold(eventData);
             isDragging = false;
 
             targetScale = originalScale;
@@ -108,8 +107,17 @@ namespace UI
             }
         }
 
-        public void SetDraggingScale(float multiplier) => targetScale = originalScale * multiplier;
-        public void SetValidationState(bool isValid) => targetColor = isValid ? normalDraggingColor : invalidColor;
+        public event Action OnDropped;
+
+        public void SetDraggingScale(float multiplier)
+        {
+            targetScale = originalScale * multiplier;
+        }
+
+        public void SetValidationState(bool isValid)
+        {
+            targetColor = isValid ? normalDraggingColor : invalidColor;
+        }
 
         public void SetData(BuildingData data, bool fromShop)
         {
