@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b, type: 3}
   m_Name: CRTRendererFeature
   m_EditorClassIdentifier: Retro.PSXEffects.Runtime::Retro.PSXEffects.CRTRendererFeature
-  m_Active: 1
+  m_Active: 0
   settings:
     renderPassEvent: 550
     pixelSize: 1
